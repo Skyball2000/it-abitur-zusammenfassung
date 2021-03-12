@@ -1,0 +1,13 @@
+siteOutDir:out\site\
+sitePagesDir:res\site\pages\
+siteTemplateDir:res\site\templates\
+
+templatePlaceTitle:BUILDER-PLACE-TITLE
+templatePlaceBody:BUILDER-PLACE-BODY
+templateInsert:INSERT
+templateMainTitle:<h1 class="u-text u-text-palette-5-dark-3 u-text-2">INSERT</h1>
+templateSubTitle:<h1 class="u-text u-text-1">INSERT</h1>
+templateTextTitle:<h4 class="u-text u-text-1" style="margin-top:-15px;">INSERT</h4>
+templateTextParagraphIntro:<p class="u-text u-text-2">
+
+templateSubTitleDefault:Hauptthema
