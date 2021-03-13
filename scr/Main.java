@@ -1,4 +1,5 @@
 import yanwittmann.Configuration;
+import yanwittmann.GoogleTranslate;
 
 import java.io.File;
 

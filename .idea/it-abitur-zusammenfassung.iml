@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="utilityClasses" level="project" />
+    <orderEntry type="library" name="json-20201115" level="project" />
   </component>
 </module>

@@ -1,13 +1,31 @@
 siteOutDir:out\site\
 sitePagesDir:res\site\pages\
 siteTemplateDir:res\site\templates\
+siteImagesDir:res\site\img\
 
 templatePlaceTitle:BUILDER-PLACE-TITLE
 templatePlaceBody:BUILDER-PLACE-BODY
+templatePlaceCss:BUILDER-PLACE-CSS
+templatePlaceWebsiteTitle:BUILDER-PLACE-WEBSITE-TITLE
+templatePlaceIcon:BUILDER-PLACE-ICON
+templatePlaceMainPage:BUILDER-PLACE-MAIN-PAGE
+templatePlaceContents:BUILDER-PLACE-CONTENTS
 templateInsert:INSERT
 templateMainTitle:<h1 class="u-text u-text-palette-5-dark-3 u-text-2">INSERT</h1>
 templateSubTitle:<h1 class="u-text u-text-1">INSERT</h1>
 templateTextTitle:<h4 class="u-text u-text-1" style="margin-top:-15px;">INSERT</h4>
 templateTextParagraphIntro:<p class="u-text u-text-2">
+templateCss:<link rel="stylesheet" href="INSERT" media="screen">
+templateWebsiteTitle:<title>INSERT - IT ABI</title>
+templateIcon:<img src="INSERT" class="u-logo-image u-logo-image-1" data-image-width="80.4586">
 
 templateSubTitleDefault:Hauptthema
+templateMainCss:nicepage.css
+templateInformationCss:information.css
+
+siteImageIcon:itabiicon.png
+siteTitleImage:227231823-carl-bosch-schule-Lef1.jpg
+mainPageUrl:http://yanwittmann.de
+
+regexLink:\[\[href=([^|]+)\|([^]]+)]]
+regexLinkReplace:<a href="$1">$2</a>
