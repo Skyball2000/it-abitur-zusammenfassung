@@ -36,16 +36,43 @@ public class HTMLListBuilder {
         return entries;
     }
 
+    private final int generateType = 1;
+
     @Override
     public String toString() {
+        String br = "<br style=\"display: block; margin: 1px 0;\">";
         LineBuilder list = new LineBuilder();
-        list.append((elementName.length() > 0 ? "<li>" + elementName : "") + "<ul" + (ulParameters.length() > 0 ? " " + ulParameters : "") + ">");
-        for (Object entry : entries) {
-            if (entry instanceof HTMLListBuilder)
-                list.append(entry.toString());
-            else list.append("<li>" + entry + "</li>");
+        if (generateType == 0) {
+            list.append((elementName.length() > 0 ? "<li>" + elementName + "\n" : "") + "<ul" + (ulParameters.length() > 0 ? " " + ulParameters : "") + ">");
+            for (Object entry : entries) {
+                if (entry instanceof HTMLListBuilder)
+                    list.append(entry.toString());
+                else list.append("<li>" + entry + "</li>");
+            }
+            list.append("</ul>" + (elementName.length() > 0 ? "</li>" : ""));
+        } else if (generateType == 1) {
+            if (elementName.length() > 0) {
+                list.append("<button type=\"button\" class=\"collapsible\">" + elementName + "</button>\n");
+                list.append("<div class=\"content\">");
+            }
+            list.append(br);
+            boolean lastWasLink = false;
+            for (Object entry : entries) {
+                if (entry instanceof HTMLListBuilder) {
+                    if (lastWasLink) {
+                        lastWasLink = false;
+                        list.append(br);
+                    }
+                    list.append(entry.toString());
+                } else {
+                    lastWasLink = true;
+                    list.append(entry + "<br>");
+                }
+            }
+            list.append(br);
+            if (elementName.length() > 0)
+                list.append("</div>");
         }
-        list.append("</ul>" + (elementName.length() > 0 ? "</li>" : ""));
-        return list.toString();
+        return list.toString().replace(br + "\n</div>\n" + br, "</div>\n" +br);
     }
 }

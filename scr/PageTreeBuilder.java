@@ -1,5 +1,6 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
+import yanwittmann.GeneralUtils;
 import yanwittmann.Pair;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 public class PageTreeBuilder {
 
     private final JSONObject tree = new JSONObject();
+    private final ArrayList<InformationPage> informationPages = new ArrayList<>();
 
     public void add(InformationPage page) {
         makeBranch(page);
@@ -14,6 +16,7 @@ public class PageTreeBuilder {
     }
 
     private void addInformationPage(InformationPage page) {
+        informationPages.add(page);
         JSONObject currentBranch = tree;
         for (String pathTitle : page.getPathTitles()) {
             if (currentBranch.has(pathTitle)) {
@@ -41,10 +44,24 @@ public class PageTreeBuilder {
             currentBranch.put("pages", new JSONArray());
     }
 
+    private HTMLListBuilder lastListBuilder = null;
+
     public HTMLListBuilder finish() {
-        HTMLListBuilder listBuilder = new HTMLListBuilder("", "class=\"u-text u-text-2\"");
-        tree.keySet().stream().map(key -> getList(tree.getJSONObject(key), key)).forEach(listBuilder::add);
-        return listBuilder;
+        if (lastListBuilder == null) {
+            HTMLListBuilder listBuilder = new HTMLListBuilder("", "class=\"u-text u-text-2\"");
+            tree.keySet().stream().map(key -> getList(tree.getJSONObject(key), key)).forEach(listBuilder::add);
+            lastListBuilder = listBuilder;
+        }
+        return lastListBuilder;
+    }
+
+    private final ArrayList<String> orderedPages = new ArrayList<>();
+
+    /**
+     * You need to finish() the PageTreeBuilder first!
+     */
+    public ArrayList<String> getOrderedPages() {
+        return orderedPages;
     }
 
     public HTMLListBuilder getList(JSONObject branch, String oldKey) {
@@ -63,7 +80,10 @@ public class PageTreeBuilder {
         sortLeaves(leaves);
         for (int i = leaves.size() - 1; i >= 0; i--) {
             String leaf = leaves.get(i);
+            if(GeneralUtils.countOccurrences(leaf, "\\") == 1)
+                leaf = leaf.replaceAll("\"\\\\(.+)", "\"$1");
             listBuilder.add(leaf);
+            orderedPages.add(leaf);
         }
         sortBranches(branches);
         for (int i = branches.size() - 1; i >= 0; i--) {
@@ -88,8 +108,11 @@ public class PageTreeBuilder {
     private void sortLeaves(ArrayList<String> leaves) {
         String k;
         for (int i = 0; i < leaves.size() - 1; i++) {
-            if (leaves.get(i).replaceAll(".+>(.+)</a>", "$1").compareTo(leaves.get(i + 1).replaceAll(".+>(.+)</a>", "$1")) > 0)
-                continue;
+            if (leaves.get(i).matches(".+>(.+)</a>"))
+                if (leaves.get(i).replaceAll(".+>(.+)</a>", "$1").compareTo(leaves.get(i + 1).replaceAll(".+>(.+)</a>", "$1")) > 0)
+                    continue;
+                else if (leaves.get(i).compareTo(leaves.get(i + 1)) > 0)
+                    continue;
             k = leaves.get(i);
             leaves.set(i, leaves.get(i + 1));
             leaves.set(i + 1, k);

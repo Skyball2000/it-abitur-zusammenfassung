@@ -19,8 +19,8 @@ public class SiteBuilder {
     private final String templatePlaceMainPage;
     private final String templatePlaceContents;
     private final String templateInsert;
-    private final String templateMainTitle;
     private final String templateSubTitle;
+    private final String templateMainTitle;
     private final String templateTextTitle;
     private final String templateTextParagraphIntro;
     private final String templateCss;
@@ -49,8 +49,8 @@ public class SiteBuilder {
         templatePlaceMainPage = configuration.getOrDefault("templatePlaceMainPage", "BUILDER-PLACE-MAIN-PAGE");
         templatePlaceContents = configuration.getOrDefault("templatePlaceContents", "BUILDER-PLACE-CONTENTS");
         templateInsert = configuration.getOrDefault("templateInsert", "INSERT");
-        templateMainTitle = configuration.getOrDefault("templateMainTitle", "<h1>INSERT</h1>");
         templateSubTitle = configuration.getOrDefault("templateSubTitle", "<h1>INSERT</h1>");
+        templateMainTitle = configuration.getOrDefault("templateMainTitle", "<h1>INSERT</h1>");
         templateTextTitle = configuration.getOrDefault("templateTextTitle", "<h4>INSERT</h4>");
         templateTextParagraphIntro = configuration.getOrDefault("templateTextParagraphIntro", "<p>");
         templateCss = configuration.getOrDefault("templateCss", "<link rel=\"stylesheet\" href=\"INSERT\" media=\"screen\">");
@@ -73,21 +73,30 @@ public class SiteBuilder {
         FileUtils.deleteDirectory(new File(siteOutDir));
     }
 
+    private ArrayList<String> orderedPages;
+    private final PageTreeBuilder pageTreeBuilder = new PageTreeBuilder();
+
     public void buildSite() {
+        ArrayList<File> files = FileUtils.getFiles(new File(sitePagesDir));
+        files.forEach(this::registerPage);
+        informationPages.forEach(pageTreeBuilder::add);
+        pageTreeBuilder.finish();
+        orderedPages = pageTreeBuilder.getOrderedPages();
+
         ArrayList<String> template = FileUtils.readFileToArrayList(new File(siteTemplateDir + "informationtemplate.html"));
-        FileUtils.getFiles(new File(sitePagesDir)).forEach(siteFile -> buildInformationPage(siteFile, template));
+        files.forEach(siteFile -> buildInformationPage(siteFile, template));
+
         FileUtils.copyFile(new File(siteTemplateDir + "information.css"), new File(siteOutDir + "information.css"));
         FileUtils.copyFile(new File(siteTemplateDir + "Hauptseite.css"), new File(siteOutDir + "Hauptseite.css"));
         FileUtils.copyFile(new File(siteTemplateDir + "nicepage.css"), new File(siteOutDir + "nicepage.css"));
         FileUtils.copyFile(new File(siteImagesDir + siteImageIcon), new File(siteOutDir + "images\\" + siteImageIcon));
+        FileUtils.copyFile(new File(siteImagesDir + siteTitleImage), new File(siteOutDir + "images\\" + siteTitleImage));
         buildMainPage();
     }
 
     private void buildMainPage() {
         ArrayList<String> template = FileUtils.readFileToArrayList(new File(siteTemplateDir + "Hauptseite.html"));
 
-        PageTreeBuilder pageTreeBuilder = new PageTreeBuilder();
-        informationPages.forEach(pageTreeBuilder::add);
         HTMLListBuilder mainList = pageTreeBuilder.finish();
 
         LineBuilder generatedPage = new LineBuilder();
@@ -112,7 +121,38 @@ public class SiteBuilder {
         FileUtils.writeFile(new File(siteOutDir + "index.html"), optimizeGenerated(generatedPage.toString()));
     }
 
-    private final PageList pageList = new PageList();
+    private Pair<String, String> getSurroundingInfoPages(File page) {
+        Pair<String, String> pair = new Pair<>();
+        String lookingForPage = page.toString().replace(".txt", ".html").replace(sitePagesDir, "");
+        for (int i = 0, orderedPagesSize = orderedPages.size(); i < orderedPagesSize; i++) {
+            String orderedPage = orderedPages.get(i);
+            if (orderedPage.contains(lookingForPage)) {
+                if (i - 1 >= 0)
+                    pair.setLeft(orderedPages.get(i - 1));
+                if (i + 1 < orderedPagesSize)
+                    pair.setRight(orderedPages.get(i + 1));
+            }
+        }
+        if (pair.getLeft() == null)
+            pair.setLeft("");
+        if (pair.getRight() == null)
+            pair.setRight("");
+        return pair;
+    }
+
+    private void registerPage(File siteFile) {
+        String path = prepareInformationPagePath(siteFile.getPath());
+        String pageTitle = "Title";
+        for (String line : FileUtils.readFileToArrayList(siteFile))
+            if (line.startsWith("# ")) { //main title
+                pageTitle = line.replace("# ", "");
+                break;
+            }
+        pathToMainDirectory = IntStream.range(0, GeneralUtils.countOccurrences(path, "\\") + (path.equals(templateSubTitleDefault) ? 0 : 1))
+                .mapToObj(i -> "..\\").collect(Collectors.joining());
+        informationPages.add(new InformationPage(pageTitle, siteFile, path.replace(templateSubTitleDefault, "")));
+    }
+
     private final ArrayList<InformationPage> informationPages = new ArrayList<>();
     private String pathToMainDirectory;
 
@@ -153,8 +193,15 @@ public class SiteBuilder {
         for (String line : template) {
             String trimmedLine = line.trim();
             if (trimmedLine.equals(templatePlaceTitle)) {
-                generatedPage.append(templateSubTitle.replace(templateInsert, pageTitle));
-                generatedPage.append(templateMainTitle.replace(templateInsert, pageSubtitle));
+                Pair<String, String> beforeNext = getSurroundingInfoPages(siteFile);
+                beforeNext.setLeft(beforeNext.getLeft().replace("href=\"", "href=\"" + pathToMainDirectory)
+                        .replaceAll("(.*)>(.+)</a>", "$1 title=\"$2\">$2</a>")
+                        .replaceAll(">(.+)</a>", ">&lt;</a>"));
+                beforeNext.setRight(beforeNext.getRight().replace("href=\"", "href=\"" + pathToMainDirectory)
+                        .replaceAll("(.*)>(.+)</a>", "$1 title=\"$2\">$2</a>")
+                        .replaceAll(">(.+)</a>", ">&gt;</a>"));
+                generatedPage.append(templateMainTitle.replace(templateInsert, beforeNext.getLeft() + " &#160&#160&#160 " + pageTitle + " &#160&#160&#160 " + beforeNext.getRight()));
+                generatedPage.append(templateSubTitle.replace(templateInsert, pageSubtitle));
             } else if (trimmedLine.equals(templatePlaceBody)) {
                 generatedPage.append(generatedBody.toString());
             } else if (trimmedLine.equals(templatePlaceCss)) {
@@ -165,15 +212,13 @@ public class SiteBuilder {
             } else if (trimmedLine.equals(templatePlaceIcon)) {
                 generatedPage.append(templateIcon.replace(templateInsert, pathToMainDirectory + "images\\" + siteImageIcon));
             } else if (line.contains(templatePlaceMainPage)) {
-                generatedPage.append(line.replace(templatePlaceMainPage, mainPageUrl));
+                generatedPage.append(line.replace(templatePlaceMainPage, pathToMainDirectory + mainPageUrl));
             } else {
                 generatedPage.append(line);
             }
         }
 
         System.out.println("Generated " + pageSubtitle + " / " + pageTitle);
-        pageList.add(path.replace(templateSubTitleDefault, ""), pageTitle);
-        informationPages.add(new InformationPage(pageTitle, siteFile, path.replace(templateSubTitleDefault, "")));
 
         FileUtils.writeFile(new File(siteOutDir + path.replace(templateSubTitleDefault, "") + "\\" + siteFile.getName().replace(".txt", ".html")), optimizeGenerated(generatedPage.toString()));
     }
