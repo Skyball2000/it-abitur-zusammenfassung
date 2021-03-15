@@ -165,7 +165,9 @@ public class SiteBuilder {
 
         LineBuilder generatedBody = new LineBuilder();
         boolean isCurrentlyTextOrImage = false;
-        for (String line : FileUtils.readFileToArrayList(siteFile)) {
+        ArrayList<String> readFileToArrayList = FileUtils.readFileToArrayList(siteFile);
+        for (int i = 0; i < readFileToArrayList.size(); i++) {
+            String line = readFileToArrayList.get(i);
             if (line.startsWith("# ")) { //main title
                 pageTitle = line.replace("# ", "");
             } else if (line.startsWith("## ")) { //title in text
@@ -180,6 +182,30 @@ public class SiteBuilder {
                     generatedBody.append(templateTextParagraphIntro);
                 }
                 generatedBody.append("<br>").append("<img style=\"margin-top:10px;\" src=\"" + prepareImageLink(line.replace("img ", "")) + "\"/><br>");
+            } else if (line.startsWith("-")) { //list
+                if (!isCurrentlyTextOrImage) {
+                    isCurrentlyTextOrImage = true;
+                    generatedBody.append(templateTextParagraphIntro);
+                }
+
+                generatedBody.append("<ul class=\"u-text u-text-2\">");
+                int lastIndentCount = 1;
+                do {
+                    int indentCount = line.replaceAll("(-+) ?.+", "$1").length();
+                    if (indentCount > lastIndentCount) {
+                        generatedBody.append("<ul>");
+                    } else if (indentCount < lastIndentCount) {
+                        generatedBody.append("</ul>");
+                    }
+                    lastIndentCount = indentCount;
+                    generatedBody.append("<li>" + line.replaceAll("-+ ?(.+)", "$1") + "</li>");
+                    i++;
+                    if (i >= readFileToArrayList.size()) break;
+                    line = readFileToArrayList.get(i);
+                } while (line.startsWith("-"));
+                i--;
+                generatedBody.append("</ul>");
+
             } else if (line.length() > 0) { //regular text
                 if (!isCurrentlyTextOrImage) {
                     isCurrentlyTextOrImage = true;
