@@ -3,3 +3,4 @@ In Netzplänen ist der Aufbau von meist privaten Netzen grafisch dargestellt.
 In ihnen sind die verschiedenen Netzkomponenten (Geräte) sowie deren IP - Adressen und die Netzadressen und Subnetzmasken von Netzen angegeben.
 Die einzelnen Netzkomponenten haben jeweils eigene Symbole. Hier eine Übersicht:
 img pages/image46.png
+Ein Repeater, auch Signalregenerator genannt, regeneriert digitale Signale. Beim Verschicken von digitalen Signalen nimmt die Signalstärke mit der Zeit immer mehr ab. Das heißt, nach einer gewissen Distanz sind die Einsen und Nullen sind nicht mehr voneinander unterscheidbar und das Signal ist unbrauchbar geworden. Ein Repeater fängt das Signal vor diesem Zeitpunkt ab und stellt das verschwommene, aber noch lesbare Signal wieder her und sendet es dann wieder mit voller Signalstärke weiter.
