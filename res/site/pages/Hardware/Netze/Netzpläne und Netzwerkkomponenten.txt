@@ -1,0 +1,3 @@
+# Netzpläne und Netzwerkkomponenten
+In Netzplänen ist der Aufbau von meist privaten Netzen grafisch dargestellt. In ihnen sind die verschiedenen Netzkomponenten (Geräte) sowie deren IP - Adressen und die Netzadressen und Subnetzmasken von Netzen angegeben. Die einzelnen Netzkomponenten haben jeweils eigene Symbole. Hier eine Übersicht:
+img img/pages/image46.png
