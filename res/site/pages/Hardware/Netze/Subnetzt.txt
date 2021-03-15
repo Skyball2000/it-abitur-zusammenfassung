@@ -1,4 +1,4 @@
-#Subnetze
+# Subnetze
 In manchen Netzwerken gibt es verschiedene Geräte, die zu unterschiedlichen Zwecken verwendet werden. Um die Übersichtlichkeit im Netz zu erhöhen, werden oft Subnetze verwendet. Das Netz wird hier in kleinere logische zusammenhängende Bereiche unterteilt. Um das zu tun, wird ein Teil des Hostanteils verwendet um die Subnetze zu adressieren.
 - Zunächst muss berechnet werden, wie viele Bits zur Adressierung der Subnetze notwendig sind. Bei vier Subnetzen wären es 2 Bits, da: 22 = 4 und log2(4) = 2.
 - Anschließend werden die ersten, in diesem Fall 2 Bits, des Hostanteiles zur Adressierung der Subnetze verwendet.

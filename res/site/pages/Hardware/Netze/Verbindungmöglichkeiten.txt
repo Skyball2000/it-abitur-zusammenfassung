@@ -1,0 +1,54 @@
+# Verbindungsmöglichkeiten
+Grundsätzlich kann man Netzwerkkomponenten auf zwei verschiedene Arten miteinander verbinden: mit oder ohne Kabel.
+- Kabel:
+-- Vorteile von Kabeln:
+--- Höhere Datenübertragungsrate (hohe Bandbreite)
+--- Abhörsicherheit
+--- Abhängig von Kabel höhere Reichweite
+-- Nachteile von Kabeln:
+--- Verkabelungsaufwand → dementsprechend teurer
+--- örtlich gebunden
+
+Es gibt verschiedene Kabeltypen, die für verschiedene Zwecke geeignet sind:
+- (Un - Shielded) Twisted Pair Kabel (UTP / STP)
+Twisted-Pair Kabel bestehen aus mehreren Adernpaaren die umeinander verzwirbelt               sind. Sie sind in verschiedene CATs (Category / Kategorien) eingeteilt. Diese beschreiben die jeweilige Übertragungsbitrate der Kabel. Die für uns relevanten Kategorien sind CAT5 - CAT7.
+<table>
+  <tr>
+    <th><b>CAT</b></th>
+    <th><b>Beschreibung</b></th>
+    <th><b>Bitrate</b></th>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>UTP/STP Kabel für
+        z.B Ethernet
+</td>
+    <td>bis 100 Mbit/s</td>
+  </tr>
+  <tr>
+     <td>6</td>
+     <td>UTP/STP Kabel für
+         z.B Ethernet
+</td>
+     <td>bis 200 Mbit/s</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>UTP/STP Kabel für
+        z.B Ethernet
+</td>
+    <td>bis 600 Mbit/s</td>
+  </tr>
+</table>
+Twisted Pair Kabel haben ca. eine Reichweite von 100 Metern, bis das Signal von einem Repeater verstärkt werden muss. In Netzplänen werden Twisted Pair Kabel einfach als normale Striche dargestellt.
+- Lichtwellenleiter (Glasfaserkabel)
+  Glasfaserkabel bestehen aus mehreren Lichtwellenleitern und übertragen Daten mittels Lichtimpulsen (Photonen). Sie haben deshalb eine höhere Datenübertragungsrate als Twisted-Pair Kabel und können das Signal sehr weit übertragen. Der Verlegungsaufwand ist bei Glasfaserkabeln deutlich höher, weswegen sie auch teurer als z.B. Twisted-Pair Kabel sind. Aus diesem Grund lohnen sie sich erst ab größeren Distanzen (mindestens über 100 Meter) In Netzplänen werden Lichtwellenleiter folgendermaßen dargestellt:
+img pages/image65.png
+- Kabellos
+-- Vorteile von kabelloser Anbindung
+--- Netzwerkverkabelung entfällt
+--- Unterstützung mobiler Geräte
+-- Nachteile von kabelloser Anbindung
+--- Niedrigere Übertragungsrate
+--- Leichter abhörbar (Problem der Datensicherheit)
+Kabellose Verbindungen benötigen einen Access Point, mit welchem sich Geräte verbinden können. WLAN hat ca. eine Reichweite von 50 Metern, kann aber auch bis maximal 100 Meter reichen. Außerdem funktionieren kabellosen Anbindungen nur effizient wenn eine Sichtverbindung besteht.

@@ -1,4 +1,4 @@
-#Routingtabellen
+# Routingtabellen
 Router sind, wie oben beschrieben, dafür verantwortlich Datenpakete weiterzuleiten. Damit sie wissen, wohin sie das Datenpaket weiterleiten sollen, besitzt jeder Router eine sogenannte Routingtabelle. In Routingtabellen ist jedes im Netzwerk vorhandene Netz aufgelistet.
 Wenn das Netz eines Hosts direkt an den Router 1 grenzt, dann kann der Router 1 das Datenpaket einfach an ihn weiterleiten (Fall 1).
 img pages/image110.png
