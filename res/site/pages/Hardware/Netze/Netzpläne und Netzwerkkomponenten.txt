@@ -3,4 +3,149 @@ In Netzplänen ist der Aufbau von meist privaten Netzen grafisch dargestellt.
 In ihnen sind die verschiedenen Netzkomponenten (Geräte) sowie deren IP - Adressen und die Netzadressen und Subnetzmasken von Netzen angegeben.
 Die einzelnen Netzkomponenten haben jeweils eigene Symbole. Hier eine Übersicht:
 img pages/image46.png
+##Repeater
 Ein Repeater, auch Signalregenerator genannt, regeneriert digitale Signale. Beim Verschicken von digitalen Signalen nimmt die Signalstärke mit der Zeit immer mehr ab. Das heißt, nach einer gewissen Distanz sind die Einsen und Nullen sind nicht mehr voneinander unterscheidbar und das Signal ist unbrauchbar geworden. Ein Repeater fängt das Signal vor diesem Zeitpunkt ab und stellt das verschwommene, aber noch lesbare Signal wieder her und sendet es dann wieder mit voller Signalstärke weiter.
+img pages/image20.png
+Solange das Signal für eine 1 eindeutig über der Trennungslinie ist und das für eine 0 eindeutig darunter, kann der Repeater das Signal noch erkennen
+und wieder verstärken / erneuern.
+##Switch
+Ein Switch kann Datenpakete an verschiedene Geräte weiterleiten. Basierend auf einer Gerätetabelle entscheidet er anhand der MAC-Adresse, für welches Gerät das empfangene Paket ist und leitet es an dieses weiter. Ist kein Gerät angegeben, dann schickt der Switch das Paket einfach an alle angeschlossene Geräte.
+##Router
+Ein Router ist ein Gerät, das verschiedene Netzwerke miteinander verbindet. Er leitet Pakete aus einem Netzwerk in das andere weiter oder blockt diese ab (er vermittelt). Jeder Router besitzt eine Routingtabelle, welche später noch erklärt wird.
+##Netz
+Ein Netz besteht zwischen zwei Routern oder zwischen einem Router und den an ihm angeschlossenen Clients.
+img pages/image68.png
+Netz 4 zwischen dem linken Router und dem Internet besteht zwischen dem Router und dem Router, der sich auf dem Weg ins Internet befindet (z.B. der beim Provider).
+Das Netz 3 ist das Internet und beginnt nach dem Router auf dem Weg ins Internet.
+##Client
+Ein Client - auch Clientanwendung - ist eine Software die auf einem Gerät jeglicher Art läuft (z.B. Smartphone, PC, Laptop usw..). Der Client kommuniziert mit einem Server und ruft Dienste von diesem ab.
+##Access Point
+Ein Access Point ist ein Gerät, welches als Schnittschnelle für kabellose Endgeräte dient.
+##Server
+Ein Server ist ein PC, mit welchem sich Clients verbinden können (Client - Server-Konzept). Der Server stellt gewissen Dienste bereit, die dann von Clients, die sich mit dem Server verbunden haben, genutzt werden können.
+<br>
+Kabel werden in solch einem Schaltplan einfach mit normalen Strichen dargestellt. Miteinander verbundene Geräte sehen also so aus:
+img pages/image104.png
+Hat man einen drahtlose Verbindung (z.B WLAN), dann wird neben dem Access Point einfach (ohne Verbindungssymbol) der Client gezeichnet.
+img pages/image79.png
+#Verbindungsmöglichkeiten
+Grundsätzlich kann man Netzwerkkomponenten auf zwei verschiedene Arten miteinander verbinden: mit oder ohne Kabel.
+- Kabel:
+-- Vorteile von Kabeln:
+--- Höhere Datenübertragungsrate (hohe Bandbreite)
+--- Abhörsicherheit
+--- Abhängig von Kabel höhere Reichweite
+-- Nachteile von Kabeln:
+--- Verkabelungsaufwand → dementsprechend teurer
+--- örtlich gebunden
+
+Es gibt verschiedene Kabeltypen, die für verschiedene Zwecke geeignet sind:
+- (Un - Shielded) Twisted Pair Kabel (UTP / STP)
+Twisted-Pair Kabel bestehen aus mehreren Adernpaaren die umeinander verzwirbelt               sind. Sie sind in verschiedene CATs (Category / Kategorien) eingeteilt. Diese beschreiben die jeweilige Übertragungsbitrate der Kabel. Die für uns relevanten Kategorien sind CAT5 - CAT7.
+<table>
+  <tr>
+    <th><b>CAT</b></th>
+    <th><b>Beschreibung</b></th>
+    <th><b>Bitrate</b></th>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>UTP/STP Kabel für
+        z.B Ethernet
+</td>
+    <td>bis 100 Mbit/s</td>
+  </tr>
+  <tr>
+     <td>6</td>
+     <td>UTP/STP Kabel für
+         z.B Ethernet
+</td>
+     <td>bis 200 Mbit/s</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>UTP/STP Kabel für
+        z.B Ethernet
+</td>
+    <td>bis 600 Mbit/s</td>
+  </tr>
+</table>
+Twisted Pair Kabel haben ca. eine Reichweite von 100 Metern, bis das Signal von einem Repeater verstärkt werden muss. In Netzplänen werden Twisted Pair Kabel einfach als normale Striche dargestellt.
+- Lichtwellenleiter (Glasfaserkabel)
+  Glasfaserkabel bestehen aus mehreren Lichtwellenleitern und übertragen Daten mittels Lichtimpulsen (Photonen). Sie haben deshalb eine höhere Datenübertragungsrate als Twisted-Pair Kabel und können das Signal sehr weit übertragen. Der Verlegungsaufwand ist bei Glasfaserkabeln deutlich höher, weswegen sie auch teurer als z.B. Twisted-Pair Kabel sind. Aus diesem Grund lohnen sie sich erst ab größeren Distanzen (mindestens über 100 Meter) In Netzplänen werden Lichtwellenleiter folgendermaßen dargestellt:
+img pages/image65.png
+- Kabellos
+-- Vorteile von kabelloser Anbindung
+--- Netzwerkverkabelung entfällt
+--- Unterstützung mobiler Geräte
+-- Nachteile von kabelloser Anbindung
+--- Niedrigere Übertragungsrate
+--- Leichter abhörbar (Problem der Datensicherheit)
+Kabellose Verbindungen benötigen einen Access Point, mit welchem sich Geräte verbinden können. WLAN hat ca. eine Reichweite von 50 Metern, kann aber auch bis maximal 100 Meter reichen. Außerdem funktionieren kabellosen Anbindungen nur effizient wenn eine Sichtverbindung besteht.
+#IP / MAC-Adressen
+- IP-Adressen
+Generell sind IP-Adresse dafür zuständig, Geräten eine virtuelle, softwaretechnische Adresse zuzuweisen. Da diese Adressen nur virtuell sind, können sie sich im Laufe der Zeit ändern. Es gibt mehrere verschiedene IP-Protokolle, die aktuellen sind: IPv4 & IPv6, wobei für uns nur IPv4 relevant ist. Eine solche IPv4-Adresse hat 32 Bit und wird in den Netzwerkanteil und den Hostanteil unterteilt.
+img pages/image41.png
+Der Netzwerkanteil gibt die Adresse des Netzes und damit aller im Netzwerk vorhandenen Geräte an, welcher innerhalb eines Netzes immer gleich ist. Der Hostanteil gibt dann das Endgerät (Host) an, zu welchem die IP-Adresse führt. Da eine IP-Adresse 32 Bit hat, wird sie in 4 Oktette mit jeweils 8 Bit aufgeteilt. Jedes dieser Oktette kann eine Zahl zwischen 0 und 255 annehmen (8 Bit). Eine Beispiel IP-Adresse sieht so aus:
+<br><b>192.168.124.5 / 24</b></br>
+Oder in Binär:
+<br><b>11000000.10101000.01111100.00000101 / 24</b></br>
+Die /24 hinter der IP-Adresse gibt die Größe des Netzwerkanteiles an. In diesem Fall gehören die ersten 24 Bit zum Netzwerkanteil. Man nennt diesen Teil Subnetzmaske.
+img pages/image34.png
+Die Subnetzmaske kann in zwei verschiedenen Weisen angegeben werden. Entweder man gibt sie, so wie oben auch, mit einem Schrägstrich und der Größe des Netzwerkanteils an: /x oder man gibt sie dezimal an. Dabei gibt es wieder 4 Oktette mit jeweils 8 Bit. Dann wird in Binärschreibweise jede Stelle des Netzwerkanteils auf 1 gesetzt und jede Stelle des Hostanteils wird auf 0 gesetzt. Anschließend werden die binären Oktette in 4 Dezimalzahlen umgewandelt.
+img pages/image23.png
+Der Hostanteil einer IP-Adresse kann nicht zu 100% genutzt werden um Hosts zu adressieren. Es gibt zwei festgelegte Adressen. Die erste Adresse des Hostanteils ist immer die Netzadresse oder Netz-ID. Diese wird benutzt, um von außerhalb das Netz zu „finden”. Die letzte Adresse des Hostanteils ist immer die sogenannte Broadcastadresse. Sie wird benutzt um einen „Rundruf” an alle Hosts des Netzes zu senden. Diese beiden Adressen können nicht von Hosts belegt werden. Bei unserer Beispiel-IP-Adresse von oben (192.168.124.5 / 24) wäre die Netz-ID 192.168.124.0 und die Broadcastadresse wäre 192.168.145.255. Da der Hostanteil nur das letzte Oktett umfasst, muss jeweils nur die letzte Ziffer verändert werden.
+    Netzadresse: niedrigste Adresse → 0
+    Broadcastadresse: höchste Adresse → 255
+- MAC-Adressen
+MAC-Adressen sind, im Gegensatz zu IP-Adressen, Hardwareadressen. Jedes Gerät hat seine eigene, fest zugewiesene MAC-Adresse, die je nur ein mal vorkommen darf. Eine MAC Adresse besteht aus 6 mal 8 Bit. Da sie meistens in Hexadezimal geschrieben wird, kann sie auch Buchstaben enthalten. Eine MAC-Adresse ist in Herstellerkennung und Seriennummer unterteilt.
+img pages/image56.png
+#Subnetze
+In manchen Netzwerken gibt es verschiedene Geräte, die zu unterschiedlichen Zwecken verwendet werden. Um die Übersichtlichkeit im Netz zu erhöhen, werden oft Subnetze verwendet. Das Netz wird hier in kleinere logische zusammenhängende Bereiche unterteilt. Um das zu tun, wird ein Teil des Hostanteils verwendet um die Subnetze zu adressieren.
+- Zunächst muss berechnet werden, wie viele Bits zur Adressierung der Subnetze notwendig sind. Bei vier Subnetzen wären es 2 Bits, da: 22 = 4 und log2(4) = 2.
+- Anschließend werden die ersten, in diesem Fall 2 Bits, des Hostanteiles zur Adressierung der Subnetze verwendet.
+img pages/image52.png
+Diese Bits gehören nun auch zum Netzwerkanteil. Das bedeutet die Subnetzmaske ist nun nicht mehr /24 sondern /26 (24 + 2 Bits).
+- Die einzelnen Subnetze können nun adressiert werden. Die Adressen für die 4 Subnetze lauten:
+img pages/img.png
+Da sich durch die Subnetze der Hostbereich verkleinert, können nun weniger Hosts adressiert werden. In diesem Fall beträgt der Hostbereich noch 6 Bits, was bedeutet, dass pro Subnetz nur noch 64 Hosts adressiert werden können. Minus die Netzadresse und die Broadcastadresse bleiben noch 62.
+Jedes Subnetz ist auch ein eigenes Netz im Netzwerk.
+#Routingtabellen
+Router sind, wie oben beschrieben, dafür verantwortlich Datenpakete weiterzuleiten. Damit sie wissen, wohin sie das Datenpaket weiterleiten sollen, besitzt jeder Router eine sogenannte Routingtabelle. In Routingtabellen ist jedes im Netzwerk vorhandene Netz aufgelistet.
+Wenn das Netz eines Hosts direkt an den Router 1 grenzt, dann kann der Router 1 das Datenpaket einfach an ihn weiterleiten (Fall 1).
+img pages/image110.png
+Wenn aber das Datenpaket an einen Host geschickt werden soll, dessen Netz nicht an den Router 1, sondern an einen weiteren Router 2 grenzt (Fall 2), dann leitet der Router 1 das Datenpaket an den Router 2 weiter. Dieser schaut dann wiederum in seiner Routingtabelle nach, um das Datenpaket an das Zielnetz weiterzuleiten. In diesem Fall muss in der Routingtabelle des Router 1, neben der Zielnetzadresse auch der nächste auf dem Weg liegende Router (in diesem Fall Router 2) aufgelistet werden.
+img pages/image45.png
+In diesem Fall muss zusätzlich zur Zielnetzadresse auch die IP-Adresse vom nächsten Router angegeben werden, damit das Datenpaket an ihn weitergeleitet werden kann. Diesen zusätzlichen Eintrag nennt man Gateway.
+In einer Routingtabelle wird außerdem immer noch die Subnetzmaske des Zielnetzes mit angegeben. Der Aufbau einer Routingtabelle sieht also so aus:
+<table>
+  <tr>
+    <th><b>Zielnetz</b></th>
+    <th><b>...</b></th>
+  </tr>
+  <tr>
+    <th><b>Subnetzmaske</b></th>
+    <th><b>...</b></th>
+  </tr>
+  <tr>
+    <th><b>Gateway</b></th>
+    <th><b>...</b></th>
+  </tr>
+</table>
+Wenn das Zielnetz direkt an den Router grenzt, dann gibt es keinen Gateway. In diesem Fall wird einfach ein * in das Feld geschrieben.
+Sollte im Schaltplan das Internet eingezeichnet sein, so ist die Zielnetzadresse hiervon 0.0.0.0 und die Subentzmaske ist /0.
+img pages/image101.png
+Ziel ist es nun, die passende Routingtabelle für Router 1 zu erstellen. Zunächst müssen alle vorhandenen Netze ermittelt werden, um Anzahl der Zeilen zu bestimmen. In diesem Fall gibt es ein Netz zwischen Router 1 und Router 2, ein Netz zwischen Router 1 und dem Router vor dem Internet,  ein Netz zwischen Router 2 und den beiden Hosts und das Internet selbst.
+→ 4 Netze → 4 Zeilen
+Der Grundriss unserer Routingtabelle sieht so aus:
+img pages/imageTab.png
+Nun kann man die Zielnetzadressen der 4 Netze eintragen. Netz 1 ist das Internet, bzw das Netz hinter dem Router vor dem Internet. Hier ist die Zielnetzadresse immer 0.0.0.0 und die Subnetzmaske ist auch immer /0.
+Netz 2 befindet sich zwischen Router 1 und Router 2. Da die Netzadresse immer die niedrigste Adresse ist und Router 1 & Router 2 die Endungen .1 & .2 haben (Router belegen meistens die ersten verfügbaren Hostadressen), endet die Netzadresse auf .0. → 10.1.0.0 Die Subnetzmaske ist bei Netz 2 angegeben: /16.
+Das Netz 3 hat die IP-Adressen von zwei Hostgeräten angegeben. Da die Subnetzmaske auch angegeben ist (/24), weiß man, dass nur die letzte Stelle als Hostbereich dient. Die niedrigste Stelle ist die 192.168.124.0. Deshalb ist dies die Netzadresse. Die Adresse des Routers im Netz 2 wäre in diesem Fall, da der Router den ersten freien Hostbereich hat: 192.168.124.1.
+Das Netz 4 ist zwischen Router 1 und dem Router vor dem Internet. Die Netzadresse und die Subnetzmaske sind angegeben: 141.91.7.0 & /30.
+Trägt man nun diese Informationen in die Routingtabelle für Router 1 ein, so erhält man:
+img pages/imageTab1.png
+Jetzt fehlen noch die Gateways. Netz 2 und Netz 4 liegen direkt an Router 1. Auf dem Weg zwischen Router und Netz liegt also kein anderer Router mehr. Hier gibt es deshalb kein Gateway und es kann ein * eingetragen werden.
+Zwischen Router 1 und Netz 3 liegt jedoch der Router 2. Das heißt, beim Weiterleiten von Datenpaketen an Netz 3 muss Router 2 passiert werden. Es gibt deshalb ein Gateway. Dieses ist die IP-Adresse des Routers 2 im Netz zwischen Router 1 und Router 2. → GW:10.1.0.2
+Zwischen Router 1 und dem Internet liegt ebenfalls ein Router, der Router vor dem Internet. Dieser ist das Gateway für das Internet. → GW:141.91.7.2 Ergänzt man nun mit diesen Informationen die Routingtabelle, ist diese vollständig:
+img pages/imageTab2.png
