@@ -3,25 +3,25 @@ In Netzplänen ist der Aufbau von meist privaten Netzen grafisch dargestellt.
 In ihnen sind die verschiedenen Netzkomponenten (Geräte) sowie deren IP - Adressen und die Netzadressen und Subnetzmasken von Netzen angegeben.
 Die einzelnen Netzkomponenten haben jeweils eigene Symbole. Hier eine Übersicht:
 img pages/image46.png
-##Repeater
+## Repeater
 Ein Repeater, auch Signalregenerator genannt, regeneriert digitale Signale. Beim Verschicken von digitalen Signalen nimmt die Signalstärke mit der Zeit immer mehr ab. Das heißt, nach einer gewissen Distanz sind die Einsen und Nullen sind nicht mehr voneinander unterscheidbar und das Signal ist unbrauchbar geworden. Ein Repeater fängt das Signal vor diesem Zeitpunkt ab und stellt das verschwommene, aber noch lesbare Signal wieder her und sendet es dann wieder mit voller Signalstärke weiter.
 img pages/image20.png
 Solange das Signal für eine 1 eindeutig über der Trennungslinie ist und das für eine 0 eindeutig darunter, kann der Repeater das Signal noch erkennen
 und wieder verstärken / erneuern.
-##Switch
+## Switch
 Ein Switch kann Datenpakete an verschiedene Geräte weiterleiten. Basierend auf einer Gerätetabelle entscheidet er anhand der MAC-Adresse, für welches Gerät das empfangene Paket ist und leitet es an dieses weiter. Ist kein Gerät angegeben, dann schickt der Switch das Paket einfach an alle angeschlossene Geräte.
-##Router
+## Router
 Ein Router ist ein Gerät, das verschiedene Netzwerke miteinander verbindet. Er leitet Pakete aus einem Netzwerk in das andere weiter oder blockt diese ab (er vermittelt). Jeder Router besitzt eine Routingtabelle, welche später noch erklärt wird.
-##Netz
+## Netz
 Ein Netz besteht zwischen zwei Routern oder zwischen einem Router und den an ihm angeschlossenen Clients.
 img pages/image68.png
 Netz 4 zwischen dem linken Router und dem Internet besteht zwischen dem Router und dem Router, der sich auf dem Weg ins Internet befindet (z.B. der beim Provider).
 Das Netz 3 ist das Internet und beginnt nach dem Router auf dem Weg ins Internet.
-##Client
+## Client
 Ein Client - auch Clientanwendung - ist eine Software die auf einem Gerät jeglicher Art läuft (z.B. Smartphone, PC, Laptop usw..). Der Client kommuniziert mit einem Server und ruft Dienste von diesem ab.
-##Access Point
+## Access Point
 Ein Access Point ist ein Gerät, welches als Schnittschnelle für kabellose Endgeräte dient.
-##Server
+## Server
 Ein Server ist ein PC, mit welchem sich Clients verbinden können (Client - Server-Konzept). Der Server stellt gewissen Dienste bereit, die dann von Clients, die sich mit dem Server verbunden haben, genutzt werden können.
 <br>
 Kabel werden in solch einem Schaltplan einfach mit normalen Strichen dargestellt. Miteinander verbundene Geräte sehen also so aus:
