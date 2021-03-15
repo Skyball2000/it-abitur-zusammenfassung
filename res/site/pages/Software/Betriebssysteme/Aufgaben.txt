@@ -1,0 +1,8 @@
+# Aufgaben
+
+- Dateiverwaltung
+-- Prozessverwaltung
+- Speicherverwaltung
+- Benutzerverwaltung
+- Sicherungsverfahren
+- Hardware-Kommunikation

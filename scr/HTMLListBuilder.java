@@ -38,11 +38,10 @@ public class HTMLListBuilder {
 
     private final int generateType = 1;
 
-    @Override
-    public String toString() {
+    public String toString(int type) {
         String br = "<br style=\"display: block; margin: 1px 0;\">";
         LineBuilder list = new LineBuilder();
-        if (generateType == 0) {
+        if (type == 0) {
             list.append((elementName.length() > 0 ? "<li>" + elementName + "\n" : "") + "<ul" + (ulParameters.length() > 0 ? " " + ulParameters : "") + ">");
             for (Object entry : entries) {
                 if (entry instanceof HTMLListBuilder)
@@ -50,7 +49,7 @@ public class HTMLListBuilder {
                 else list.append("<li>" + entry + "</li>");
             }
             list.append("</ul>" + (elementName.length() > 0 ? "</li>" : ""));
-        } else if (generateType == 1) {
+        } else if (type == 1) {
             if (elementName.length() > 0) {
                 list.append("<button type=\"button\" class=\"collapsible\">" + elementName + "</button>\n");
                 list.append("<div class=\"content\">");
@@ -74,5 +73,10 @@ public class HTMLListBuilder {
                 list.append("</div>");
         }
         return list.toString().replace(br + "\n</div>\n" + br, "</div>\n" +br);
+    }
+
+    @Override
+    public String toString() {
+        return toString(generateType);
     }
 }
