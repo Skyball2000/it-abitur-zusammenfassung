@@ -1,0 +1,10 @@
+#Subnetze
+In manchen Netzwerken gibt es verschiedene Geräte, die zu unterschiedlichen Zwecken verwendet werden. Um die Übersichtlichkeit im Netz zu erhöhen, werden oft Subnetze verwendet. Das Netz wird hier in kleinere logische zusammenhängende Bereiche unterteilt. Um das zu tun, wird ein Teil des Hostanteils verwendet um die Subnetze zu adressieren.
+- Zunächst muss berechnet werden, wie viele Bits zur Adressierung der Subnetze notwendig sind. Bei vier Subnetzen wären es 2 Bits, da: 22 = 4 und log2(4) = 2.
+- Anschließend werden die ersten, in diesem Fall 2 Bits, des Hostanteiles zur Adressierung der Subnetze verwendet.
+img pages/image52.png
+Diese Bits gehören nun auch zum Netzwerkanteil. Das bedeutet die Subnetzmaske ist nun nicht mehr /24 sondern /26 (24 + 2 Bits).
+- Die einzelnen Subnetze können nun adressiert werden. Die Adressen für die 4 Subnetze lauten:
+img pages/img.png
+Da sich durch die Subnetze der Hostbereich verkleinert, können nun weniger Hosts adressiert werden. In diesem Fall beträgt der Hostbereich noch 6 Bits, was bedeutet, dass pro Subnetz nur noch 64 Hosts adressiert werden können. Minus die Netzadresse und die Broadcastadresse bleiben noch 62.
+Jedes Subnetz ist auch ein eigenes Netz im Netzwerk.
