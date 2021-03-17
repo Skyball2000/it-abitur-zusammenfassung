@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="de">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+<title>7. Protokolle im Netz - IT ABI</title>
+<link rel="stylesheet" href="..\..\nicepage.css" media="screen">
+<link rel="stylesheet" href="..\..\information.css" media="screen">
+    <link id="u-theme-google-font" rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
+
+
+    <script type="application/ld+json">{
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "itzusammenfassung",
+        "url": "index.html",
+        "logo": "images/itabiicon.png"
+    }</script>
+    <meta property="og:title" content="information">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#478ac9">
+    <link rel="canonical" href="index.html">
+    <meta property="og:url" content="index.html">
+</head>
+<body class="u-body">
+<header class="u-clearfix u-header u-header" id="sec-6c75">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <a href="..\..\index.html" data-page-id="501709633" class="u-image u-logo u-image-1"
+           data-image-width="576"
+           data-image-height="219" title="Hauptseite">
+<img src="..\..\images\itabiicon.png" class="u-logo-image u-logo-image-1" data-image-width="80.4586">
+        </a>
+        <p class="u-text u-text-default u-text-1">
+            <a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-base u-btn-1"
+               href="..\..\index.html"><b>Zur Hauptseite</b>
+            </a>
+        </p>
+    </div>
+</header>
+<section class="u-align-center u-clearfix u-section-1" id="sec-f625">
+    <div class="u-clearfix u-sheet u-sheet-1">
+<h1 class="u-text u-text-1"><a href="..\..\Hardware\Netze\OSI-Schichten & TCP-IP.html" title="6. OSI-Schichten & TCP/IP">&lt;</a> &#160&#160&#160 7. Protokolle im Netz &#160&#160&#160 <a href="..\..\Hardware\Schaltnetze & Schaltwerke\Einleitung.html" title="1. Einleitung">&gt;</a></h1>
+<h1 class="u-text u-text-palette-5-dark-3 u-text-2">Hardware >> Netze</h1>
+    </div>
+</section>
+<section class="u-align-left u-clearfix u-section-2" id="sec-6775">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <br>
+<p class="u-text u-text-2">
+Im nachfolgenden Bild sieht man, wie verschiedene Protokolle, genau wie beim OSI-Modell und beim TCP/IP-Modell, welchem dieser Protokollstapel eher ähnelt, aufeinander aufbauen.<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image32.jpg"/><br>
+Die grüne Schicht ist für die physikalische Übertragung verantwortlich und
+entspricht OSI-Schicht 1 & 2 bzw. TCP/IP Schicht 1. Die blaue Schicht ist für die Verteilung zuständig und entspricht OSI-Schicht 3 bzw. TCP/IP Schicht 2.
+Die lila-gelbe Schicht entspricht der Transportschicht und die restlichen, vertikalen, Balken gehören zur Anwendungsschicht.
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Protokolle</h4>
+<ul class="u-text u-text-2">
+<li><code>DHCP</code> ist dafür verantwortlich, Hosts in einem Netzwerk automatisch zu konfigurieren, damit diese Intenetzugriff erlangen können: Dem Host wird damit automatisch eine IP-Adresse, die Subnetzmask, die Gateway-Adresse zum Internet und die IP-Adresse des DNS Servers mitgegeben.</li>
+<li><code>UDP / TCP</code> - Beide Protokolle zerlegen die Daten in kleine Pakete und nummerieren diese durch. Bei TCP wird allerdings eine Prüfsumme angehängt, mit der der Empfänger kontrollieren kann, ob er alle Pakete intakt empfangen hat. Falls ein Paket fehlt oder beschädigt ist, kann der Empfänger dieses erneut anfordern. UDP zerlegt die Daten ebenfalls in kleine Pakete, jedoch gibt es keine Fehlerkorrektur. Das heißt, verloren gegangene oder beschädigte Pakete werden nicht erneut angefordert. Beide Protokolle bringen diese dann mit der Nummerierung noch in die richtige Reihenfolge, sollten die Pakete in der falschen angekommen sein.</li>
+</ul>
+<p class="u-text u-text-2">
+Hier nochmal der Vergleich zwischen OSI-Modell und TCP/IP Modell, dieses mal mit Protokollen als Beispiel für die jeweilige Schichten:<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image64.png"/><br>
+    </div>
+</section>
+
+
+<footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-025f">
+    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+        <p class="u-small-text u-text u-text-variant u-text-1">
+            Zusammenfassungen bereitgestellt von Luca Kirsch und <a href="http://yanwittmann.de">Yan Wittmann</a>.<br>
+            Einen Fehler gefunden oder du willst dabei helfen, die Seite besser zu machen?
+            <a href="mailto:mail@yanwittmann.de?subject=IT%20Abitur%20Zusammenfassungen&body=Danke%20f%C3%BCr%20dein%20Interesse!%20Bitte%20beschreibe%20hier%20kurz%20dein%20Anliegen%3A%0D%0A%0D%0A">
+                Hilf mit!</a>
+        </p>
+    </div>
+</footer>
+</body>
+</html>

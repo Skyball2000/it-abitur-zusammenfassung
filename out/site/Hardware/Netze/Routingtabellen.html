@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="de">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+<title>5. Routingtabellen - IT ABI</title>
+<link rel="stylesheet" href="..\..\nicepage.css" media="screen">
+<link rel="stylesheet" href="..\..\information.css" media="screen">
+    <link id="u-theme-google-font" rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
+
+
+    <script type="application/ld+json">{
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "itzusammenfassung",
+        "url": "index.html",
+        "logo": "images/itabiicon.png"
+    }</script>
+    <meta property="og:title" content="information">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#478ac9">
+    <link rel="canonical" href="index.html">
+    <meta property="og:url" content="index.html">
+</head>
+<body class="u-body">
+<header class="u-clearfix u-header u-header" id="sec-6c75">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <a href="..\..\index.html" data-page-id="501709633" class="u-image u-logo u-image-1"
+           data-image-width="576"
+           data-image-height="219" title="Hauptseite">
+<img src="..\..\images\itabiicon.png" class="u-logo-image u-logo-image-1" data-image-width="80.4586">
+        </a>
+        <p class="u-text u-text-default u-text-1">
+            <a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-base u-btn-1"
+               href="..\..\index.html"><b>Zur Hauptseite</b>
+            </a>
+        </p>
+    </div>
+</header>
+<section class="u-align-center u-clearfix u-section-1" id="sec-f625">
+    <div class="u-clearfix u-sheet u-sheet-1">
+<h1 class="u-text u-text-1"><a href="..\..\Hardware\Netze\Subnetze.html" title="4. Subnetze">&lt;</a> &#160&#160&#160 5. Routingtabellen &#160&#160&#160 <a href="..\..\Hardware\Netze\OSI-Schichten & TCP-IP.html" title="6. OSI-Schichten & TCP/IP">&gt;</a></h1>
+<h1 class="u-text u-text-palette-5-dark-3 u-text-2">Hardware >> Netze</h1>
+    </div>
+</section>
+<section class="u-align-left u-clearfix u-section-2" id="sec-6775">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <br>
+<p class="u-text u-text-2">
+Router sind dafür verantwortlich Datenpakete weiterzuleiten. Damit sie wissen, wohin sie das Datenpaket weiterleiten sollen,
+besitzt jeder Router eine sogenannte Routingtabelle. In Routingtabellen ist jedes im Netzwerk vorhandene Netz aufgelistet.
+Wenn das Netz eines Hosts direkt an den Router 1 grenzt, dann kann der Router 1 das Datenpaket einfach ohne weitere Umwege an ihn weiterleiten.<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image110.png"/><br><br>Wenn aber das Datenpaket an einen Host geschickt werden soll, dessen Netz nicht an den Router 1, sondern an einen weiteren Router 2 grenzt (Bild unten),
+dann sieht Router 1 in seiner Routingtabelle nach, wohin er das Paket weiterleiten muss. In diesem Fall leitet Router 1 das Datenpaket an Router 2 weiter,
+welcher dann das Datenpaket direkt an das Zielnetz weiterleiten kann.
+In diesem Fall muss in der Routingtabelle des Router 1 neben der Zielnetzadresse auch der nächste auf dem Weg liegende Router (in diesem Fall Router 2) aufgelistet werden,
+damit das Datenpaket an ihn weitergeleitet werden kann. Diesen zusätzlichen Eintrag nennt man Gateway.<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image45.png"/><br>
+In einer Routingtabelle muss außerdem immer noch die Subnetzmaske des Zielnetzes mit angegeben werden. Der Aufbau einer Routingtabelle sieht also so aus:<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/imageTabSmall.png"/><br>
+Wenn das Zielnetz direkt an den Router grenzt, dann gibt es keinen Gateway. In diesem Fall wird einfach ein <code>*</code> in das Feld geschrieben.
+Sollte im Schaltplan das Internet eingezeichnet sein, so ist die Zielnetzadresse hiervon <code>0.0.0.0</code> und die Subentzmaske <code>/0</code>.
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Beispiel</h4>
+<p class="u-text u-text-2"><br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image101.png"/><br>
+Ziel ist es nun, die passende Routingtabelle für Router 1 zu erstellen. Zunächst müssen alle vorhandenen Netze ermittelt werden, um Anzahl der Zeilen zu bestimmen.
+In diesem Fall gibt es ein Netz zwischen Router 1 und Router 2, ein Netz zwischen Router 1 und dem Router vor dem Internet,
+ein Netz zwischen Router 2 und den beiden Hosts und das Internet selbst.
+Also: 4 Netze → 4 Zeilen<br>
+Der Grundriss unserer Routingtabelle sieht so aus (4 Zeilen):<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/imageTab.png"/><br>
+Nun kann man die Zielnetzadressen der 4 Netze eintragen. Netz 1 ist das Internet, bzw. das Netz hinter dem Router vor dem Internet.
+Hier ist die Zielnetzadresse immer <code>0.0.0.0</code> und die Subnetzmaske ist auch immer <code>/0</code>.
+Netz 2 befindet sich zwischen Router 1 und Router 2. Da die Netzadresse immer die niedrigste Adresse ist und Router 1 & Router 2 die Endungen .1 & .2 haben
+(Router belegen meistens die ersten verfügbaren Hostadressen), endet die Netzadresse auf .0. → <code>10.1.0.0</code> Die Subnetzmaske ist bei Netz 2 angegeben: <code>/16</code>.
+Das Netz 3 hat die IP-Adressen von zwei Hostgeräten angegeben. Da die Subnetzmaske auch angegeben ist (<code>/24</code>), weiß man, dass nur die letzte Stelle als Hostbereich dient.
+Die niedrigste Stelle ist die <code>192.168.124.0</code>. Deshalb ist dies die Netzadresse.
+Die Adresse des Routers im Netz 2 wäre in diesem Fall, da der Router den ersten freien Hostbereich hat: <code>192.168.124.1</code>
+Das Netz 4 ist zwischen Router 1 und dem Router vor dem Internet. Die Netzadresse und die Subnetzmaske sind angegeben: <code>141.91.7.0</code> & <code>/30</code>.
+Trägt man nun diese Informationen in die Routingtabelle für Router 1 ein, so erhält man:<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/imageTab1.png"/><br>
+Jetzt fehlen noch die Gateways. Netz 2 und Netz 4 liegen direkt an Router 1. Auf dem Weg zwischen Router und Netz liegt also kein anderer Router mehr.
+Hier gibt es deshalb kein Gateway und es kann ein <code>*</code> eingetragen werden.
+Zwischen Router 1 und Netz 3 liegt jedoch der Router 2. Das heißt, beim Weiterleiten von Datenpaketen an Netz 3 muss Router 2 passiert werden.
+Es gibt deshalb ein Gateway. Dieses ist die IP-Adresse des Routers 2 im Netz zwischen Router 1 und Router 2. → <code>GW:10.1.0.2</code>
+Zwischen Router 1 und dem Internet liegt ebenfalls ein Router, der Router vor dem Internet. Dieser ist das Gateway für das Internet.
+→ <code>GW:141.91.7.2</code> Ergänzt man nun mit diesen Informationen die Routingtabelle, ist diese vollständig:<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/imageTab2.png"/><br>
+    </div>
+</section>
+
+
+<footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-025f">
+    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+        <p class="u-small-text u-text u-text-variant u-text-1">
+            Zusammenfassungen bereitgestellt von Luca Kirsch und <a href="http://yanwittmann.de">Yan Wittmann</a>.<br>
+            Einen Fehler gefunden oder du willst dabei helfen, die Seite besser zu machen?
+            <a href="mailto:mail@yanwittmann.de?subject=IT%20Abitur%20Zusammenfassungen&body=Danke%20f%C3%BCr%20dein%20Interesse!%20Bitte%20beschreibe%20hier%20kurz%20dein%20Anliegen%3A%0D%0A%0D%0A">
+                Hilf mit!</a>
+        </p>
+    </div>
+</footer>
+</body>
+</html>
