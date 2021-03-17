@@ -29,6 +29,12 @@ public class InformationPage {
         return pathTitles;
     }
 
+    public String generateSearchEntry() {
+        return "<li class=\"searchElement\"> " +
+                "<a href=\"" + path + "\\" + file.getName().replace(".txt", ".html") + "\">" +
+                path.replace("\\", " > ") + " > " + displayName + "</a></li>";
+    }
+
     @Override
     public String toString() {
         return "<a href=\"" + path + "\\" + file.getName().replace(".txt", ".html") + "\">" + displayName + "</a>";

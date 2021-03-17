@@ -1,0 +1,38 @@
+# 4. Diagrammarten
+
+Um die verschiedenen Zustände und Übergänge der Schaltnetze/Schaltwerke besser darstellen zu können, gibt es eine Reihe an Diagrammen.<br>
+Generell kann in den Diagrammen jede Zahl auch durch ein `x` ersetzt werden, was dann für einen beliebigen Wert steht.
+
+## Zustandsfolgediagramm
+Hier beschreibt jeder Kreis einen möglichen Zustand des Systems. In diesem befinden sich alle für den Zustand relevanten Variablen mit ihren konkreten Werten,
+zusammen mit dem optionalen Zustandsnamen, welcher dann in der oberen Hälfte des Kreises aufgefürt wird.
+Sie können durch Pfeile verbunden sein, die jeweils aussagen, bei welcher Bedingung in den nächsten Zustand gewechselt wird.
+Es kann sein, dass mehrere Pfeile mit je unterschiedlichen Bedingungen von einem Zustand ausgehen oder auf einen anderen zeigen.
+Beim Start des Systems beginnt man in dem Zustand, auf den der „Reset”-Pfeil zeigt.
+img pages/image85.png
+Es gibt zwei Spezialfälle:
+img pages/image95.png
+Das rechts ist eine Sackgasse, aus der man nicht mehr herauskommt.
+img pages/image106.png
+Dies ist eine Endlosschleife.
+
+## Impulsdiagramm
+Das Impulsdiagramm zeigt die Veränderung der Ausgangssignale in Abhängigkeit der Eingangssignale und der vorherigen Zustände.<br>
+Es besteht aus mehreren Linien übereinander, die je für ein Eingangs- oder Ausgangssignal stehen. Wenn auf dieser Linie Kasten steht, dann bedeutet dies, dass das
+Signal gerade an ist (1), ansonsten ist es aus (0).<br>
+Der zeitliche Verlauf wird von links nach rechts dargestellt, es kann also abgelesen werden, wie das System auf gewisse Eingabemuster und Sequenzen reagiert.
+Hier ein Beispiel für ein T-FF:
+img pages/image91.png
+Der Ausgang Q wechselt jedes mal, wenn T eine positive Taktflanke erhält, den Zustand. Vor allem bei komplexeren Schaltwerken kann es hilfreich sein ein
+Impulsdiagramm zu erstellen, da man so einfacher die Zusammenhänge der einzelnen Eingabewerte zu den Ausgängen nachvollziehen kann.
+
+## Zustandsfolgetabelle (Funktionstabelle / Wahrheitstabelle)
+Diese wurde bereits im Kapitel der Flip Flops verwendet, um die Ein- und Ausgaben einer Schaltung basierend auf dem vorherigen Zustand darzustellen.
+Allgemein besteht sie aus zwei durch eine Doppellinie getrennten Bereichen (Zustand vorher/nachher, Eingabe/Ausgabe), die jeweils weiter unterteilt werden können.
+In jeder Spalte steht als Titel ein Signal und in den Zeilen darunter jeweils 1 oder 0 für je den aktuellen Zustand des Signals.
+img pages/image88.png
+Um ohne großen Aufwand alle Varianten der Eingabemuster abzudecken, kann man in der ersten Spalte die erste Hälfte mit nullen und den rest mit einsen auffüllen.
+Die nächste Spalte hat dann das erste und dritte Viertel mit nullen, das zweite und vierte Viertel mit einsen. Die nächste Spalte hat jedes achtel abwechseld und so weiter.<br><br>
+
+Wenn man aus einer Wahrheitstabelle eine Schaltung macht, nennt man das Synthese.<br>
+Wenn aus einer Schaltung eine Wahrheitstabelle abgeleitet wird, ist das eine Analyse.

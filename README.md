@@ -11,3 +11,4 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - `Simple Text` - Fügt einen Text hinzu
 - `Text [[href=http://yanwittmann.de|with link]]` - Ein klickbarer Link
 - `<b>, <i>, ...` - HTML Formatierungszeichen
+- ``` `code` ``` - Code, also mit backticks umschließen

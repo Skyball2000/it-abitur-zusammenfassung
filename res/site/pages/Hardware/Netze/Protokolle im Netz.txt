@@ -1,13 +1,14 @@
-# Protokolle im Netz
-img pages/image32.png
-In diesem Bild sieht man, wie verschiedene Protokolle, genau wie beim OSI-Modell und beim TCP/IP-Modell, welchem dieser Protokollstapel eher ähnelt, aufeinander aufbauen. Die grüne Schicht ist für die physikalische Übertragung verantwortlich und entspricht OSI-Schicht 1 & 2 bzw. TCP/IP Schicht 1. Die blaue Schicht ist für die Verteilung zuständig und entspricht OSI-Schicht 3 / TCP/IP Schicht 2. Die gelb-lilane Schicht entspricht der Transportschicht und die restlichen Balken gehören zur Anwendungsschicht.
-Das Protokoll DHCP ist dafür verantwortlich, Hosts in einem Netzwerk automatisch zu konfigurieren und verschiedene Werte einzutragen, die benötigt werden um ins Internet zu gelangen. Dem Host wird die eigene IP-Adresse, die eigene Subnetzmask, die Gateway-Adresse zum Internet und die IP-Adresse des DNS Servers.
+# 7. Protokolle im Netz
 
-Ein Vergleich zwischen OSI-Modell und TCP/IP Modell mit Protokollen als Beispiel für die jeweilige Schicht sieht wie folgt aus:
+Im nachfolgenden Bild sieht man, wie verschiedene Protokolle, genau wie beim OSI-Modell und beim TCP/IP-Modell, welchem dieser Protokollstapel eher ähnelt, aufeinander aufbauen.
+img pages/image32.jpg
+Die grüne Schicht ist für die physikalische Übertragung verantwortlich und
+entspricht OSI-Schicht 1 & 2 bzw. TCP/IP Schicht 1. Die blaue Schicht ist für die Verteilung zuständig und entspricht OSI-Schicht 3 bzw. TCP/IP Schicht 2.
+Die lila-gelbe Schicht entspricht der Transportschicht und die restlichen, vertikalen, Balken gehören zur Anwendungsschicht.
+
+## Protokolle
+- `DHCP` ist dafür verantwortlich, Hosts in einem Netzwerk automatisch zu konfigurieren, damit diese Intenetzugriff erlangen können: Dem Host wird damit automatisch eine IP-Adresse, die Subnetzmask, die Gateway-Adresse zum Internet und die IP-Adresse des DNS Servers mitgegeben.
+- `UDP / TCP` - Beide Protokolle zerlegen die Daten in kleine Pakete und nummerieren diese durch. Bei TCP wird allerdings eine Prüfsumme angehängt, mit der der Empfänger kontrollieren kann, ob er alle Pakete intakt empfangen hat. Falls ein Paket fehlt oder beschädigt ist, kann der Empfänger dieses erneut anfordern. UDP zerlegt die Daten ebenfalls in kleine Pakete, jedoch gibt es keine Fehlerkorrektur. Das heißt, verloren gegangene oder beschädigte Pakete werden nicht erneut angefordert. Beide Protokolle bringen diese dann mit der Nummerierung noch in die richtige Reihenfolge, sollten die Pakete in der falschen angekommen sein.
+
+Hier nochmal der Vergleich zwischen OSI-Modell und TCP/IP Modell, dieses mal mit Protokollen als Beispiel für die jeweilige Schichten:
 img pages/image64.png
-## Unterschied UDP /TCP
-Unterschied UDP / TCP
-Beide Protokolle zerlegen die Daten in kleine Pakete und nummerieren diese durch.
-Bei TCP wird allerdings eine Prüfsumme angehängt, mit der der Empfänger kontrollieren kann, ob er alle Pakete intakt empfangen hat. Falls ein Paket fehlt oder beschädigt ist, kann der Empfänger dieses erneut anfordern.
-UDP zerlegt die Daten ebenfalls in kleine Pakete, jedoch gibt es keine Fehlerkorrektur. Das heißt, verloren gegangene oder beschädigte Pakete werden nicht erneut angefordert.
-Beide Protokolle bringen diese dann mit der Nummerierung noch in die richtige Reihenfolge, sollten die Pakete in der falschen angekommen sein.

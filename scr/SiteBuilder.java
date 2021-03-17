@@ -18,6 +18,7 @@ public class SiteBuilder {
     private final String templatePlaceIcon;
     private final String templatePlaceMainPage;
     private final String templatePlaceContents;
+    private final String templatePlaceSearchList;
     private final String templateInsert;
     private final String templateSubTitle;
     private final String templateMainTitle;
@@ -48,6 +49,7 @@ public class SiteBuilder {
         templatePlaceIcon = configuration.getOrDefault("templatePlaceIcon", "BUILDER-PLACE-ICON");
         templatePlaceMainPage = configuration.getOrDefault("templatePlaceMainPage", "BUILDER-PLACE-MAIN-PAGE");
         templatePlaceContents = configuration.getOrDefault("templatePlaceContents", "BUILDER-PLACE-CONTENTS");
+        templatePlaceSearchList = configuration.getOrDefault("templatePlaceSearchList", "BUILDER-PLACE-SEARCH-LIST");
         templateInsert = configuration.getOrDefault("templateInsert", "INSERT");
         templateSubTitle = configuration.getOrDefault("templateSubTitle", "<h1>INSERT</h1>");
         templateMainTitle = configuration.getOrDefault("templateMainTitle", "<h1>INSERT</h1>");
@@ -89,6 +91,7 @@ public class SiteBuilder {
         FileUtils.copyFile(new File(siteTemplateDir + "information.css"), new File(siteOutDir + "information.css"));
         FileUtils.copyFile(new File(siteTemplateDir + "Hauptseite.css"), new File(siteOutDir + "Hauptseite.css"));
         FileUtils.copyFile(new File(siteTemplateDir + "nicepage.css"), new File(siteOutDir + "nicepage.css"));
+        FileUtils.copyFile(new File(siteTemplateDir + "search.js"), new File(siteOutDir + "search.js"));
         FileUtils.copyFile(new File(siteImagesDir + siteImageIcon), new File(siteOutDir + "images\\" + siteImageIcon));
         FileUtils.copyFile(new File(siteImagesDir + siteTitleImage), new File(siteOutDir + "images\\" + siteTitleImage));
         buildMainPage();
@@ -98,6 +101,7 @@ public class SiteBuilder {
         ArrayList<String> template = FileUtils.readFileToArrayList(new File(siteTemplateDir + "Hauptseite.html"));
 
         HTMLListBuilder mainList = pageTreeBuilder.finish();
+        String searchList = generateSearchList();
 
         LineBuilder generatedPage = new LineBuilder();
         for (String line : template) {
@@ -113,12 +117,20 @@ public class SiteBuilder {
                 generatedPage.append(line.replace(templatePlaceMainPage, mainPageUrl));
             } else if (line.contains(templatePlaceContents)) {
                 generatedPage.append(line.replace(templatePlaceContents, mainList.toString()));
+            } else if (line.contains(templatePlaceSearchList)) {
+                generatedPage.append(line.replace(templatePlaceSearchList, searchList));
             } else {
                 generatedPage.append(line);
             }
         }
 
         FileUtils.writeFile(new File(siteOutDir + "index.html"), optimizeGenerated(generatedPage.toString()));
+    }
+
+    private String generateSearchList() {
+        LineBuilder searches = new LineBuilder();
+        informationPages.stream().map(InformationPage::generateSearchEntry).forEach(searches::append);
+        return searches.toString();
     }
 
     private Pair<String, String> getSurroundingInfoPages(File page) {
@@ -181,30 +193,42 @@ public class SiteBuilder {
                     isCurrentlyTextOrImage = true;
                     generatedBody.append(templateTextParagraphIntro);
                 }
-                generatedBody.append("<br>").append("<img style=\"margin-top:10px;\" src=\"" + prepareImageLink(line.replace("img ", "")) + "\"/><br>");
+                generatedBody.append("<br>").append("<img style=\"margin-top:10px;max-width:100%;\" src=\"" + prepareImageLink(line.replace("img ", "")) + "\"/><br>");
             } else if (line.startsWith("-")) { //list
-                if (!isCurrentlyTextOrImage) {
-                    isCurrentlyTextOrImage = true;
-                    generatedBody.append(templateTextParagraphIntro);
+                if (isCurrentlyTextOrImage) {
+                    isCurrentlyTextOrImage = false;
+                    generatedBody.append("</p>");
                 }
-
                 generatedBody.append("<ul class=\"u-text u-text-2\">");
                 int lastIndentCount = 1;
                 do {
                     int indentCount = line.replaceAll("(-+) ?.+", "$1").length();
-                    if (indentCount > lastIndentCount) {
-                        generatedBody.append("<ul>");
-                    } else if (indentCount < lastIndentCount) {
-                        generatedBody.append("</ul>");
-                    }
-                    lastIndentCount = indentCount;
-                    generatedBody.append("<li>" + line.replaceAll("-+ ?(.+)", "$1") + "</li>");
+                    int storedIndentCount = indentCount;
+                    while (indentCount != lastIndentCount)
+                        if (indentCount > lastIndentCount) {
+                            indentCount--;
+                            generatedBody.append("<ul>");
+                        } else {
+                            indentCount++;
+                            generatedBody.append("</ul>");
+                        }
+                    lastIndentCount = storedIndentCount;
+                    generatedBody.append("<li>" + prepareBodyText(line.replaceAll("-+ ?(.+)", "$1")) + "</li>");
                     i++;
                     if (i >= readFileToArrayList.size()) break;
                     line = readFileToArrayList.get(i);
                 } while (line.startsWith("-"));
+                int indentCount = 0;
+                while (indentCount != lastIndentCount) {
+                    if (indentCount > lastIndentCount) {
+                        indentCount--;
+                        generatedBody.append("<ul>");
+                    } else {
+                        generatedBody.append("</ul>");
+                        indentCount++;
+                    }
+                }
                 i--;
-                generatedBody.append("</ul>");
 
             } else if (line.length() > 0) { //regular text
                 if (!isCurrentlyTextOrImage) {
@@ -212,6 +236,10 @@ public class SiteBuilder {
                     generatedBody.append(templateTextParagraphIntro);
                 }
                 generatedBody.append(prepareBodyText(line));
+                if (line.contains("</table>")) {
+                    generatedBody.append("</p>");
+                    generatedBody.append(templateTextParagraphIntro);
+                }
             }
         }
 
@@ -262,7 +290,7 @@ public class SiteBuilder {
     }
 
     private String prepareBodyText(String text) {
-        return text.replaceAll(regexLink, regexLinkReplace);
+        return text.replaceAll(regexLink, regexLinkReplace).replaceAll("`([^`]+)`", "<code>$1</code>");
     }
 
     private String prepareInformationPagePath(String path) {

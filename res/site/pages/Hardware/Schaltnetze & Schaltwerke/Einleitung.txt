@@ -1,0 +1,5 @@
+# 1. Einleitung
+
+## Unterschied zwischen Schaltnetzen & Schaltwerken
+- In Schaltnetzen kommen keine speichernden Elemente vor. Das heißt, mit der gleichen Eingabe kommt auch immer die gleiche Ausgabe aus dem Schaltnetz heraus.
+- Bei Schaltwerken ist das Gegenteil der Fall: Mit jeder Eingabe kommt ein unterschiedliches Ergebnis raus, da vom vorherigen Zustand noch immer einige Daten gespeichert sind, also zum Beispiel von Flip Flops.<br>Ein einfaches Beispiel dafür ist eine Beleuchtungssteuerung: Mit einem Klick sind die Lichter an, mit einem weitern wieder aus.

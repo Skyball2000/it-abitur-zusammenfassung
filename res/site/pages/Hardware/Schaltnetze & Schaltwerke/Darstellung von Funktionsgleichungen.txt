@@ -1,0 +1,16 @@
+# 3. Darstellung von Funktionsgleichungen
+
+Mittels Funktionsgleichungen können Schaltnetze / Schaltwerke dargestellt werden. Diese verwenden neben Klammern folgende Symbole:
+- ⋁    Logisches oder
+- ∧    Logisches und
+- A    Logisches nicht
+
+Ein Beispiel:
+img pages/beispielsFunktionsgleichungLogisch.png
+
+Dank dieser Funktionsgleichungen kann man einfach die Eingabewerte des Schaltnetzes / Schaltwerks einsetzen und das Ergebnis 'rechnerisch'
+bestimmen und muss nicht umständlich das Schaltnetz / Schaltwerk verwenden.
+
+## De Morgansche Gesetze
+Mittels der De Morganschen Gesetzen können diese Funktionsgleichungen umgestellt werden. Sie erlauben diese beiden Umformungen, welche die Negierungen umstellen:
+img pages/deMorgan.png

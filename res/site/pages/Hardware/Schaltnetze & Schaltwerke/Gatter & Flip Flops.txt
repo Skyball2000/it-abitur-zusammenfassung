@@ -1,0 +1,18 @@
+# 2. Gatter & Flip Flops
+
+Die Hauptbestandteile der Netze sind Gatter, welche die Eingabeinformationen verwerten und modifizieren. Allgemein sehen diese so aus:
+img pages/image60.png
+
+E steht für die Eingabe, A für die Ausgabe und die Box mit dem S für das Schaltglied mit dem dazugehörigen Schaltsymbol. Die Ein- und Ausgänge können je an (1) oder aus (0) sein.<br>
+Die Ein- und Ausgänge der Gatter können mit je einem unausgefüllten Punkt versehen werden. Der Punkt bedeutet, dass dieser Eingang/Ausgang negiert wird, also aus einer 1 eine 0 und umgekehrt.<br><br>
+Eingänge können zudem mit einer art Pfeil versehen werden, diese sind dann Flankengesteuert.
+Das heißt, bei einem Übergang von 0 zu 1 wird diese Eingabe ganz kurz auf 1 gesetzt, danach sofort wieder auf 0.
+Dann wird so lange gewartet, bis der Eingang wieder 0 ist und der Vorgang beginnt von neuem. Wenn jedoch ein Punkt davor gesetzt wird, reagiert es auf den Übergang von 1 zu 0,
+so wie hier abgebildet:
+img pages/image83.png
+
+Es folgt eine Auflistung der relevanten Schaltglieder. Zunächst die, die keine Zustände speichern:
+img pages/tableFFListe.png
+Nun diejenigen, die Zustände speichern können. Hierbei handelt es sich meistens um Flip Flops (kurz: FF). Eine Auflistung:
+img pages/tableFFListe2.png
+Natürlich gibt es für jedes Gatter und die FF noch Variationen, z.B. wenn einige Eingänge oder Ausgänge negiert werden oder die Eingänge nur auf Flanken reagieren.

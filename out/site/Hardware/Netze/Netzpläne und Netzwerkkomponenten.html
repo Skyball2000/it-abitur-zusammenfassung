@@ -6,7 +6,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
-<title>Netzpläne und Netzwerkkomponenten - IT ABI</title>
+<title>1. Netzpläne und Netzwerkkomponenten - IT ABI</title>
 <link rel="stylesheet" href="..\..\nicepage.css" media="screen">
 <link rel="stylesheet" href="..\..\information.css" media="screen">
     <link id="u-theme-google-font" rel="stylesheet"
@@ -29,7 +29,8 @@
 <body class="u-body">
 <header class="u-clearfix u-header u-header" id="sec-6c75">
     <div class="u-clearfix u-sheet u-sheet-1">
-        <a href="..\..\index.html" data-page-id="501709633" class="u-image u-logo u-image-1" data-image-width="576"
+        <a href="..\..\index.html" data-page-id="501709633" class="u-image u-logo u-image-1"
+           data-image-width="576"
            data-image-height="219" title="Hauptseite">
 <img src="..\..\images\itabiicon.png" class="u-logo-image u-logo-image-1" data-image-width="80.4586">
         </a>
@@ -42,7 +43,7 @@
 </header>
 <section class="u-align-center u-clearfix u-section-1" id="sec-f625">
     <div class="u-clearfix u-sheet u-sheet-1">
-<h1 class="u-text u-text-1"><a href="..\..\test.html" title="Ein kleiner Test">&lt;</a> &#160&#160&#160 Netzpläne und Netzwerkkomponenten &#160&#160&#160 <a href="..\..\Software\Betriebssysteme\Aufgaben.html" title="Aufgaben">&gt;</a></h1>
+<h1 class="u-text u-text-1"><a href="..\..\Hardware\Microcontroller\template.html" title="Überschrift">&lt;</a> &#160&#160&#160 1. Netzpläne und Netzwerkkomponenten &#160&#160&#160 <a href="..\..\Hardware\Netze\Verbindungmöglichkeiten.html" title="2. Verbindungsmöglichkeiten">&gt;</a></h1>
 <h1 class="u-text u-text-palette-5-dark-3 u-text-2">Hardware >> Netze</h1>
     </div>
 </section>
@@ -53,16 +54,64 @@
 In Netzplänen ist der Aufbau von meist privaten Netzen grafisch dargestellt.
 In ihnen sind die verschiedenen Netzkomponenten (Geräte) sowie deren IP - Adressen und die Netzadressen und Subnetzmasken von Netzen angegeben.
 Die einzelnen Netzkomponenten haben jeweils eigene Symbole. Hier eine Übersicht:<br>
-<img style="margin-top:10px;" src="..\..\\images\pages/image46.png"/><br>
-Ein Repeater, auch Signalregenerator genannt, regeneriert digitale Signale. Beim Verschicken von digitalen Signalen nimmt die Signalstärke mit der Zeit immer mehr ab. Das heißt, nach einer gewissen Distanz sind die Einsen und Nullen sind nicht mehr voneinander unterscheidbar und das Signal ist unbrauchbar geworden. Ein Repeater fängt das Signal vor diesem Zeitpunkt ab und stellt das verschwommene, aber noch lesbare Signal wieder her und sendet es dann wieder mit voller Signalstärke weiter.
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image46.png"/><br>
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Repeater</h4>
+<p class="u-text u-text-2">
+Ein Repeater, auch Signalregenerator genannt, regeneriert digitale Signale.
+Beim Verschicken von digitalen Signalen nimmt die Signalstärke mit der Zeit immer mehr ab.
+Das heißt, nach einer gewissen Distanz sind die Einsen und Nullen sind nicht mehr voneinander unterscheidbar und das Signal ist unbrauchbar geworden.
+Ein Repeater fängt das Signal vor diesem Zeitpunkt ab und stellt das verschwommene, aber noch lesbare Signal wieder her und sendet es dann wieder mit voller Signalstärke weiter.<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image20.png"/><br>
+Solange das Signal für eine 1 eindeutig über der Trennungslinie ist und das für eine 0 eindeutig darunter, kann der Repeater das Signal noch erkennen
+und wieder verstärken / erneuern.
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Switch</h4>
+<p class="u-text u-text-2">
+Ein Switch kann Datenpakete an verschiedene Geräte weiterleiten. Basierend auf einer Gerätetabelle entscheidet er anhand der MAC-Adresse,
+für welches Gerät das empfangene Paket ist und leitet es an dieses weiter. Ist kein Gerät angegeben, dann schickt der Switch das Paket einfach an alle angeschlossene Geräte.
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Router</h4>
+<p class="u-text u-text-2">
+Ein Router ist ein Gerät, das verschiedene Netzwerke miteinander verbindet. Er leitet Pakete aus einem Netzwerk in das andere weiter oder blockt diese ab (er vermittelt).
+Jeder Router besitzt eine Routingtabelle, welche später noch erklärt wird.
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Netz</h4>
+<p class="u-text u-text-2">
+Ein Netz besteht zwischen zwei Routern oder zwischen einem Router und den an ihm angeschlossenen Clients.<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image68.png"/><br>
+Netz 4 zwischen dem linken Router und dem Internet besteht zwischen dem Router und dem Router, der sich auf dem Weg ins Internet befindet (z.B. der beim Provider).
+Das Netz 3 ist das Internet und beginnt nach dem Router auf dem Weg ins Internet.
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Client</h4>
+<p class="u-text u-text-2">
+Ein Client - auch Clientanwendung - ist eine Software die auf einem Gerät jeglicher Art läuft (z.B. Smartphone, PC, Laptop usw..).
+Der Client kommuniziert mit einem Server und ruft Dienste von diesem ab.
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Access Point</h4>
+<p class="u-text u-text-2">
+Ein Access Point ist ein Gerät, welches als Schnittschnelle für kabellose Endgeräte dient.
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Server</h4>
+<p class="u-text u-text-2">
+Ein Server ist ein PC, mit welchem sich Clients verbinden können (Client - Server-Konzept).
+Der Server stellt gewissen Dienste bereit, die dann von Clients, die sich mit dem Server verbunden haben, genutzt werden können.<br>
+Kabel werden in solch einem Schaltplan einfach mit normalen Strichen dargestellt. Miteinander verbundene Geräte sehen also so aus:<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image104.png"/><br>
+Hat man einen drahtlose Verbindung (z.B WLAN), dann wird neben dem Access Point einfach (ohne Verbindungssymbol) der Client gezeichnet.<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image79.png"/><br>
     </div>
 </section>
 
 
 <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-025f">
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <p class="u-small-text u-text u-text-variant u-text-1">Zusammenfassungen bereitgestellt von Luca Kirsch und Yan
-            Wittmann.</p>
+        <p class="u-small-text u-text u-text-variant u-text-1">
+            Zusammenfassungen bereitgestellt von Luca Kirsch und <a href="http://yanwittmann.de">Yan Wittmann</a>.<br>
+            Einen Fehler gefunden oder du willst dabei helfen, die Seite besser zu machen?
+            <a href="mailto:mail@yanwittmann.de?subject=IT%20Abitur%20Zusammenfassungen&body=Danke%20f%C3%BCr%20dein%20Interesse!%20Bitte%20beschreibe%20hier%20kurz%20dein%20Anliegen%3A%0D%0A%0D%0A">
+                Hilf mit!</a>
+        </p>
     </div>
 </footer>
 </body>
