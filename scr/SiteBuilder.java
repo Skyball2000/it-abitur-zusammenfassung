@@ -2,6 +2,8 @@ import yanwittmann.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -157,6 +159,7 @@ public class SiteBuilder {
         String pageTitle = "Title";
         for (String line : FileUtils.readFileToArrayList(siteFile))
             if (line.startsWith("# ")) { //main title
+                if (line.endsWith("!!")) line = line.replace("!!", "");
                 pageTitle = line.replace("# ", "");
                 break;
             }
@@ -174,6 +177,7 @@ public class SiteBuilder {
         String pageTitle = "Title";
         pathToMainDirectory = IntStream.range(0, GeneralUtils.countOccurrences(path, "\\") + (path.equals(templateSubTitleDefault) ? 0 : 1))
                 .mapToObj(i -> "..\\").collect(Collectors.joining());
+        boolean pageWarning = false;
 
         LineBuilder generatedBody = new LineBuilder();
         boolean isCurrentlyTextOrImage = false;
@@ -181,7 +185,11 @@ public class SiteBuilder {
         for (int i = 0; i < readFileToArrayList.size(); i++) {
             String line = readFileToArrayList.get(i);
             if (line.startsWith("# ")) { //main title
-                pageTitle = line.replace("# ", "");
+                if (line.endsWith("!!")) {
+                    pageTitle = "<font style=\"color:red\">" + line.replace("# ", "").replace("!!", "") + "</font>";
+                    pageWarning = true;
+                } else
+                    pageTitle = line.replace("# ", "");
             } else if (line.startsWith("## ")) { //title in text
                 if (isCurrentlyTextOrImage) {
                     isCurrentlyTextOrImage = false;
@@ -213,7 +221,7 @@ public class SiteBuilder {
                             generatedBody.append("</ul>");
                         }
                     lastIndentCount = storedIndentCount;
-                    generatedBody.append("<li>" + prepareBodyText(line.replaceAll("-+ ?(.+)", "$1")) + "</li>");
+                    generatedBody.append("<li>" + prepareBodyText(line.replaceAll("-+ ?(.+)", "$1"), pathToMainDirectory) + "</li>");
                     i++;
                     if (i >= readFileToArrayList.size()) break;
                     line = readFileToArrayList.get(i);
@@ -230,17 +238,62 @@ public class SiteBuilder {
                 }
                 i--;
 
+            } else if (line.startsWith("~")) { //list
+                if (isCurrentlyTextOrImage) {
+                    isCurrentlyTextOrImage = false;
+                    generatedBody.append("</p>");
+                }
+                generatedBody.append("<ol class=\"u-text u-text-2\">");
+                int lastIndentCount = 1;
+                do {
+                    int indentCount = line.replaceAll("(~+) ?.+", "$1").length();
+                    int storedIndentCount = indentCount;
+                    while (indentCount != lastIndentCount)
+                        if (indentCount > lastIndentCount) {
+                            indentCount--;
+                            generatedBody.append("<ol>");
+                        } else {
+                            indentCount++;
+                            generatedBody.append("</ol>");
+                        }
+                    lastIndentCount = storedIndentCount;
+                    generatedBody.append("<li>" + prepareBodyText(line.replaceAll("~+ ?(.+)", "$1"), pathToMainDirectory) + "</li>");
+                    i++;
+                    if (i >= readFileToArrayList.size()) break;
+                    line = readFileToArrayList.get(i);
+                } while (line.startsWith("~"));
+                int indentCount = 0;
+                while (indentCount != lastIndentCount) {
+                    if (indentCount > lastIndentCount) {
+                        indentCount--;
+                        generatedBody.append("<ol>");
+                    } else {
+                        generatedBody.append("</ol>");
+                        indentCount++;
+                    }
+                }
+                i--;
+
             } else if (line.length() > 0) { //regular text
                 if (!isCurrentlyTextOrImage) {
                     isCurrentlyTextOrImage = true;
                     generatedBody.append(templateTextParagraphIntro);
                 }
-                generatedBody.append(prepareBodyText(line));
+                generatedBody.append(prepareBodyText(line, pathToMainDirectory));
                 if (line.contains("</table>")) {
                     generatedBody.append("</p>");
                     generatedBody.append(templateTextParagraphIntro);
                 }
             }
+        }
+
+        if (pageWarning) {
+            if (!isCurrentlyTextOrImage)
+                generatedBody.append(templateTextParagraphIntro);
+            generatedBody.append(templateTextTitle.replace(templateInsert, "<font style=\"color:red\"><b>Warnung:</b></font>"));
+            generatedBody.append(templateTextParagraphIntro);
+            generatedBody.append(prepareBodyText("Diese Seite könnte Fehler oder Ungenauigkeiten enthalten oder noch nicht fertig sein.<br>" +
+                    "Falls du einen Verbesserungsvorschlag hast, kontaktiere uns bitte über den Link `Hilf mit!` in der grauen Footer-Leiste direkt unten diesem Text:", pathToMainDirectory));
         }
 
         LineBuilder generatedPage = new LineBuilder();
@@ -255,14 +308,17 @@ public class SiteBuilder {
                         .replaceAll("(.*)>(.+)</a>", "$1 title=\"$2\">$2</a>")
                         .replaceAll(">(.+)</a>", ">&gt;</a>"));
                 generatedPage.append(templateMainTitle.replace(templateInsert, beforeNext.getLeft() + " &#160&#160&#160 " + pageTitle + " &#160&#160&#160 " + beforeNext.getRight()));
-                generatedPage.append(templateSubTitle.replace(templateInsert, pageSubtitle));
+                if (pageWarning)
+                    generatedPage.append(templateSubTitle.replace(templateInsert, "Bitte Warnung ganz unten lesen!<br><br>" + pageSubtitle));
+                else
+                    generatedPage.append(templateSubTitle.replace(templateInsert, pageSubtitle));
             } else if (trimmedLine.equals(templatePlaceBody)) {
                 generatedPage.append(generatedBody.toString());
             } else if (trimmedLine.equals(templatePlaceCss)) {
                 generatedPage.append(templateCss.replace(templateInsert, pathToMainDirectory + templateMainCss));
                 generatedPage.append(templateCss.replace(templateInsert, pathToMainDirectory + templateInformationCss));
             } else if (trimmedLine.equals(templatePlaceWebsiteTitle)) {
-                generatedPage.append(templateWebsiteTitle.replace(templateInsert, pageTitle));
+                generatedPage.append(templateWebsiteTitle.replace(templateInsert, pageTitle.replaceAll("<[^>]+>", "")));
             } else if (trimmedLine.equals(templatePlaceIcon)) {
                 generatedPage.append(templateIcon.replace(templateInsert, pathToMainDirectory + "images\\" + siteImageIcon));
             } else if (line.contains(templatePlaceMainPage)) {
@@ -289,8 +345,27 @@ public class SiteBuilder {
         return (pathToMainDirectory + "\\images\\" + link).replaceAll("^\\\\", "");
     }
 
-    private String prepareBodyText(String text) {
-        return text.replaceAll(regexLink, regexLinkReplace).replaceAll("`([^`]+)`", "<code>$1</code>");
+    private String prepareBodyText(String text, String pathToMainDirectory) {
+        text = text.replaceAll(regexLink, regexLinkReplace).replaceAll("`([^`]+)`", "<code>$1</code>");
+        if (text.matches(".*\\[([^\\]]+)\\].*")) {
+            Pattern pattern = Pattern.compile("\\[([^]]+)]");
+            Matcher matcher = pattern.matcher(text);
+            while (matcher.find()) {
+                String found = matcher.group();
+                text = text.replace(found, getMostLikelyLink(found.replace("[", "").replace("]", ""), pathToMainDirectory));
+            }
+        }
+        return text;
+    }
+
+    private String getMostLikelyLink(String linkText, String pathToMainDirectory) {
+        String[] splitted = linkText.split("\\|");
+        for (InformationPage informationPage : informationPages) {
+            if (informationPage.getDisplayName().contains(splitted[1]))
+                return "<a href=\"" + pathToMainDirectory + informationPage.getPath() + "\\" +
+                        informationPage.getFile().getName().replace(".txt", ".html") + "\">" + splitted[0] + "</a>";
+        }
+        return linkText;
     }
 
     private String prepareInformationPagePath(String path) {

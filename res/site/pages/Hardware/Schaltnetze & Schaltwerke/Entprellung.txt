@@ -1,0 +1,25 @@
+# 7. Entprellung!!
+
+Da die Realität nicht digital, sondern analog funktioniert, gibt es bei Tastern, Schaltern und anderen Eingabegeräten nicht immer eindeutig ‘High’ oder ‘Low’.
+Dies kann durch Störeinwirkungen oder durch das Federn des Tasters auf dem Kontakt passieren, was zu scheinbar willkürlichen Eingabeveränderungen und
+somit zu großer Verwirrung führen kann. Dieser unbekannte Zustand wird „Schwebend” genannt.<br>
+Um dieses Problem zu umgehen gibt es drei verschiedene Möglichkeiten:
+
+## Pull-Up Widerstand
+Der Pull-Up Widerstand befindet sich zwischen Taster (A) und der Spannungsquelle (Vcc). Y ist die Datenleitung.<br>
+Dies sorgt dafür, dass das Signal, das gemessen wird, High ist, wenn der Taster nicht gedrückt ist und umgekehrt.<br>
+Bei einem geöffneten Taster kann der Strom nun problemlos an Y fließen und somit ein High ausgeben. Wenn der Taster allerdings geschlossen ist,
+fließt der Strom zu GND. Da von Y aus zu Vcc ein höherer Widerstand ist als zu GND, liegt Y nun an GND und das Signal wird eindeutig als Low gewertet.
+img pages/image39_1.png
+
+## Pull-Down Widerstand
+Der Pull-Down Widerstand befindet sich zwischen Taster und Ground (GND).<br>
+Hier bedeutet ein geschlossener Taster auch ein High an Y.<br>
+Genau umgekehrt wie bei dem Pull-Up Widerstand ist hier bei einem geöffneten Taster die einzige Verbindung die zu GND, nicht zu Vcc, also Low.<br>
+Bei einem geschlossenen Taster gibt es nun eine einfachere (weniger Widerstand) Verbindung zu Vcc und der Wert an Y ist High.
+img pages/image39_2.png
+
+## Tristate
+Hier gibt es nicht nur zwei Zustände, sondern drei. Der dritte Zustand bedeutet, dass weder ein High, noch ein Low registriert wird.
+Das Bauteil erscheint dann so, als ob es von der Schaltung abgetrennt sei.
+img pages/image39_3.png

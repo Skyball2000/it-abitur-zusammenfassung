@@ -1,0 +1,13 @@
+# 5. Disjunktive Normalform
+
+Die <b>D</b>isjunktive <b>N</b>ormal<b>f</b>orm (DNF) ist eine Form der Synthese: mit ihr kann eine beliebige Wahrheitstabelle zu einer Schaltung gemacht werden,
+ohne einen großen Aufwand betreiben zu müssen. Diese Schaltung ist dann zwar nicht immer die optimalste/effizienteste,
+sie funktioniert aber genau den Erwartungen entsprechend. Hierfür müssen folgende Schritte gemacht werden:
+~ Alle Zeilen mit einer 1 als Ausgabe finden
+~ Die Bedingung für diese Fälle in Form einer großen Funktionsgleichung formulieren
+~ Die Eingangssignale im Schaltplan mit senkrechten Linien einzeichnen
+~ Für die in (2) aufgestellten Bedingungen (also alle, die von den `V` getrennt werden) AND-Gatter erstellen und mit den Eingangssignalen verbinden (wenn nötig mit negierten Eingängen)
+~ Alle AND-Gatter in ein OR-Gatter führen
+
+So sieht der Vorgang anhand eines Beispiels aus:
+img pages/image96.png

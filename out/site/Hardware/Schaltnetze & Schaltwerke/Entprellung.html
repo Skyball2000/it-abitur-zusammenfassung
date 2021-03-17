@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="de">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+<title>7. Entprellung - IT ABI</title>
+<link rel="stylesheet" href="..\..\nicepage.css" media="screen">
+<link rel="stylesheet" href="..\..\information.css" media="screen">
+    <link id="u-theme-google-font" rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
+
+
+    <script type="application/ld+json">{
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "itzusammenfassung",
+        "url": "index.html",
+        "logo": "images/itabiicon.png"
+    }</script>
+    <meta property="og:title" content="information">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#478ac9">
+    <link rel="canonical" href="index.html">
+    <meta property="og:url" content="index.html">
+</head>
+<body class="u-body">
+<header class="u-clearfix u-header u-header" id="sec-6c75">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <a href="..\..\index.html" data-page-id="501709633" class="u-image u-logo u-image-1"
+           data-image-width="576"
+           data-image-height="219" title="Hauptseite">
+<img src="..\..\images\itabiicon.png" class="u-logo-image u-logo-image-1" data-image-width="80.4586">
+        </a>
+        <p class="u-text u-text-default u-text-1">
+            <a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-base u-btn-1"
+               href="..\..\index.html"><b>Zur Hauptseite</b>
+            </a>
+        </p>
+    </div>
+</header>
+<section class="u-align-center u-clearfix u-section-1" id="sec-f625">
+    <div class="u-clearfix u-sheet u-sheet-1">
+<h1 class="u-text u-text-1"><a href="..\..\Hardware\Schaltnetze & Schaltwerke\KV-Diagramm.html" title="6. KV-Diagramm">&lt;</a> &#160&#160&#160 <font style="color:red">7. Entprellung</font> &#160&#160&#160 <a href="..\..\Software\Betriebssysteme\Aufgaben.html" title="Aufgaben">&gt;</a></h1>
+<h1 class="u-text u-text-palette-5-dark-3 u-text-2">Bitte Warnung ganz unten lesen!<br><br>Hardware >> Schaltnetze & Schaltwerke</h1>
+    </div>
+</section>
+<section class="u-align-left u-clearfix u-section-2" id="sec-6775">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <br>
+<p class="u-text u-text-2">
+Da die Realität nicht digital, sondern analog funktioniert, gibt es bei Tastern, Schaltern und anderen Eingabegeräten nicht immer eindeutig ‘High’ oder ‘Low’.
+Dies kann durch Störeinwirkungen oder durch das Federn des Tasters auf dem Kontakt passieren, was zu scheinbar willkürlichen Eingabeveränderungen und
+somit zu großer Verwirrung führen kann. Dieser unbekannte Zustand wird „Schwebend” genannt.<br>
+Um dieses Problem zu umgehen gibt es drei verschiedene Möglichkeiten:
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Pull-Up Widerstand</h4>
+<p class="u-text u-text-2">
+Der Pull-Up Widerstand befindet sich zwischen Taster (A) und der Spannungsquelle (Vcc). Y ist die Datenleitung.<br>
+Dies sorgt dafür, dass das Signal, das gemessen wird, High ist, wenn der Taster nicht gedrückt ist und umgekehrt.<br>
+Bei einem geöffneten Taster kann der Strom nun problemlos an Y fließen und somit ein High ausgeben. Wenn der Taster allerdings geschlossen ist,
+fließt der Strom zu GND. Da von Y aus zu Vcc ein höherer Widerstand ist als zu GND, liegt Y nun an GND und das Signal wird eindeutig als Low gewertet.<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image39_1.png"/><br>
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Pull-Down Widerstand</h4>
+<p class="u-text u-text-2">
+Der Pull-Down Widerstand befindet sich zwischen Taster und Ground (GND).<br>
+Hier bedeutet ein geschlossener Taster auch ein High an Y.<br>
+Genau umgekehrt wie bei dem Pull-Up Widerstand ist hier bei einem geöffneten Taster die einzige Verbindung die zu GND, nicht zu Vcc, also Low.<br>
+Bei einem geschlossenen Taster gibt es nun eine einfachere (weniger Widerstand) Verbindung zu Vcc und der Wert an Y ist High.<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image39_2.png"/><br>
+</p>
+<h4 class="u-text u-text-1" style="margin-top:0px;">Tristate</h4>
+<p class="u-text u-text-2">
+Hier gibt es nicht nur zwei Zustände, sondern drei. Der dritte Zustand bedeutet, dass weder ein High, noch ein Low registriert wird.
+Das Bauteil erscheint dann so, als ob es von der Schaltung abgetrennt sei.<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image39_3.png"/><br>
+<h4 class="u-text u-text-1" style="margin-top:0px;"><font style="color:red"><b>Warnung:</b></font></h4>
+<p class="u-text u-text-2">
+Diese Seite könnte Fehler oder Ungenauigkeiten enthalten oder noch nicht fertig sein.<br>Falls du einen Verbesserungsvorschlag hast, kontaktiere uns bitte über den Link <code>Hilf mit!</code> in der grauen Footer-Leiste direkt unten diesem Text:
+    </div>
+</section>
+
+
+<footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-025f">
+    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+        <p class="u-small-text u-text u-text-variant u-text-1">
+            Zusammenfassungen bereitgestellt von Luca Kirsch und <a href="http://yanwittmann.de">Yan Wittmann</a>.<br>
+            Einen Fehler gefunden oder du willst dabei helfen, die Seite besser zu machen?
+            <a href="mailto:mail@yanwittmann.de?subject=IT%20Abitur%20Zusammenfassungen&body=Danke%20f%C3%BCr%20dein%20Interesse!%20Bitte%20beschreibe%20hier%20kurz%20dein%20Anliegen%3A%0D%0A%0D%0A">
+                Hilf mit!</a>
+        </p>
+    </div>
+</footer>
+</body>
+</html>

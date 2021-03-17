@@ -6,7 +6,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
-<title>Aufgaben - IT ABI</title>
+<title>5. Disjunktive Normalform - IT ABI</title>
 <link rel="stylesheet" href="..\..\nicepage.css" media="screen">
 <link rel="stylesheet" href="..\..\information.css" media="screen">
     <link id="u-theme-google-font" rel="stylesheet"
@@ -43,23 +43,28 @@
 </header>
 <section class="u-align-center u-clearfix u-section-1" id="sec-f625">
     <div class="u-clearfix u-sheet u-sheet-1">
-<h1 class="u-text u-text-1"><a href="..\..\Hardware\Schaltnetze & Schaltwerke\Entprellung.html" title="7. Entprellung">&lt;</a> &#160&#160&#160 Aufgaben &#160&#160&#160 <a href="..\..\Software\Datenbanken\template.html" title="Überschrift">&gt;</a></h1>
-<h1 class="u-text u-text-palette-5-dark-3 u-text-2">Software >> Betriebssysteme</h1>
+<h1 class="u-text u-text-1"><a href="..\..\Hardware\Schaltnetze & Schaltwerke\Diagrammarten.html" title="4. Diagrammarten">&lt;</a> &#160&#160&#160 5. Disjunktive Normalform &#160&#160&#160 <a href="..\..\Hardware\Schaltnetze & Schaltwerke\KV-Diagramm.html" title="6. KV-Diagramm">&gt;</a></h1>
+<h1 class="u-text u-text-palette-5-dark-3 u-text-2">Hardware >> Schaltnetze & Schaltwerke</h1>
     </div>
 </section>
 <section class="u-align-left u-clearfix u-section-2" id="sec-6775">
     <div class="u-clearfix u-sheet u-sheet-1">
         <br>
-<ul class="u-text u-text-2">
-<li>Dateiverwaltung</li>
-<ul>
-<li>Prozessverwaltung</li>
-</ul>
-<li>Speicherverwaltung</li>
-<li>Benutzerverwaltung</li>
-<li>Sicherungsverfahren</li>
-<li>Hardware-Kommunikation</li>
-</ul>
+<p class="u-text u-text-2">
+Die <b>D</b>isjunktive <b>N</b>ormal<b>f</b>orm (DNF) ist eine Form der Synthese: mit ihr kann eine beliebige Wahrheitstabelle zu einer Schaltung gemacht werden,
+ohne einen großen Aufwand betreiben zu müssen. Diese Schaltung ist dann zwar nicht immer die optimalste/effizienteste,
+sie funktioniert aber genau den Erwartungen entsprechend. Hierfür müssen folgende Schritte gemacht werden:
+</p>
+<ol class="u-text u-text-2">
+<li>Alle Zeilen mit einer 1 als Ausgabe finden</li>
+<li>Die Bedingung für diese Fälle in Form einer großen Funktionsgleichung formulieren</li>
+<li>Die Eingangssignale im Schaltplan mit senkrechten Linien einzeichnen</li>
+<li>Für die in (2) aufgestellten Bedingungen (also alle, die von den <code>V</code> getrennt werden) AND-Gatter erstellen und mit den Eingangssignalen verbinden (wenn nötig mit negierten Eingängen)</li>
+<li>Alle AND-Gatter in ein OR-Gatter führen</li>
+</ol>
+<p class="u-text u-text-2">
+So sieht der Vorgang anhand eines Beispiels aus:<br>
+<img style="margin-top:10px;max-width:100%;" src="..\..\\images\pages/image96.png"/><br>
     </div>
 </section>
 
