@@ -1,0 +1,98 @@
+# 4. Interrupts / Polling
+
+Bei Interrupts und Polling handelt es sich um zwei verschiedene Möglichkeiten, die unterschiedlichsten Ereignisse (Timer, externe Ereignisse) im Microcontroller zu
+registrieren und zu verarbeiten. Es folgt eine kurze Beschreibung der beiden Methoden, Interrupts werden jedoch genauer beschrieben.<br>
+
+Hier schnell der Unterschied zwischen Interrupt und Polling in einer Grafik:
+img pages/image108.png
+
+## Polling
+Polling überprüft direkt in der Hauptschleife des Programms, ob ein bestimmtes Ereignis eingetreten ist. Also: an einer Stelle im Programm ist eine Abfrage implementiert,
+welche überprüft, ob das Ereignis aufgetreten ist. Sollte dies der Fall sein,
+so wird dafür vorgesehener Code ausgeführt, der normalerweise mit einem `rjmp` übersprungen worden werde.
+
+Dadurch, dass die Abfrage beim Polling direkt in der Hauptschleife des Programms implementiert ist, wird dementsprechend auch nur einmal pro Schleifendurchlauf überprüft,
+ob das Ereignis eingetreten ist, was zu einer verzögerten Reaktion führt.
+Durch die Überprüfung, ob das Ereignis eingetreten ist, wird außerdem CPU-Zeit verwendet, was zu weiteren Verzögerungen für das restliche Programm führt.
+
+## Interrupts
+Interrupts sind Programmstränge die parallel zum normalen Programm laufen und damit unabhängig vom Status der Hauptschleife sind. Sobald ein Ereignis auftritt,
+wird sofort der Interrupt ausgelöst und behandelt, der normale Programmablauf wird hierfür an egal welcher Stelle unterbrochen.<br><br>
+
+Funktionsweise von Interrupts:<br>
+Jedem Interrupt ist eine Adresse im Programmspeicher zugeordnet. Wird ein Interrupt ausgelöst, springt der Programmzeiger auf diese dem Interrupt zugewiesenen Adresse.
+Diese Adresse befindet sich in der sogenannten Interruptvektortabelle, welche sich fast ganz am Anfang des Programmspeichers befindet.<br>
+Jeder Eintrag in der Interruptvektortabelle ist nur eine einzige Adresse lang. Darum muss in dieser ein `rjmp` Befehl stehen, der dann zur eigentlichen auszuführenden
+Stelle im Programmspeicher springt.
+img pages/image25.png
+
+<br>Im der obigen Grafik ist eine solche Vektortabelle zu sehen.<br>
+Da nicht immer alle Interrupts benötigt werden, müssen diejenigen angelegt werden, die später verwendet werden sollen.
+Der im Beispiel dargestellte Interrupt INT0 (externer Interrupt 0) wird wie folgt erstellt:<br>
+
+`.include "tn2313def.inc"`<br>
+`.org INT0addr`<br>
+`rjmp isrINT0`<br>
+
+Mit `.include "tn2313def.inc"` wird eine Microcontroller-spezifische Datei geladen, welche Konstanten enthält, die im darauf folgenden Code verwendet werden können
+(z.B. `INT0addr` oder `ISC01`). Der nächste Befehl `.org INT0addr` ist dafür zuständig, dass der Assembler als nächstes in die Adresse `INT0addr` schreibt,
+dessen Zeiger also dorthin zeigt. Da vor dem dritten Befehl kein Punkt steht, dieser also keine Speicher-Direktive ist, wird die Assembler-Anweisung
+tatsächlich in Maschinensprache umgewandelt und in den Programmspeicher geschrieben. Dort steht also nun bei der Adresse `INT0addr` in Maschinencode: `rjmp isrINT0`<br><br>
+
+Falls jetzt das Interrupt INT0 ausgelöst wird, springt der Programmzeiger direkt zur Adresse vom Interrupt 0: INT0addr. Der Befehl, der in diesem Feld steht,
+wird dementsprechend anschließend ausgeführt. Falls dort jedoch, sei es aus Unachtsamkeit des Programmierers, kein Befehl stehen sollte, geht der Programmzeiger
+einfach Zeile für Zeile nach unten und führt die Befehle aus, auf die er stößt. Im Normalfall steht dort jedoch eine rjmp-Anweisung (hier: rjmp isrINT0),
+mit der dann in die eigentliche Interruptbehandlung, zur sogenannten ISR, (Interrupt Service Routine) gesprungen wird.<br><br>
+
+Eine ISR beginnt meistens mit einem Marker, zu dem gesprungen wird, und endet immer mit dem Befehl reti, der wieder zur ursprünglichen Adresse im Programmspeicher springt,
+die vor der Interruptbehandlung zuletzt ausgeführt wurde. Zwischen diesen beiden Befehlen befinden sich normale Befehle.<br>
+
+`isrINT0:`<br>
+`; weitere Befehle in der ISR`<br>
+`reti`<br>
+
+Durch reti wird der Interrupt also beendet. Steht am Ende der ISR kein reti, springt der Programmzeiger nicht zurück in den Programmcode und führt so lange die Befehle aus,
+auf die er stößt, bis er am Ende des Programmspeichers angelangt ist oder auf ein anderes, womöglich von einer anderen ISR, reti stößt.<br><br>
+
+Vor Ausführung der eigentlichen Befehle in der ISR sollten wichtige Inhalte aus Registern (unter anderem das Statusregister SREG) auf dem Stack gespeichert werden,
+sodass diese Registerinhalte durch die Ausführung der ISR überschrieben und danach wiederhergestellt werden können. Der Stack beginnt am Ende des SRAMs und wächst
+dann Richtung Anfang, man setzt daher den Stackpointer zu Beginn auf die letzte Speicherzelle. Zu beginn wird also zunächst die Adresse des Ende des RAMs gesucht.
+Da die bei uns verwendeten Microcontroller 16 Bit-Adressen verwenden, gibt es einmal ein oberes und ein unteres Byte der Adresse, das gesichert werden muss.<br>
+Das wird wie folgt getan:<br>
+
+`ldi r16, LOW(RAMEND)        ; untere 8 Bit werden in r16 geladen`<br>
+`out SPL, r16                ; speichern der Position der unteren 8 Bit`<br>
+`ldi r16, HIGH(RAMEND)       ; gleiche für obere 8 Bit`<br>
+`out SPH, r16`<br><br>
+
+Somit befindet sich nun die Adresse in SPL und SPH. Für gewöhnlich findet dies ein mal am Anfang des Codes statt, nicht in der Hauptschleife.
+Das eigentliche Sichern der Register auf dem Stack erfolgt dann in den jeweiligen ISRs:<br>
+
+`push r16        ; sichern des Registers r16`<br>
+`in   r16, SREG  ; Das Statusregister wird in r16 geladen`<br>
+`push r16        ; und wird ebenfalls gesichert`<br>
+
+`; eigentliche Befehle der Interruptbehandlung`<br>
+`pop r16         ; das Statusregister wird wieder runtergeholt`<br>
+`out SREG, r16   ; und zurückgeschrieben`<br>
+`pop r16         ; r16 wird wiederhergestellt`<br><br>
+
+Der Befehl push r16 schiebt zuerst den inhalt von r16 auf den Stack. Anschließend wird mit in r16, SREG das Statusregister in r16 geladen.
+Dieses wird dann wieder mit push r16 auf den Stack geschoben.<br>
+Es folgen die eigentlichen Befehle der Interruptbehandlung. Um die gesicherten Daten der Register wieder aus dem Stack in die eigentlichen Variablen zu verschieben
+muss man zuerst das Register r16 mit dem SREG vom Stapel holen, da dieses ganz oben liegt (mit dem Befehl pop r16). Dann speichert man den Wert wieder in SREG
+mit in r16, SREG. Anschließend holt man noch das eigentliche Register r16 aus dem Stack mit pop r16.<br><br>
+
+Hier ist der Ablauf eines solchen Interrupts einmal zu sehen:
+img pages/image19.png
+
+Nun haben wir für unseren Fall die ISR fertig implementiert.<br><br>
+
+Allgemein sind folgende Schritte notwendig, um ein Interrupt zu initialisieren:
+- Interruptvektortabelle erstellen: Am Anfang des Codes die Interruptvektortabelle anlegen.
+- ISRs erstellen: Dies sind die ‘Unterprogramme’ zu denen die RJMPs der Vektortabelle zeigen.
+- ggf. Sicherung von Registern auf Stack; Vor allem das Statusregister sollte in den ISRs auf den Stack gesichert werden.
+- Konfigurieren der Interrupts: Einzelne Register setzen, um die jeweiligen zu aktivierenden Interrupts zu konfigurieren, diese sind abhängig von den zu aktivierenden Interrupts.
+- Auswahl der Interrupts
+- Aktivierung der zu verwendenden Interrupts durch setzen von Registern, auch hier von den Interrupts abhängig.
+- I-Bit (Bit 7) in Statusregister setzen: Allgemeine Aktivierung von Interrupts

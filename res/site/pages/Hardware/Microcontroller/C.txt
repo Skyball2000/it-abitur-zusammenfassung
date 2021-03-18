@@ -1,0 +1,11 @@
+# 2. C!
+
+Im Gegensatz zu [Assembler|Assembler] ist C eine Hochsprache, die erweiterte Konstrukte erlaubt. Man kann zwar noch immer auf die einzelnen Bits der Register
+und Ports zugreifen, jedoch nicht mehr unbedingt so direkt, wie es bei Assembler möglich ist. Dies hat zur Folge, dass der Code wesentlich übersichtlicher
+und leichter zu debuggen ist, in der Ausführung dann jedoch zeitlich länger braucht, um dasselbe zu erreichen.<br><br>
+
+Hier gibt es keine konkreten Bit-Set-Operationen, nur ganze Register können überschrieben werden, außer für das jeweilige Register gibt es spezielle Operationen.
+Das Programm beginnt immer in der `main()`, daraus kann es in verschiedene Unterprogramme springen. Da wir von Microcontrollern reden befindet sich dann meistens
+irgendwo eine Endlosschleife (`while(1)`), die dann für den Rest der Laufzeit den entsprechenden Code ausführt.<br>
+
+Hier gibt es die selben Bitoperationen wie bei Assembler (plus einige weitere die nicht relevant sind).

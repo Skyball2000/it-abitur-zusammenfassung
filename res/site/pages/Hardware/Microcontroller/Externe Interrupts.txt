@@ -1,0 +1,10 @@
+# 5. Externe Interrupts
+
+Wichtig! Erst [Interrupts|Interrupts / Polling] durchlesen!<br><br>
+Ein Beispiel zu externen Interrupts. Um einen externen Interrupt auszulösen müssen 3 Bedingungen erfüllt sein:
+
+## 1
+Es gibt verschieden Ereignisse, auf die ein externes Interrupt reagieren kann. Dies kann entweder ein low oder eine wechselnde, fallende oder steigende
+Flanke am Pin des Interrupts sein. Um das festzulegen, müssen zwei Bits im sogenannten MCUCR gesetzt werden. Dies sind für den Interrupt INT0 die Bits
+ISC00 & ISC01 und für den Interrupt INT1 die Bits ISC10 & ISC1. Je nachdem, in welcher Kombination diese gesetzt sind, reagiert das Interrupt auf etwas anderes:
+img pages/tableMCUCR.png

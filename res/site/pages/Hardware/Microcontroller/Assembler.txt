@@ -1,0 +1,208 @@
+# 1. Assembler!
+
+Assembler ist eine (die allererste!) Programmiersprache, die von einem Programm names 'Assemblierer' in Maschinensprache übersetzt (kompiliert) wird,
+also zu tatsächlichen Einsen und Nullen gemacht wird. Sie arbeitet fast nur mit den Anweisungen, die dann später tatsächlich von der CPU ausgeführt werden und kommt
+ohne die Konstrukte der höheren Sprachen aus, also keine Schleifen, Klassen, Objekte, Methoden, usw.
+<br>Zwar sind mit Assembler dadurch sehr viel effizientere Programme möglich, doch dafür ist es auch sehr viel umständlicher zu schreiben und zu lernen. Ebenso wird der Code schwerer zu lesen und zu warten.<br>
+Heutzutage wird Assembler hauptsächlich auf Mikrocontrollern eingesetzt, da diese eine niedrigere Leistung haben und somit die Ausführungsgeschwindigkeit im Gegensatz zu PCs ein nicht zu verachtender Faktor wird.<br>
+Code, der in Assembler geschrieben ist, folgt eigentlich immer diesem Muster:<br>
+`Befehl parameter1, parameter2`<br>
+
+## Anweisungen
+Die relevanten Befehle sind:
+<table class="tg">
+<thead>
+  <tr>
+    <th>Befehl</th>
+    <th>Parameter</th>
+    <th>Erklärung</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>`SBI`</td>
+    <td>Port, Bit</td>
+    <td>set Bit in Port-Register</td>
+  </tr>
+  <tr>
+    <td>`CBI`</td>
+    <td>Port, Bit</td>
+    <td>clear Bit in Port-Register</td>
+  </tr>
+  <tr>
+    <td>`NOP`</td>
+    <td></td>
+    <td>no operation</td>
+  </tr>
+  <tr>
+    <td>`LDI` *</td>
+    <td>Register, Konstante</td>
+    <td>Konstante in Register laden (load immediately)</td>
+  </tr>
+  <tr>
+    <td>`LD`</td>
+    <td>Register, Konstante</td>
+    <td>Konstante in Register laden</td>
+  </tr>
+  <tr>
+    <td>`DEC`</td>
+    <td>Register</td>
+    <td>Register um 1 kleiner machen</td>
+  </tr>
+  <tr>
+    <td>`Marke:`</td>
+    <td></td>
+    <td>markiert Stelle im Code</td>
+  </tr>
+  <tr>
+    <td>`RJMP`</td>
+    <td>Marke</td>
+    <td>springt zu Marke</td>
+  </tr>
+  <tr>
+    <td>`BRNE`</td>
+    <td>Marke</td>
+    <td>springt zu Marke wenn Z-Flag = 0</td>
+  </tr>
+  <tr>
+    <td>`IN`</td>
+    <td>Register, Port</td>
+    <td>lädt Register auf einen Port</td>
+  </tr>
+  <tr>
+    <td>`OUT`</td>
+    <td>Port, Register</td>
+    <td>lädt Port in ein Register</td>
+  </tr>
+  <tr>
+    <td>`PUSH`</td>
+    <td>Register</td>
+    <td>Lädt Register auf den Stack</td>
+  </tr>
+  <tr>
+    <td>`POP`</td>
+    <td>Register</td>
+    <td>Holt Register vom Stack</td>
+  </tr>
+  <tr>
+    <td>`ADD`</td>
+    <td>Register, Register</td>
+    <td>Register 1 = Register 1 + Register 2</td>
+  </tr>
+  <tr>
+    <td>`SUB`</td>
+    <td>Register, Register</td>
+    <td>Register 1 = Register 1 - Register 2</td>
+  </tr>
+  <tr>
+    <td>`INC`</td>
+    <td>Register</td>
+    <td>das Register wird um 1 erhöht</td>
+  </tr>
+  <tr>
+    <td>`DEC`</td>
+    <td>Register</td>
+    <td>das Register wird um 1 verringert</td>
+  </tr>
+</tbody>
+</table>
+
+Befehle, die mit einem `*` markiert sind, dürfen nicht auf die Register 0-15 angewandt werden. (siehe [Register|Register / Ports])<br>
+Befehle, die mit Interrupts zu tun haben, werden bei später bei [Interrupts / Polling|Interrupts] genannt.<br>
+Die jeweils benötigten Ausführungszyklen und mehr Details können in der lokalen Formelsammlung gefunden werden.<br><br>
+
+Es gibt einige Direktiven, die nicht als Assembler-Code kompiliert werden:<br>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Element</th>
+    <th class="tg-0lax">Erklärung</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">`;`</td>
+    <td class="tg-0lax">alles hinter dem `;` wird ignoriert (Kommentar)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`.include`</td>
+    <td class="tg-0lax">Einbinden einer Datei mit Konstanten, usw.</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`.equ`</td>
+    <td class="tg-0lax">Setzen einer Konstanten</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`.set`</td>
+    <td class="tg-0lax">Setzen einer Variable</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`.def`</td>
+    <td class="tg-0lax">ein Register wird einem symbolischen Wert zugeordnet</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`.org`</td>
+    <td class="tg-0lax">setzt die Adresse im Programmspeicher, bei der als nächstes der assemblierte Code geschrieben werden soll. Vor allem nützlich zum Erstellen der Interruptvektortabelle.</td>
+  </tr>
+</tbody>
+</table>
+
+Doch gibt es auch einige ‘höhere’ Funktionen, auch, wenn es nicht viele sind. Hier sind die wichtigsten von diesen:<br>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Funktion</th>
+    <th class="tg-0lax">Erklärung</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">`LOW( Register )`</td>
+    <td class="tg-0lax">liefert Bits 0-7 eines 16-Bit Registers</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`HIGH( Register )`</td>
+    <td class="tg-0lax">liefert Bits 8-15 eines 16-Bit Registers</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`EXP2( Ausdruck )`</td>
+    <td class="tg-0lax">wendet 2^Ausdruck an</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`LOG2( Ausdruck )`</td>
+    <td class="tg-0lax">wendet log2(Ausdruck) an</td>
+  </tr>
+</tbody>
+</table>
+
+Um Werte zu verarbeiten, gibt es die Bitoperationen:<br>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Operation</th>
+    <th class="tg-0lax">Erklärung</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">`&gt;&gt;` und `&lt;&lt;`</td>
+    <td class="tg-0lax">rechts- und links- Shift. Schiebt alle Bits nach rechts/links und füllt je mit 0 auf</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`|`</td>
+    <td class="tg-0lax">bitweise oder</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`&amp;`</td>
+    <td class="tg-0lax">bitweise und</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`^`</td>
+    <td class="tg-0lax">bitweise exklusives oder</td>
+  </tr>
+</tbody>
+</table>
+Diese drei Zeilen würden z.B. dasselbe machen:<br>
+`ldi temp, (1<<3) | (1<<1) | (1<<2) | (1<<0)`<br>
+`ldi temp, 8 | 2 | 4 | 1`<br>
+`ldi temp, 15`<br>

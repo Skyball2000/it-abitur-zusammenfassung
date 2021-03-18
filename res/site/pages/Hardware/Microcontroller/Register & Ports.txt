@@ -1,0 +1,77 @@
+# 3. Register / Ports
+
+Register in Prozessoren sind Speicherbereiche für binäre Daten, auf die Prozessoren besonders schnell zugreifen können.
+Sie befinden sich darum in der direkten Nähe der Rechenwerke (CPU, ...).<br><br>
+
+Es gibt unterschiedliche Register, die alle für andere Dinge zuständig sind. Es folgt eine Auflistung der für uns relevanten:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Register</th>
+    <th class="tg-0lax">Bits</th>
+    <th class="tg-0lax">Erklärung</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">`MCUCR`</td>
+    <td class="tg-0lax">`ISC00 ISC01`<br>`ISC10 ISC11`</td>
+    <td class="tg-0lax">Mit diesen vier Bits kann für die beiden externen Interrupts eingestellt werden, auf was diese reagieren sollen. Genaueres siehe externe Interrupts weiter unten.</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`GIFR`</td>
+    <td class="tg-0lax">`INTF0 INTF1`</td>
+    <td class="tg-0lax">Diese Bits werden gesetzt, wenn im MCUCR ein Interrupt registriert wird.</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`GIMSK`</td>
+    <td class="tg-0lax">`INT0 INT1`</td>
+    <td class="tg-0lax">In diesem Register werden die externen Interrupts aktiviert.</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`SREG`</td>
+    <td class="tg-0lax">`I Z C …`</td>
+    <td class="tg-0lax">Das Statusregister hat acht verschiedene Bits, die jeweils unterschiedliche Funktionen erfüllen. Das I-Bit aktiviert Interrupts allgemein, wenn es gesetzt ist. Das Z-Bit wird gesetzt, wenn die letzte Operation eine 0 als Ergebnis hatte. Das C-Bit wird gesetzt, wenn die letzte Operation einen Rest verursacht hat.</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`TIMSK0`</td>
+    <td class="tg-0lax">`OCIE0 TOIE0`</td>
+    <td class="tg-0lax">Hiermit wird eingestellt, auf was der Timer 0 reagieren soll (output compare / overflow).</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`TCCR0`</td>
+    <td class="tg-0lax">`CS00 - CS01`</td>
+    <td class="tg-0lax">Hiermit wird der Vorteiler des Timer 0 angegeben und somit der Interrupt aktiviert.</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`r0-15`</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Diese Register sind frei verwendbar, auch, wenn sie nicht durch ‘immediate’-Befehle veränderbar sind.</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`r16-31`</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Hier sind ‘immediate’-Befehle verwendbar. Diese können zudem als 16-Bit Register verwendet werden, indem immer Paare (also `r16` und `r17`, …) beschrieben werden.</td>
+  </tr>
+</tbody>
+</table>
+
+## Ports
+Es gibt bei dem Microcontroller, den wir verwenden, 4 Ports (A/B/C/D). Für jeden Port gibt es zwei Register, die relevant sind:
+<table class="tg">
+<tbody>
+  <tr>
+    <td class="tg-0lax">`DDRA/B/C/D`</th>
+    <td class="tg-0lax">Data direction register. Es beschreibt, in diesem Fall für `Port B`, welche der Pins Daten ausgeben sollen und welche zur Eingabe dienen werden. (1 = Ausgabe, 0 = Eingabe)</th>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`PORTA/B/C/D`</td>
+    <td class="tg-0lax">Wenn mittels `DDRB` für die Pins Input eingestellt wurde, werden die Bits den Eingaben der Pins gesetzt und man kann im Programm diese Eingaben verwenden. Wenn ‘Ausgabe’ eingestellt ist, können diese Bits gesetzt werden, um an den Port-Pins auszugeben.</td>
+  </tr>
+</tbody>
+</table>
+
+Um also zu bestimmen, welche der 8 Pins Ein- oder Ausgabe sein sollen, muss zunächst eine Bitmaske (z.B. `DDRA = 00110100`) auf das data direction register des jeweiligen Ports gesetzt werden.<br>
+Dann kann man mittels `PORTA/B/C/D` die Pin-Werte auslesen oder setzen, je nachdem, was man in `DDRA/B/C/D` festgelegt hat.<br>
+Einige dieser Pins werden vom Mikrocontroller bereits für andere Dinge verwendet, wie z.B. als Eingabe für die externen Interrupts. Darum können nicht alle Pins verwendet werden.
+Welche genau das sind steht in der lokalen Formelsammlung.
