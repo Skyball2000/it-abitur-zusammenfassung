@@ -111,7 +111,7 @@ Befehle, die mit einem `*` markiert sind, dürfen nicht auf die Register 0-15 an
 Befehle, die mit Interrupts zu tun haben, werden bei später bei [Interrupts / Polling|Interrupts] genannt.<br>
 Die jeweils benötigten Ausführungszyklen und mehr Details können in der lokalen Formelsammlung gefunden werden.<br><br>
 
-Es gibt einige Direktiven, die nicht als Assembler-Code kompiliert werden:<br>
+Es gibt einige [Direktiven], die nicht als Assembler-Code kompiliert werden:<br>
 <table class="tg">
 <thead>
   <tr>

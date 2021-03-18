@@ -200,6 +200,7 @@ public class SiteBuilder {
                     generatedBody.append("</p>");
                 }
                 generatedBody.append(templateTextTitle.replace(templateInsert, line.replace("## ", "")));
+            } else if (line.startsWith(">")) { //keywords, do nothing. They are evaluated somewhere else
             } else if (line.startsWith("img ")) { //image
                 if (!isCurrentlyTextOrImage) {
                     isCurrentlyTextOrImage = true;
@@ -360,8 +361,8 @@ public class SiteBuilder {
     }
 
     private String prepareBodyText(String text, String pathToMainDirectory) {
-        text = text.replaceAll(regexLink, regexLinkReplace).replaceAll("`([^`]+)`", "<code>$1</code>");
-        if (text.matches(".*\\[([^\\]]+)\\].*")) {
+        text = text.replaceAll(regexLink, regexLinkReplace).replace("``", "`").replaceAll("`([^`]+)`", "<code>$1</code>").replace("  ", "&nbsp;&nbsp;");
+        if (text.matches(".*\\[([^]]+)].*")) {
             Pattern pattern = Pattern.compile("\\[([^]]+)]");
             Matcher matcher = pattern.matcher(text);
             while (matcher.find()) {
@@ -373,11 +374,18 @@ public class SiteBuilder {
     }
 
     private String getMostLikelyLink(String linkText, String pathToMainDirectory) {
-        String[] splitted = linkText.split("\\|");
-        for (InformationPage informationPage : informationPages)
-            if (informationPage.getDisplayName().contains(splitted[1]))
-                return "<a href=\"" + pathToMainDirectory + informationPage.getPath() + "\\" +
-                        informationPage.getFile().getName().replace(".txt", ".html") + "\">" + splitted[0] + "</a>";
+        String[] splitted = linkText.split("\\|", 3);
+        if (splitted.length == 1) {
+            return "<font id=\"" + linkText + "\">" + linkText + "</font>";
+        } else
+            for (InformationPage informationPage : informationPages)
+                if (informationPage.getDisplayName().contains(splitted[1])) {
+                    String section;
+                    if (splitted.length == 3) section = "#" + splitted[2];
+                    else section = "";
+                    return "<a href=\"" + pathToMainDirectory + informationPage.getPath() + "\\" +
+                            informationPage.getFile().getName().replace(".txt", ".html") + section + "\">" + splitted[0] + "</a>";
+                }
         return splitted[0];
     }
 

@@ -1,5 +1,6 @@
 # 3. Register / Ports
 
+## Register
 Register in Prozessoren sind Speicherbereiche für binäre Daten, auf die Prozessoren besonders schnell zugreifen können.
 Sie befinden sich darum in der direkten Nähe der Rechenwerke (CPU, ...).<br><br>
 
