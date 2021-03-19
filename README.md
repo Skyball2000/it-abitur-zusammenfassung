@@ -33,3 +33,6 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Man kann jetzt mehrere Leertasten hintereinander verwenden
 - Anker-Links zu Anschnitten oder Text-Snippets einer anderen Seite
 - Keywords für eine Seite, nach denen in der Suche gesucht werden kann
+- Man kann jetzt `<<` und `>>` eingeben, ohne, dass es die gesamte Formatierung der Seite ruiniert
+  (was immer gut ist!)
+- Code snippets können nun leer sein und eine Leertaste am Anfang enthalten

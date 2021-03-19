@@ -1,10 +1,42 @@
 # 5. Externe Interrupts
 
 Wichtig! Erst [Interrupts|Interrupts / Polling] durchlesen!<br><br>
-Ein Beispiel zu externen Interrupts. Um einen externen Interrupt auszulösen müssen 3 Bedingungen erfüllt sein:
+Um einen externen Interrupt auszulösen müssen 3 Bedingungen erfüllt sein:<br><br>
 
-## 1
-Es gibt verschieden Ereignisse, auf die ein externes Interrupt reagieren kann. Dies kann entweder ein low oder eine wechselnde, fallende oder steigende
-Flanke am Pin des Interrupts sein. Um das festzulegen, müssen zwei Bits im sogenannten MCUCR gesetzt werden. Dies sind für den Interrupt INT0 die Bits
-ISC00 & ISC01 und für den Interrupt INT1 die Bits ISC10 & ISC1. Je nachdem, in welcher Kombination diese gesetzt sind, reagiert das Interrupt auf etwas anderes:
+<b>Bedingung 1</b><br>
+Es gibt verschieden Ereignisse, auf die ein externes Interrupt reagieren kann. Dies kann entweder eine wechselnde, fallende oder steigende Flanke oder einfach
+nur ein low am Pin des Interrupts sein. Um das festzulegen, müssen zwei Bits im sogenannten `MCUCR` (MCU General Control Register) gesetzt werden.
+Dies sind für den Interrupt `INT0` die Bits `ISC00` & `ISC01` und für den Interrupt `INT1` die Bits `ISC10` & `ISC1`.
+Je nachdem, in welcher Kombination diese gesetzt sind, reagiert das Interrupt auf etwas anderes:
 img pages/tableMCUCR.png
+
+Die Aktivierung des Interrupts wird ganz oben im Hauptprogramm vorgenommen, dort wo auch der Stackpointer an die letzte Stelle des RAMs gesetzt wird.<br><br>
+
+Bits in solchen speziellen Registern kann man nicht direkt mit z.B. `LDI` verändern. Daher muss der gewünschte Wert zuerst in ein normales Register wie
+z.B. `r16` geladen werden, was dann auf das spezielle Register ausgegeben wird. Als Assembler-Code würde das so aussehen:<br>
+
+`ldi r16, (1<<ISC00) | (1<<ISC01) ; Bits ISC00 & ISC01 werden in r16 gesetzt`<br>
+`out MCUCR, r16                   ; Bitmaske für INT0 wird auf MCUCR ausgegeben`<br>
+
+Wenn nun das entsprechende Ereignis auftritt, auf das der Interrupt reagiert, wird durch die `MCUCR` das zum Interrupt passende Bit
+im Register `GIFR` gesetzt (siehe Grafik unten).<br><br>
+
+<b>Bedingung 2</b><br>
+Der spezifische externe Interrupt muss aktiviert sein (`INT0` und/oder `INT1`). Das wird mit dem `GIMSK`-Register veranlasst. In diesem muss das Bit `INT0` (für `INT0`)
+oder `INT1` (für `INT1`) gesetzt sein. Welchen Wert dieses Bit hat, steht wieder in einer Variable, welche ganz am Anfang mit der Datei `tn2313def.inc` importiert wurde.
+Um das Interrupt `INT0` zu aktivieren muss das Bit `INT0` im `GIMSK`-Register gesetzt werden. Für das Interrupt `INT1` entsprechend das Bit `INT1`.
+Die Aktivierung des Interrupts wird ganz oben im Hauptprogramm vorgenommen, wo auch die `MCUCR` initialisiert wird. So sähe es aus:<br>
+
+`ldi r16, 1<<INT0 ; Bit wird um INT0 geschiftet und in r16 gesetzt`<br>
+`out GIMSK, r16   ; INT0 aus r16 wird auf GIMSK ausgegeben `<br><br>
+
+<b>Bedingung 3</b><br>
+Der letzte Schritt ist, dass man Interrupts allgemein im Microcontroller aktivieren muss. Das wird mit dem Befehl `sei` gemacht, was üblicherweise an das Ende des Codes
+geschrieben wird, wo alle benötigten Interrupts fertig konfiguriert und aktiviert wurden.<br><br>
+
+Sind alle 3 Bedingungen erfüllt, wird das Interrupt aktiviert und behandelt (Hauptprogramm → Interruptvektortabelle → ISR (`rjmp`) → `reti` → Hauptprogramm).
+Hier nochmal die Bedingungen dargestellt:
+img pages/image84.png
+
+Wie zu sehen ist: Wenn `MCUCR` das  mit `ISC00`/... eingestellte Signal registriert, wird das Bit `INTF0`/`INTF1` in `GIFR` gesetzt.
+Wenn nun noch das entsprechende Bit in `GIMSK` gesetzt ist (`INT0`/`INT1`) und Interrupts generell aktiviert sind (`i`-Bit gesetzt) wird der Interrupt ausgelöst.<br><br>

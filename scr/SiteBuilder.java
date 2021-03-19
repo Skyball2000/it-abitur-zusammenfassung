@@ -361,7 +361,9 @@ public class SiteBuilder {
     }
 
     private String prepareBodyText(String text, String pathToMainDirectory) {
-        text = text.replaceAll(regexLink, regexLinkReplace).replace("``", "`").replaceAll("`([^`]+)`", "<code>$1</code>").replace("  ", "&nbsp;&nbsp;");
+        text = text.replaceAll(regexLink, regexLinkReplace).replace("``", "`&nbsp`").replaceAll("^` ", "`&nbsp")
+                .replaceAll("`([^`]+)`", "<code>$1</code>").replace("  ", "&nbsp;&nbsp;").
+                        replace("<<", "&lt&lt").replace(">>", "&gt&gt");
         if (text.matches(".*\\[([^]]+)].*")) {
             Pattern pattern = Pattern.compile("\\[([^]]+)]");
             Matcher matcher = pattern.matcher(text);

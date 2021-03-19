@@ -1,0 +1,124 @@
+# 6. Timer
+
+Timer sind integrierte Bauteile in den Mikrocontrollern, die in regelmäßigen Abständen hardwaregesteuert um 1 hoch- bzw. runterzählen können,
+und das unabhängig vom Programmablauf. Hierfür sind einige Register reserviert, so gut wie jeder Mikrocontroller (μC) besitzt solche Register,
+doch abhängig von der Größe des μC kann deren Anzahl jedoch variieren. Es gibt generell zwei Größen von Timern: 8 und 16 Bit.<br><br>
+
+Generell sieht der Ablauf eines Timers so aus:
+img pages/Microcontroller_Timer.png
+
+Noch einige Anmerkungen zu den einzelnen Punkten:
+## Prescaler
+Dadurch, dass der Prescaler den Standardwert 0, lässt er keinen Takt durch, was dazu führt, dass der Timer inaktiv ist. Zum Aktivieren muss also ein Vorteiler gesetzt werden.
+Dies kann man im Register `TCCR0` mit den Bits `CS00`-`CS02` (Clock Select) machen.
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">CS02</th>
+    <th class="tg-0lax">CS01</th>
+    <th class="tg-0lax">CS00</th>
+    <th class="tg-0lax">Bedeutung</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">keine (Timer ist angehalten)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">Vorteiler: 1</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">Vorteiler: 8</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">Vorteiler: 64</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">Vorteiler: 256</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">Vorteiler: 1024</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">0</td>
+    <td class="tg-0lax">externer Takt von Pin `T0`, fallende Flanke</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">externer Takt von Pin `T0`, steigende Flanke</td>
+  </tr>
+</tbody>
+</table><br>
+
+## Auslöser einstellen
+Hierfür wird das Register `TIMSK0` verwendet. Es beinhaltet zwei Bits, die für zwei Interrupt-Arten stehen:
+- `TOIE0`: overflow
+- `OCIE0`: output compare
+<br>
+
+## Beispiele
+Eine komplette Initialisierung eines Timers in Assembler als Beispiel:<br>
+`ldi r16, (1 << CS00)  ; Prescaler auf 1`<br>
+`out TCCR0, r16`<br>
+`ldi r16, (1 << TOIE0) ; Overflow`<br>
+`out TIMSK0, r16`<br><br>
+
+Ein vollständiges Beispiel mit einem Overflow-Interrupt:<br>
+`rjmp reset`<br>
+`.org OVF0addr ; Timer 0 Overflow Vektor-Adresse`<br>
+`rjmp isrOVF0  ; Wenn ausgelöst, springe zur passenden ISR`<br>
+`.org INT_VECTORS_SIZE`<br>
+``<br>
+`reset:`<br>
+` ldi r16, (1 << CS00) | (1 << CS01) ; Prescaler auf 64`<br>
+` out TCCR0B, r16`<br>
+` ldi r16, (1 << TOIE0) ; Bei Overflow`<br>
+` out TIMSK0, r16`<br>
+`loop:`<br>
+` rjmp loop`<br>
+``<br>
+`isrOVF0:`<br>
+`  ; ISR-Code`<br>
+`reti`<br><br>
+
+Hier noch ein Beispiel, wie ein Timer verwendet werden würde, der durch eine fallende Flanke eines externen Signals hoch zählt
+und das zudem immer den aktuellen Zählerstand auf `PORTB` ausgibt, ohne, dass dabei ein Interrupt ausgelöst wird:<br>
+`rjmp reset`<br>
+`.org INT_VECTORS_SIZE ; es werden keine Interrupts benutzt, direkt zum Code`<br>
+``<br>
+`reset:`<br>
+` ldi r16, low(RAMEND)`<br>
+` out SPL, r16`<br>
+` ser r16        ; set register (alles auf 1, also 0xFF)`<br>
+` out DDRB, r16  ; und damit PORTB komplett als Output definieren`<br>
+` ldi r16, 0b110 ; auf fallende Flanke setzen`<br>
+`          ; ^^ hierfür hätte man auch Bits CS02 & CS01 setzen können!`<br>
+` out TCCR0B, r16`<br>
+``<br>
+`loop:`<br>
+` in r16, TCNT0  ; laufender Zählerstand`<br>
+` out PORTB, r16 ; auf PORTB ausgeben`<br>
+` rjmp loop`

@@ -102,3 +102,6 @@ Allgemein sind folgende Schritte notwendig, um ein Interrupt zu initialisieren:
 -- Konfigurieren der Interrupts: Einzelne Register setzen, um die jeweiligen zu aktivierenden Interrupts zu konfigurieren, diese sind abhängig von den zu aktivierenden Interrupts
 -- Aktivierung der zu verwendenden Interrupts durch setzen von Registern, auch hier von den Interrupts abhängig
 - I-Bit (Bit 7) in Statusregister setzen: Allgemeine Aktivierung von Interrupts
+
+<br>Es gibt verschiedene Arten von Interrupts, die alle bei unterschiedlichen Dingen auslösen. Die für uns relevanten sind
+[Externe Interrupts|Externe Interrupts] und [Timer-Interrupts|Timer].
