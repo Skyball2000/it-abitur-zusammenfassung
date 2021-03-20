@@ -11,6 +11,7 @@ templatePlaceIcon:BUILDER-PLACE-ICON
 templatePlaceMainPage:BUILDER-PLACE-MAIN-PAGE
 templatePlaceContents:BUILDER-PLACE-CONTENTS
 templatePlaceSearchList:BUILDER-PLACE-SEARCH-LIST
+templatePlaceSearchRandomSite:BUILDER-PLACE-SEARCH-RANDOM-SITE
 templateInsert:INSERT
 templateSubTitle:<h1 class="u-text u-text-palette-5-dark-3 u-text-2">INSERT</h1>
 templateMainTitle:<h1 class="u-text u-text-1">INSERT</h1>

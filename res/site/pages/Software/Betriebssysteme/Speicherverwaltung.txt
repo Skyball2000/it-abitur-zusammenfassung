@@ -1,0 +1,114 @@
+# 4. Speicherverwaltung
+> Seitenrahmen, Pageframe, Kachel, Tile, Valid bit
+
+Das Betriebssystem versucht die für die Prozesse nötigen Daten immer im Hauptspeicher zu haben, da die Zugriffszeit dort sehr viel kleiner ist,
+als auf der Festplatte. Dieser ist jedoch nicht beliebig groß, daher müssen einige Strategien befolgt werden, um Prozesse ein- und auszulagern.
+Solange die für den Prozess benötigten Daten nicht eingelagert sind, kann der Prozess nicht ausgeführt werden.
+
+## Swapping (≠ ㅂ≋!)
+Hier werden Prozesse komplett aus- und eingelagert. Hierzu wird auf der Festplatte ein bestimmter Bereich reserviert, der sog. „Swap-space”. Ein Prozess wird ausgelagert, wenn:
+- Ein anderer (z.B. wichtigerer) Prozess soll in den Hauptspeicher
+- Der Prozess versucht, seinen Platz zu erweitern, bekommt aber nicht genug Speicherplatz
+- Ein neuer Prozess versucht in den Hauptspeicher zu gelangen, kommt aber nicht rein
+img pages/image40.png
+Hierbei kann es zu kleinen, ungenutzten Bereichen im Hauptspeicher kommen, da die Prozesse nicht immer die vorhandenen „Lücken” komplett ausfüllen:
+img pages/image61.png
+
+## Virtueller Speicher
+Hauptspeicher und externer Speicher (z.B. Festplatte) werden so vereint, dass sie wie ein einzelner, großer Speicher wirken.
+Es gibt hier mehr Adressen, als es im Hauptspeicher gibt, daher wird dieser Speicher „Virtueller Speicher” genannt.<br>
+Der Prozess wird in mehrere Teile aufgeteilt. Der Teil des Prozesses, der gerade benötigt wird, steht im Hauptspeicher, der Rest wird ausgelagert.
+Es kann also auch nur ein Teil des Prozesses im Hauptspeicher stehen.<br>
+Wenn der Prozess auf einen Teil zugreift, der aktuell auf der Festplatte liegt, muss dieser erst eingelagert werden.
+Dies übernimmt die MMU (Memory Management Unit = Speicherverwaltungseinheit): Sie weiß, ob ein Teil ein- oder ausgelagert ist.
+Wenn auf einen nicht eingelagerten Teil zugegriffen wird, wird dieser eingelagert und die Adresse in der MMU aktualisiert.<br>
+So müssen sich die Programme keine Gedanken machen, wo die einzulesende/beschreibende Adresse liegt, sondern sie können eine virtuelle Adresse verwenden,
+die immer gleich bleibt, während die MMU die dazugehörigen realen, sich verändernden Adressen im Hintergrund passend verwaltet.<br>
+Dies hat mehrere Vorteile: Die Größe des Prozesses ist nicht auf die des Hauptspeichers begrenzt und es können mehrere Programme gleichzeitig ausgeführt werden,
+die in ihrer Gesamtlänge den Hauptspeicher überschreiten würden.
+img pages/image48.png
+
+<br>Es gibt zwei verschiedene Möglichkeiten, diese Variante zu implementieren:<br><br>
+<b>Segmentorientierter Speicher</b>
+img pages/segmentorientiert.png
+Der Adressraum wird hier in Abschnitte (Segmente) variabler Größe eingeteilt, die den logischen Einheiten des Prozesses entsprechen,
+z.B: Quelltext, Konstanten oder die Symboltabelle. Diese besitzen je eine Segmentnummer, welche in einer Segmenttabelle verwaltet werden.
+Diese Tabelle enthält für jedes Segment folgende Attribute:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Rechte</th>
+    <th class="tg-0lax">Länge</th>
+    <th class="tg-0lax">Valid Bit</th>
+    <th class="tg-0lax">reelle Anfangsadresse</th>
+  </tr>
+</thead>
+</table>
+
+Die Rechte beschreiben, auf welche Art auf das Segment zugegriffen werden darf, die Länge beschreibt die Länge des Segments, das Valid Bit sagt aus,
+ob sich das Segment bereits im Hauptspeicher befindet (`1` = ja; `0` = nein) und die reelle Anfangsadresse ist, wenn es sich im Hauptspeicher befindet,
+die Startadresse des Segments im Hauptspeicher; wenn es nicht im Hauptspeicher ist, dann sagt es aus, wo es auf der Festplatte zu finden ist.<br><br>
+
+Die <b><font style="color:purple">virtuelle Adresse</font></b>, also die, die der Prozess anfordert,
+besteht aus der <b><font style="color:orange">Segmentnummer</font></b> und dem <b><font style="color:DeepSkyBlue">Offset</font></b> innerhalb des Segments.<br>
+Ein kompletter Zugriff auf eine virtuelle Adresse sieht folgendermaßen aus:
+img pages/image26.png
+
+~ Zunächst muss überprüft werden, ob sich die <b><font style="color:DarkBlue">Rechte</font></b> mit denen vereinen, mit denen auf das Segment zugegriffen wird (z.B. Schreiben, Lesen).
+~ Wenn der Offset größer ist als die <b><font style="color:green">Länge</font></b> des Segments, so befindet sich Adresse nicht mehr im Segment und ein Fehler wird ausgegeben.
+~ Wenn das <b><font style="color:Gold">Valid Bit</font></b> nicht gesetzt ist, so muss das Segment erst noch eingelagert werden. Eventuell muss hierfür ein anderes Segment ausgelagert werden, wenn nicht genügend Platz vorhanden ist. Die neuen <b><font style="color:DeepSkyBlue">reelle Anfangsadressen</font></b> werden dann im Seitentabelleneintrag aktualisiert.
+~ Die <b><font style="color:DeepSkyBlue">reelle Adresse</font></b> wird berechnet, indem die <b><font style="color:DeepSkyBlue">Anfangsadresse</font></b> des Segments plus das <b><font style="color:DeepSkyBlue">Offset</font></b> gerechnet wird.
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Vorteile</th>
+    <th class="tg-0lax">Nachteile</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">Segmente lassen sich individuell mit Rechten schützen</td>
+    <td class="tg-0lax">Möglicherweise sehr große Segmente, die zusammenhängend gespeichert werden müssen</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Segmente können dynamisch größer und kleiner werden</td>
+    <td class="tg-0lax">Bei Zugriff auf Segment muss ganzes Segment eingelesen werden, obwohl vielleicht nur ein kleiner Teil benötigt wird</td>
+  </tr>
+</tbody>
+</table>
+
+<br><b>Seitenorientierter Speicher (Paging)</b>
+img pages/seitenorientiert.png
+
+Der virtuelle und physische Speicher wird beim Paging in gleich große, je zusammenhängende Teile  eingeteilt. Die virtuellen Teile werden Seiten genannt,
+die physischen Seitenrahmen / Pageframes / Kacheln / Tiles. Um Seiten und Seitenrahmen zueinander zuordnen zu können, wird, ähnlich wie bei dem segmentorientieren Speicher,
+eine Seitentabelle (Page Table) verwendet. Jeder Prozess besitzt eine solche Tabelle. Die virtuelle Adresse besteht auch hier aus Seitennummer und Offset.<br>
+Ein Beispiel zur Adressberechnung:
+img pages/image92.png
+
+Natürlich muss, wie beim Segmentorientieren, überprüft werden, ob die Zugriffsrechte stimmen, die Länge überschritten wurde und ob das Valid Bit gesetzt ist
+(wenn nicht: Seite einlesen, Adressen aktualisieren und weitermachen).
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Vorteile</th>
+    <th class="tg-0lax">Nachteile</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">Einfachheit:&nbsp;&nbsp;Alle Seiten haben die gleiche Länge, es treten keine Verschnittprobleme&nbsp;&nbsp;auf. Die Seiten können beliebig ausgetauscht werden</td>
+    <td class="tg-0lax">Struktur des virtuellen Speichers spiegelt nicht den logischen Aufbau wieder<br>(alle Daten durcheinander; nicht in Segmente eingeteilt)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Es müssen nicht große Teile eingelesen werden, wenn nur ein kleiner von diesen gebraucht wird</td>
+    <td class="tg-0lax">Speicherplatz wird womöglich verschwendet, wenn eine Seite nicht komplett voll beschrieben wird</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Hoher Speicherbedarf für die Seitentabellen</td>
+  </tr>
+</tbody>
+</table>

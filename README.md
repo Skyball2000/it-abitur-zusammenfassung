@@ -5,6 +5,7 @@ Eine [Live-Demo](http://yanwittmann.de/schule/site/) kann hier gefunden werden.
 
 ![res/site/img/itabiicon.png](res/site/img/itabiicon.png)
 
+
 ## Wie man eine Seite verfasst
 
 Zuerst im `site/pages/` directory eine neue Textdatei (bzw. einen neuen Ordner mit einer Textdatei) erstellen.  
@@ -31,15 +32,29 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - `~ Text` für eine geordnete Liste (mehrere `~` für Einrückungen)
 - `<table class="tg">` - Tabellen (muss Klasse `tg` sein, ansonsten eine normale HTML Tabelle mit `<tr>` und `<td>`)
 
+
 ## Neues
 
 - Man kann jetzt mehrere Leertasten hintereinander verwenden
 - Anker-Links zu Anschnitten oder Text-Snippets einer anderen Seite
 - Keywords für eine Seite, nach denen in der Suche gesucht werden kann
-- Man kann jetzt `<<` und `>>` eingeben, ohne, dass es die gesamte Formatierung der Seite ruiniert
-  (was immer gut ist!)
+- Man kann jetzt `<<` und `>>` eingeben, ohne, dass es die gesamte Formatierung der Seite ruiniert (was immer gut ist!)
 - Code snippets können nun leer sein und eine Leertaste am Anfang enthalten
 - Mit dem Keyword `hidden` können Seiten nun von der Hauptübersicht versteckt werden
 - Es können nun Nachrichten mit den Warnungen angezeigt werden: `!!Nachricht`
 - Eine Überschrift mit `##` erzeugt nun einen Zeilenabstand zum vorherigen Absatz
 - Neues Icon!
+- `[]^` können nun mit einem \ escaped werden: `\[ \] \^`
+- Bilder, die direkt nach einem anderen Bild oder einer Liste kommen, haben jetzt einen kleineren Abstand zu diesen
+- Die Suchleiste zeigt jetzt zufällige Suchbegriffe basierend auf den vorhandenen Seiten an
+- Die Suchleiste wählt nun alle 10 Sekunden einen neuen Suchbegriff
+- Haupt/Startseiten-Texte endlich geschrieben
+
+## Todo
+
+- Luca Bild für Hauptseite unten
+- Mehr Beispiele
+- Aufgaben
+- Seiten fertig importieren
+- Seiten überarbeiten
+- Keywords für Seiten erstellen

@@ -1,0 +1,83 @@
+# 6. Master Boot Record & Partitionstabelle
+
+Der MBR ist das Startprogramm für BIOS-basierte Betriebssysteme und befindet sich in den ersten 512 Byte eines Speichermediums.
+Er enthält einen Bootloader (ein Programm, das eine Partition startet), eine Disk-Signatur (Identifikation einer Festplatte; darf deshalb nicht doppelt vergeben werden),
+die Partitionstabelle und die MBR-Signatur (zeigt Ende des MBR). In der folgenden Tabelle ist der genaue Aufbau zu sehen:
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Adresse</th>
+    <th class="tg-0lax">Größe</th>
+    <th class="tg-0lax">Inhalt</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">`0000`</td>
+    <td class="tg-0lax">`440B`</td>
+    <td class="tg-0lax">Bootloader</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`01B8`</td>
+    <td class="tg-0lax">`4B`</td>
+    <td class="tg-0lax">Disk-Signatur</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`01BC`</td>
+    <td class="tg-0lax">`2B`</td>
+    <td class="tg-0lax">zwei Nullbytes (`0x0000`)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`01BE`</td>
+    <td class="tg-0lax">`64B`</td>
+    <td class="tg-0lax">Partitionstabelle (4 mal <i>16B</i>)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`01FE`</td>
+    <td class="tg-0lax">`2B`</td>
+    <td class="tg-0lax">Ende MBR (`0x55AA`)</td>
+  </tr>
+</tbody>
+</table>
+
+Der MBR kann bis zu vier Partitionseiträge à <i>16 Bytes</i> beinhalten. Diese bestehen je aus folgenden Einträgen:
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Größe</th>
+    <th class="tg-0lax">Inhalt</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">1 Byte</td>
+    <td class="tg-0lax">Boot-Indikator (wenn Partition aktiv: 0x80; wenn inaktiv: 0x00)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">3 Byte</td>
+    <td class="tg-0lax">Anfangsposition nach CHS</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">1 Byte</td>
+    <td class="tg-0lax">Typ (`0x04` / `0x06` = FAT  |  `0x0B` = FAT32  |  `0x07` = NTFS)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">3 Byte</td>
+    <td class="tg-0lax">Endposition nach CHS</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">4 Byte</td>
+    <td class="tg-0lax">relative Anfangsadresse</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">4 Byte</td>
+    <td class="tg-0lax">Läng der Partition in Sektoren</td>
+  </tr>
+</tbody>
+</table>
+
+Die Anfangs- und Endposition der Partitionen wird folgendermaßen aufgeteilt (siehe auch [[href=https://www.google.com/url?q=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Chs.svg/495px-Chs.svg.png&sa=D&source=editors&ust=1615823994924000&usg=AOvVaw1RPXLoL-WMNYL_aJkjf6vL|anderes Bild]]):
+img pages/image97.png
+

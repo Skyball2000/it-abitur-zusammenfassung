@@ -1,4 +1,4 @@
-# BCD
+# 2. BCD
 > Binary Coded Decimal
 
 Binary Coded Decimal ist eine Möglichkeit, jeweils eine Dezimalstelle als Binärzahlen darzustellen. Hierbei werden vier Bits verwendet:<br><br>

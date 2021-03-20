@@ -1,0 +1,19 @@
+# 3. Speichermedien
+
+Je nachdem, welches Speichermedium verwendet wird, ist die Zugriffsgeschwindigkeit größer oder kleiner. Von schnell nach langsam:
+~ Prozessor
+~ Hauptspeicher
+~ Festplatte
+~ Externer Speicher
+
+## Festplatte
+Der Speicher einer Festplatte ist folgendermaßen aufgebaut:
+- <b>Cluster</b>: Mehrere Sektoren
+-- <b>Sektor</b>: Einzelne Bereiche auf Zylinder (512 Byte pro Sektor)
+--- <b>Spur</b>: Ein „Kreis” auf dem Zylinder
+---- <b>Zylinder</b>
+
+Auf der Hardwareebene gibt es 2 Adressierungsmethoden:
+- <b>CHS</b> (<b>C</b>ylinder <b>H</b>ead <b>S</b>ector)<br>Hier sind es immer gleich viele Sektoren in einer Spur, dafür unterschiedliche Sektorfläche → Datendichte nimmt nach außen ab.<br><br>
+- <b>LBA</b> (<b>L</b>ogical <b>B</b>lock <b>A</b>ddressing)<br>Hier ist die Datendichte überall gleich.
+img pages/image77.png

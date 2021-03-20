@@ -1,12 +1,16 @@
 import yanwittmann.FileUtils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InformationPage {
     private final String displayName;
     private final String path;
     private final String[] pathTitles;
-    private String[] keywords;
+    private final ArrayList<String> keywords = new ArrayList<>();
     private boolean isHidden = false;
     private final File file;
 
@@ -15,17 +19,28 @@ public class InformationPage {
         this.file = file;
         this.path = path;
         this.pathTitles = path.split("\\\\+");
-        keywords = FileUtils.readFileToArrayList(file).stream().filter(line -> line.startsWith(">")).findFirst().
-                map(line -> line.replaceAll("> ?", "").split("[, ]")).orElse(keywords);
-        if (keywords != null)
-            for (int i = 0, keywordsLength = keywords.length; i < keywordsLength; i++) {
-                String keyword = keywords[i];
-                if (keyword.equals("hidden")) {
-                    isHidden = true;
-                    keywords[i] = "";
-                    break;
-                }
+
+        ArrayList<String> fileLines = FileUtils.readFileToArrayList(file);
+        keywords.addAll(Arrays.asList(fileLines.stream().filter(line -> line.startsWith(">")).findFirst().
+                map(line -> line.replaceAll("> ?", "").split("[, ]")).orElse(new String[]{})));
+        for (String line : fileLines) {
+            Pattern pattern = Pattern.compile("<b>([^<>]+)</b>");
+            Matcher matcher = pattern.matcher(line);
+            while (matcher.find()) {
+                String found = matcher.group().replaceAll("<[^<>]+>", "");
+                keywords.add(found);
             }
+            if (line.startsWith("## ")) keywords.add(line.replace("##", ""));
+        }
+
+        for (int i = 0, keywordsLength = keywords.size(); i < keywordsLength; i++) {
+            String keyword = keywords.get(i);
+            if (keyword.equals("hidden")) {
+                isHidden = true;
+                keywords.remove(i);
+                break;
+            }
+        }
     }
 
     public boolean isHidden() {
@@ -49,14 +64,14 @@ public class InformationPage {
     }
 
     public String[] getKeywords() {
-        return keywords;
+        return keywords.toArray(new String[0]);
     }
 
     public String generateSearchEntry() {
         return "<li class=\"searchElement\"> " +
                 "<a href=\"" + path + "\\" + file.getName().replace(".txt", ".html") + "\">" +
                 path.replace("\\", " > ") + " > " + displayName +
-                (keywords != null ? "<font style=\"display:none\">" + String.join(" ", keywords) + "</font>" : "") + "</a></li>";
+                (keywords.size() > 0 ? "<font style=\"display:none\">" + SiteBuilder.prepareSearchKeyword(String.join(" ", keywords)) + "</font>" : "") + "</a></li>";
     }
 
     @Override

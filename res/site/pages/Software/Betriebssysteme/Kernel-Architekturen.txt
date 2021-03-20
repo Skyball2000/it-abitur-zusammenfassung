@@ -1,0 +1,18 @@
+# 8. Kernel-Architekturen
+
+Der Kernel stellt die Schnittstelle zu den Anwendungsprogrammen dar.
+Er kontrolliert den Zugriff auf den Prozessor und den Speicher. Es gibt verschiedene Arten, diesen zu implementieren:
+
+## Monolithischer Kernel
+Führt auch Aufgaben von Treiber (Hardware), Dateisystem, Prozessverwaltung und Systemaufrufen aus.
+Geringe Umschaltzeiten zwischen Systemaufrufen, da alle Programmteile im privilegierten Kernel-Modus laufen.
+Bei Änderung eines Programmteils muss der gesamte Kernel neu kompiliert werden.
+
+## Microkernel
+Erfüllt nur grundlegende Funktionen (Prozess- / Speicherverwaltung). System wird durch die Verkleinerung stabiler.
+Durch Wechsel zwischen Benutzer- und Kernelmodus wird das System langsamer (da nicht mehr alles im Kernel passiert).
+
+## Hybridkernel
+Mix aus Monolithischem- und Microkernel:
+Nicht so fehleranfällig wie der monolithische Kernel, da nicht alle Treiber im privilegierten Kernel-Modus laufen und bei einem Fehler nicht das gesamte System abstürzt.
+Andererseits sind nicht so viele Kontextwechsel nötig wie beim Microkernel, wodurch sich die Geschwindigkeit gegenüber dem Microkernel erhöht.

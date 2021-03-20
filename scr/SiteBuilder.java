@@ -21,6 +21,7 @@ public class SiteBuilder {
     private final String templatePlaceMainPage;
     private final String templatePlaceContents;
     private final String templatePlaceSearchList;
+    private final String templatePlaceSearchRandomSite;
     private final String templateInsert;
     private final String templateSubTitle;
     private final String templateMainTitle;
@@ -52,6 +53,7 @@ public class SiteBuilder {
         templatePlaceMainPage = configuration.getOrDefault("templatePlaceMainPage", "BUILDER-PLACE-MAIN-PAGE");
         templatePlaceContents = configuration.getOrDefault("templatePlaceContents", "BUILDER-PLACE-CONTENTS");
         templatePlaceSearchList = configuration.getOrDefault("templatePlaceSearchList", "BUILDER-PLACE-SEARCH-LIST");
+        templatePlaceSearchRandomSite = configuration.getOrDefault("templatePlaceSearchRandomSite", "BUILDER-PLACE-SEARCH-RANDOM-SITE");
         templateInsert = configuration.getOrDefault("templateInsert", "INSERT");
         templateSubTitle = configuration.getOrDefault("templateSubTitle", "<h1>INSERT</h1>");
         templateMainTitle = configuration.getOrDefault("templateMainTitle", "<h1>INSERT</h1>");
@@ -93,9 +95,14 @@ public class SiteBuilder {
         FileUtils.copyFile(new File(siteTemplateDir + "information.css"), new File(siteOutDir + "information.css"));
         FileUtils.copyFile(new File(siteTemplateDir + "Hauptseite.css"), new File(siteOutDir + "Hauptseite.css"));
         FileUtils.copyFile(new File(siteTemplateDir + "nicepage.css"), new File(siteOutDir + "nicepage.css"));
-        FileUtils.copyFile(new File(siteTemplateDir + "search.js"), new File(siteOutDir + "search.js"));
         FileUtils.copyFile(new File(siteImagesDir + siteImageIcon), new File(siteOutDir + "images\\" + siteImageIcon));
         FileUtils.copyFile(new File(siteImagesDir + siteTitleImage), new File(siteOutDir + "images\\" + siteTitleImage));
+        FileUtils.copyFile(new File(siteImagesDir + "yangifsmall.gif"), new File(siteOutDir + "images\\yangifsmall.gif"));
+
+        String[] searchJs = FileUtils.readFileToStringArray(new File(siteTemplateDir + "search.js"));
+        IntStream.range(0, searchJs.length).filter(i -> searchJs[i].equals(templatePlaceSearchRandomSite)).forEach(i -> searchJs[i] = generateSearchRandomKeywords());
+        FileUtils.writeFile(new File(siteOutDir + "search.js"), searchJs);
+
         buildMainPage();
 
         if (warnings.size() > 0) {
@@ -123,6 +130,8 @@ public class SiteBuilder {
                 generatedPage.append(templateIcon.replace(templateInsert, "images\\" + siteImageIcon));
             } else if (line.contains(templatePlaceMainPage)) {
                 generatedPage.append(line.replace(templatePlaceMainPage, mainPageUrl));
+            } else if (line.contains(templatePlaceSearchRandomSite)) {
+                generatedPage.append(line.replace(templatePlaceSearchRandomSite, generateSearchRandomKeywords()));
             } else if (line.contains(templatePlaceContents)) {
                 generatedPage.append(line.replace(templatePlaceContents, mainList.toString()));
             } else if (line.contains(templatePlaceSearchList)) {
@@ -133,6 +142,33 @@ public class SiteBuilder {
         }
 
         FileUtils.writeFile(new File(siteOutDir + "index.html"), optimizeGeneratedPage(generatedPage.toString()));
+    }
+
+    private String generateSearchRandomKeywords() {
+        ArrayList<String> searchTerms = new ArrayList<>();
+        for (InformationPage page : informationPages) {
+            String toAdd = prepareSearchKeyword(page.getDisplayName());
+            if (!searchTerms.contains(toAdd) && toAdd.length() > 0)
+                searchTerms.add(toAdd);
+            for (String keyword : page.getKeywords()) {
+                toAdd = prepareSearchKeyword(keyword);
+                if (!searchTerms.contains(toAdd) && toAdd.length() > 2)
+                    searchTerms.add(toAdd);
+            }
+        }
+        return "\"" + String.join("\", \"", searchTerms) + "\"";
+    }
+
+    public static String prepareSearchKeyword(String keyword) {
+        return capitalize(keyword.replaceAll("<[^<>]+>", "").replaceAll("[\\d.()\\[\\]!\"§$%&/=?+#*'\\-_:,;]", "")
+                .replaceAll("([a-z]{2,10})([A-Z])", "$1 $2").trim().replace("  ", " "));
+    }
+
+    public static String capitalize(String str) {
+        if (str == null) return null;
+        if (str.length() == 0) return str;
+        if (str.length() == 1) return str.toUpperCase();
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
     private String generateSearchList() {
@@ -216,7 +252,10 @@ public class SiteBuilder {
                     isCurrentlyTextOrImage = true;
                     generatedBody.append(templateTextParagraphIntro);
                 }
-                generatedBody.append("<br>").append("<img style=\"margin-top:10px;max-width:100%;\" src=\"" + prepareImageLink(line.replace("img ", "")) + "\"/><br>");
+                if ((i + 1 < readFileToArrayList.size() && !readFileToArrayList.get(i + 1).startsWith("img ")) ||
+                        (i - 1 >= 0 && !readFileToArrayList.get(i - 1).startsWith("-") && !readFileToArrayList.get(i - 1).startsWith("~")))
+                    generatedBody.append("<br>");
+                generatedBody.append("<img style=\"margin-top:10px;max-width:100%;\" src=\"" + prepareImageLink(line.replace("img ", "")) + "\"/><br>");
             } else if (line.startsWith("-")) { //list
                 if (isCurrentlyTextOrImage) {
                     isCurrentlyTextOrImage = false;
@@ -382,6 +421,8 @@ public class SiteBuilder {
     }
 
     private String prepareBodyText(String text, String pathToMainDirectory) {
+        text = text.replace("\\[", "ESCAPEDSQUAREBRACKETSOPEN").replace("\\]", "ESCAPEDSQUAREBRACKETSCLOSE")
+                .replace("\\^", "ESCAPEDCARROT");
         text = text.replaceAll(regexLink, regexLinkReplace).replace("``", "`&nbsp`").replaceAll("^` ", "`&nbsp")
                 .replaceAll("`([^`]+)`", "<code>$1</code>").replace("  ", "&nbsp;&nbsp;")
                 .replace("<<", "&lt&lt").replace(">>", "&gt&gt")
@@ -394,7 +435,8 @@ public class SiteBuilder {
                 text = text.replace(found, getMostLikelyLink(found.replace("[", "").replace("]", ""), pathToMainDirectory));
             }
         }
-        return text;
+        return text.replace("ESCAPEDSQUAREBRACKETSOPEN", "[").replace("ESCAPEDSQUAREBRACKETSCLOSE", "]")
+                .replace("ESCAPEDCARROT", "^");
     }
 
     private String getMostLikelyLink(String linkText, String pathToMainDirectory) {

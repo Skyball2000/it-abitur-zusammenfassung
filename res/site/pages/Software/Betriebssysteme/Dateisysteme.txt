@@ -1,0 +1,98 @@
+# 9. Dateisysteme
+
+Dateisysteme dienen als Ordnungs- und Zugriffssysteme für Dateien. Sie speichern Dateien geordnet ab und greifen auf den entsprechenden Speicherplatz zu,
+wenn diese Dateien wieder geöffnet werden sollen. Es gibt verschiedene Arten von Dateisystemen:
+
+## FAT (<b>F</b>ile <b>A</b>llocation <b>T</b>able)
+
+Die FAT selbst ist am Anfang der zugehörigen Partition gespeichert, direkt nach dem Bootblock und gefolgt von einer Kopie dieser.
+Mit FAT gespeicherte Dateien müssen nicht unbedingt zusammenhängend gespeichert werden, sie können auch aufgeteilt werden (Fragmentierung).
+Der Aufbau einer FAT ist im folgenden Bild zu sehen:
+img pages/image24.png
+
+Die Partition des FAT-Dateisystems ist in Tabelle 1 zu sehen.<br>
+Will man auf eine Datei C zugreifen, wird im Root Directory (Tabelle 2) nach der Anfangsadresse der Datei C gesucht. Dort steht, dass sie im <font style="color:red"><b>Cluster 5</b></font> anfängt.
+Der passende Eintrag in der FAT verrät nun, wo der nächste Cluster zu finden ist: <font style="color:ForestGreen"><b>11</b></font>. Dies geht so lange, bis in der FAT der Eintrag `FF` gefunden wird:
+Die Datei ist zu Ende. Alle Cluster, an denen vorbeigegangen wurde, werden eingelesen: 5, 11, 18, 17.<br><br>
+
+Das Root Directory (Tabelle 2) ist, wie bereits gesagt, eine Liste aller im System vorhandenen Dateien. Ein Dateieintrag ist 32 Byte groß und folgendermaßen aufgebaut:
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Dateiname</th>
+    <th class="tg-0lax">Endung</th>
+    <th class="tg-0lax">Attribute</th>
+    <th class="tg-0lax">Reserviert</th>
+    <th class="tg-0lax">Zeit</th>
+    <th class="tg-0lax">Datum</th>
+    <th class="tg-0lax">Adresse</th>
+    <th class="tg-0lax">Größe</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">8 Byte</td>
+    <td class="tg-0lax">3 Byte</td>
+    <td class="tg-0lax">1 Byte</td>
+    <td class="tg-0lax">10 Byte</td>
+    <td class="tg-0lax">2 Byte</td>
+    <td class="tg-0lax">2 Byte</td>
+    <td class="tg-0lax">2 Byte</td>
+    <td class="tg-0lax">4 Byte</td>
+  </tr>
+</tbody>
+</table>
+
+<br>
+Die Maximale Partitionsgröße eines FAT-Systems wird wie folgt berechnet:
+img pages/image1.png
+<br>Bei einem System mit 16 Bit-Adressraum (FAT16) und einer Clustergröße (Sektorgröße * Anzahl Sektoren pro Cluster) von 512 Byte ergibt sich folgende maximale Partitionsgröße.
+img pages/image2.png
+
+<br>Nachteile von FAT:
+- Dateiname nur 8 Zeichen
+- wenige Attribute
+- Speicherplatz kann nicht voll genutzt werden (Cluster nicht ganz voll)
+- FAT liegt am Anfang -> viele Kopfbewegungen
+- hohe Fragmentierung
+- Partitionsgröße durch Adressverwaltungseinträge beschränkt
+- bei Absturz können Fragmente entstehen
+
+Vorteile von FAT:
+- simpel
+- geeignet für kleine Systeme mit niedrigem Adressraum
+
+## NTFS (<b>N</b>ew <b>T</b>echnology <b>F</b>ile <b>S</b>ystem)
+NTFS hat folgende Eigenschaften:
+- 64 Bit Adressierung
+- Journaling File System: Protokolldatei zur Wiederherstellung von Daten; Rückgängig machen (Strg + Z)
+- erweiterte Sicherheitsattribute
+- UNICODE & 255 Zeichen für Dateiname
+- Clustergröße 1 - 8 Sektoren (512 - 4096 Byte)
+- max. Laufwerkgröße: 2TB
+- Dateigröße unbeschränkt
+
+img pages/image35.png
+
+Die Partition des NTFS Dateisystems ist wie in Tabelle 1 zu sehen aufgebaut. Die Einträge in der MFT sind wie in Tabelle 2 & Tabelle 3 zu sehen aufgebaut:
+~ Bei Dateigrößen < 1,4 kB werden die Daten direkt in den MFT - Eintrag geschrieben
+~ Ist die Datei aber >= 1,4 kB dann muss der Verzeichniseintrag ausgelagert werden (siehe Tabelle 4)
+Wenn Daten >= 1,4 kB wieder ausgelesen werden sollen, werden im externen Verzeichniseintrag nacheinander die logischen Clusternummern
+ermittelt und die zusammenliegenden Cluster in je einem RUN abgefahren. Ein RUN zeigt auf ein Startcluster und den Bereich dahinter mit einer gewissen Größe.<br><br>
+
+Der MFT - Eintrag liegt hier etwa in der Mitte der Partition. Das bedeutet, dass beim Lesen weniger Kopfbewegungen (da nicht immer zum Start der Partition)
+gemacht werden müssen → schneller.<br><br>
+Da sich Dateien >= 1,4 kB an verschiedenen Stellen im logischen Speicher befinden, können dadurch Lücken entstehen (Fragmentierung).
+Doch: Beim NTFS Dateisystem wird der Verzeichniseintrag automatisch, dynamisch und konstant optimiert (Defragmentierung).
+
+## EXT (<b>E</b>xtended <b>F</b>ile <b>S</b>ystem)
+Die Informationen, wo die Dateien gespeichert sind, sind beim EXT - Dateisystem nicht direkt in der Verzeichnisdatei (Tabelle 1)
+sondern in einer separaten Datenstruktur, der Inode (Grafik 1) gespeichert.
+img pages/image109.png
+
+Eine Inode hat 12 direkte Blockadressen und jeweils eine einfach indirekte, eine zweichfach indirekte und eine dreifach indirekte Adresse.
+Die direkten Blockadressen zeigen jeweils auf einen Datenblock. Die indirekten Adressen zeigen jeweils auf einen weiteren Adressblock,
+der dann entweder auf 256 Blockadressen zeigt (einfach indirekt) oder auf 256 weitere Adressblöcke (zwei- und dreifach indirekt).
+So kann man mit einer Inode auf bis zu 16843020 Datenblöcke zugreifen. (256*256*256 + 256*256 + 256 + 12).
+

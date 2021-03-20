@@ -1,0 +1,9 @@
+# 5. Partitionen
+> Laufwerke, Festplatte
+
+Eine Festplatte wird in unterschiedliche Partitionen (Laufwerke) aufgeteilt. Es gibt verschiedene Arten:
+- Primäre Partition:<br>Bis zu vier pro Festplatte, von denen immer nur eine gleichzeitig aktiv sein kann. Von diesen können die Betriebssysteme des Rechners booten. Sie erhalten zuerst die Laufwerkbuchstaben.
+- Erweiterte Partitionen:<br>Diese sind nicht bootfähig, sie können nur als Datenspeicher dienen. Sie sind allerdings weiter in logische Partitionen unterteilbar.
+
+Zum Beispiel:
+img pages/image89.png

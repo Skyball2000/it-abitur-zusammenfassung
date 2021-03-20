@@ -1,8 +1,15 @@
-# Aufgaben
-
-- Dateiverwaltung
--- Prozessverwaltung
-- Speicherverwaltung
+# 1. Aufgaben
+Die Aufgaben eines Betriebssystems sind generell:
+- [Dateiverwaltung|Dateisysteme]
+- [Prozessverwaltung|Prozessverwaltung]
+- [Speicherverwaltung|Speicherverwaltung]
 - Benutzerverwaltung
 - Sicherungsverfahren
 - Hardware-Kommunikation
+
+img pages/image29.png
+img pages/image16.png
+img pages/image55.png
+img pages/image44.png
+img pages/image54.png
+img pages/image90.png

@@ -1,0 +1,10 @@
+# 7. Aufbau eines Computers
+
+## Schalenmodell
+Beim Schalenmodell sind die Schnittstellen der einzelnen Komponenten die Übergänge zwischen den Schichten. Zugriffe von z.B einer Anwendung
+direkt auf den Speicher sind nicht zulässig, da diese Schichten nicht nebeneinander liegen und somit nicht direkt miteinander interagieren können.
+Sie müssen die von den dazwischenliegenden Schichten bereitgestellten Dienste verwenden.
+img pages/image98.png
+
+## Schichtenmodell
+img pages/image43.png

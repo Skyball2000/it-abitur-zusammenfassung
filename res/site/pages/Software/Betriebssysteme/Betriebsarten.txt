@@ -1,0 +1,25 @@
+# 2. Betriebsarten
+
+Ein Betriebssystem lässt sich allgemein in eine dieser vier Kategorien einteilen:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"></th>
+    <th class="tg-0lax">single user</th>
+    <th class="tg-0lax">multi user</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">single task</td>
+    <td class="tg-0lax">DOS / CP / M</td>
+    <td class="tg-0lax">一一一一一</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">multi task</td>
+    <td class="tg-0lax">Windows / Linux / Mac OS</td>
+    <td class="tg-0lax">Unise / MVS</td>
+  </tr>
+</tbody>
+</table>
+
