@@ -7,6 +7,7 @@ public class InformationPage {
     private final String path;
     private final String[] pathTitles;
     private String[] keywords;
+    private boolean isHidden = false;
     private final File file;
 
     public InformationPage(String displayName, File file, String path) {
@@ -16,6 +17,19 @@ public class InformationPage {
         this.pathTitles = path.split("\\\\+");
         keywords = FileUtils.readFileToArrayList(file).stream().filter(line -> line.startsWith(">")).findFirst().
                 map(line -> line.replaceAll("> ?", "").split("[, ]")).orElse(keywords);
+        if (keywords != null)
+            for (int i = 0, keywordsLength = keywords.length; i < keywordsLength; i++) {
+                String keyword = keywords[i];
+                if (keyword.equals("hidden")) {
+                    isHidden = true;
+                    keywords[i] = "";
+                    break;
+                }
+            }
+    }
+
+    public boolean isHidden() {
+        return isHidden;
     }
 
     public File getFile() {
@@ -42,7 +56,7 @@ public class InformationPage {
         return "<li class=\"searchElement\"> " +
                 "<a href=\"" + path + "\\" + file.getName().replace(".txt", ".html") + "\">" +
                 path.replace("\\", " > ") + " > " + displayName +
-                (keywords != null ? "<font style=\"display:none\">" + String.join(" ", keywords) + "</font>" : "") +"</a></li>";
+                (keywords != null ? "<font style=\"display:none\">" + String.join(" ", keywords) + "</font>" : "") + "</a></li>";
     }
 
     @Override

@@ -16,6 +16,7 @@ public class PageTreeBuilder {
     }
 
     private void addInformationPage(InformationPage page) {
+        if (page.isHidden()) return;
         informationPages.add(page);
         JSONObject currentBranch = tree;
         for (String pathTitle : page.getPathTitles()) {
@@ -80,7 +81,7 @@ public class PageTreeBuilder {
         sortLeaves(leaves);
         for (int i = leaves.size() - 1; i >= 0; i--) {
             String leaf = leaves.get(i);
-            if(GeneralUtils.countOccurrences(leaf, "\\") == 1)
+            if (GeneralUtils.countOccurrences(leaf, "\\") == 1)
                 leaf = leaf.replaceAll("\"\\\\(.+)", "\"$1");
             listBuilder.add(leaf);
             orderedPages.add(leaf);

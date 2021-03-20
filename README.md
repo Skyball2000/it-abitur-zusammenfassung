@@ -3,6 +3,8 @@
 Eine Website, auf der nützliches fürs IT Abitur in Baden Württemberg gesammelt wird!  
 Eine [Live-Demo](http://yanwittmann.de/schule/site/) kann hier gefunden werden.
 
+![res/site/img/itabiicon.png](res/site/img/itabiicon.png)
+
 ## Wie man eine Seite verfasst
 
 Zuerst im `site/pages/` directory eine neue Textdatei (bzw. einen neuen Ordner mit einer Textdatei) erstellen.  
@@ -12,8 +14,9 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - `# Main Title!!` - Setzt die Hauptüberschrift der Seite mit einer Warnung, dass die Seite
   eventuell Fehler enthalten oder ungenau sein könnte 
 - `# Main Title!` - Setzt die Hauptüberschrift der Seite mit einer Warnung, dass die Seite
-  nicht unseren Standards entspricht
+- `# Main Title!Nachricht` - Warnung mit einer Nachricht
 - `> Keyword, Katze` - Setzt Keywords für die Seite, sodass man in der Suche auf der Hauptseite danach suchen kann
+- `> hidden` - Versteckt eine Seite von der Hauptübersicht (nicht von der Suche)
 - `## Text Title` - Erstellt eine Überschrift im Text
 - `img https://picsum.photos/450/250` - Fügt ein Bild ein
 - `Simple Text` - Fügt einen Text hinzu
@@ -36,3 +39,7 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Man kann jetzt `<<` und `>>` eingeben, ohne, dass es die gesamte Formatierung der Seite ruiniert
   (was immer gut ist!)
 - Code snippets können nun leer sein und eine Leertaste am Anfang enthalten
+- Mit dem Keyword `hidden` können Seiten nun von der Hauptübersicht versteckt werden
+- Es können nun Nachrichten mit den Warnungen angezeigt werden: `!!Nachricht`
+- Eine Überschrift mit `##` erzeugt nun einen Zeilenabstand zum vorherigen Absatz
+- Neues Icon!

@@ -1,0 +1,264 @@
+# 3. Normalformen!Erklären: was ist eine Redundanz (13/14 6.3.1) & Datenkonsistenz (heißt keine widersprüchlichen Daten)
+
+Im sogenannten Normalisierungsprozess werden schrittweise einfachere Relationen in einer Datenbank erzeugt, um Redundanz zu vermeiden.
+Das bedeutet, dass wenn eine Datenbank vollständig normalisiert wurde, so muss bereits <i>ein einzelner</i> Verlust eines Datenbestandes zu einem Informationsverlust führen.
+Dies verhindert Mutationsanomalien und verringert den verwendeten Speicherplatz.
+
+## 1. Normalform (1NF)
+Eine Tabelle liegt in der ersten Normalform vor, wenn jeder Attributwert eine atomare, nicht weiter unterteilbare Dateneinheit ist und die Attribute nur
+einfach Werte enthalten, also keine Listen, Mengen oder Wiederholungsgruppen.<br>
+Allerdings gibt es noch immer Redundanz, denn es gibt noch immer sich wiederholende Werte.
+
+## 2. Normalform (2NF)
+Eine Tabelle liegt in der zweiten Normalform vor, wenn sie in der 1NF ist und alle Nichtschlüsselattribute voll funktional vom Primärschlüssel abhängen.
+Das heißt: Jedes Nichtschlüsselattribut ist aus dem Primärschlüssel ableitbar und nicht bereits von Teilen einer Attributkombination. Dafür müssen Merkmale,
+die von einem solchen Teilschlüssel abhängig sind, mit diesem Teilschlüssel in eine eigene Tabelle zusammengefasst werden.<br>
+Allerdings lassen sich hier noch immer über einige Umwege funktionale Abhängigkeiten finden.
+
+## 3. Normalform (3NF)
+Eine Tabelle liegt in der dritten Normalform vor, wenn sie in der 2NF ist und jedes Schlüsselattribut nicht transitiv vom Primärschlüssel abhängig ist.
+Transitiv bedeutet, wenn über irgendeinen Umweg ein Attribut funktional von einem anderen abhängig ist. Das heißt, alle Attribute sind nur von ihrem
+(zusammengesetzten) Primärschlüssel abhängig und sind sonst unabhängig.
+
+## Beispiel
+Hier ist ein Beispiel, wie eine Datenbank normalisiert wird. Es handelt sich um ein Fahrradgeschäft, das seine Kundendaten sichern möchte. Hier ist die Tabelle in der 0NF:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"><u>Knr</u></th>
+    <th class="tg-0lax">Name</th>
+    <th class="tg-0lax">Str</th>
+    <th class="tg-0lax">Ort</th>
+    <th class="tg-0lax"><u>RahmenNr</u></th>
+    <th class="tg-0lax">Marke</th>
+    <th class="tg-0lax">Versicherung</th>
+    <th class="tg-0lax">VersicherungsOrt</th>
+    <th class="tg-0lax">ReparaturDatum</th>
+    <th class="tg-0lax">Diagnose</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">100</td>
+    <td class="tg-0lax">Tim</td>
+    <td class="tg-0lax">Hofweg 6</td>
+    <td class="tg-0lax">Ber</td>
+    <td class="tg-0lax">123<br>432</td>
+    <td class="tg-0lax">Diamant<br>Winora</td>
+    <td class="tg-0lax">Allianz<br>Signal</td>
+    <td class="tg-0lax">Köln<br>Mainz</td>
+    <td class="tg-0lax">12.12.99<br>15.12.99</td>
+    <td class="tg-0lax">Platten<br>Ölverlust</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">101</td>
+    <td class="tg-0lax">Moe</td>
+    <td class="tg-0lax">Klupf 5</td>
+    <td class="tg-0lax">Ber</td>
+    <td class="tg-0lax">690</td>
+    <td class="tg-0lax">Kettler</td>
+    <td class="tg-0lax">Allianz</td>
+    <td class="tg-0lax">Köln</td>
+    <td class="tg-0lax">14.12.99</td>
+    <td class="tg-0lax">Schleicher</td>
+  </tr>
+</tbody>
+</table>
+
+<br>Die erste Normalform zieht die Wiederholungsgruppen in einzelne Einträge:
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"><u>Knr</u></th>
+    <th class="tg-0lax">Name</th>
+    <th class="tg-0lax">Str</th>
+    <th class="tg-0lax">Ort</th>
+    <th class="tg-0lax"><u>RahmenNr</u></th>
+    <th class="tg-0lax">Marke</th>
+    <th class="tg-0lax">Versicherung</th>
+    <th class="tg-0lax">VersicherungsOrt</th>
+    <th class="tg-0lax">ReparaturDatum</th>
+    <th class="tg-0lax">Diagnose</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">100</td>
+    <td class="tg-0lax">Tim</td>
+    <td class="tg-0lax">Hofweg 6</td>
+    <td class="tg-0lax">Ber</td>
+    <td class="tg-0lax">123<br>432</td>
+    <td class="tg-0lax">Diamant<br>Winora</td>
+    <td class="tg-0lax">Allianz<br>Signal</td>
+    <td class="tg-0lax">Köln<br>Mainz</td>
+    <td class="tg-0lax">12.12.99<br>15.12.99</td>
+    <td class="tg-0lax">Platten<br>Ölverlust</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">101</td>
+    <td class="tg-0lax">Moe</td>
+    <td class="tg-0lax">Klupf 5</td>
+    <td class="tg-0lax">Ber</td>
+    <td class="tg-0lax">690</td>
+    <td class="tg-0lax">Kettler</td>
+    <td class="tg-0lax">Allianz</td>
+    <td class="tg-0lax">Köln</td>
+    <td class="tg-0lax">14.12.99</td>
+    <td class="tg-0lax">Schleicher</td>
+  </tr>
+</tbody>
+</table>
+
+<br>Die 2NF teilt die Attribute dann in unterschiedliche Tabellen auf, um Redundanz zu vermeiden:<br>
+Fahrräder:
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"><u>RahmenNr</u></th>
+    <th class="tg-0lax"><u>K</u>n<u>r</u></th>
+    <th class="tg-0lax">Marke</th>
+    <th class="tg-0lax">Versicherung</th>
+    <th class="tg-0lax">VersicherungsOrt</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">123</td>
+    <td class="tg-0lax">100</td>
+    <td class="tg-0lax">Diamant</td>
+    <td class="tg-0lax">Allianz</td>
+    <td class="tg-0lax">Köln</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">432</td>
+    <td class="tg-0lax">100</td>
+    <td class="tg-0lax">Kettler</td>
+    <td class="tg-0lax">Allianz</td>
+    <td class="tg-0lax">Köln</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">690</td>
+    <td class="tg-0lax">101</td>
+    <td class="tg-0lax">Winora</td>
+    <td class="tg-0lax">Signal</td>
+    <td class="tg-0lax">Mainz</td>
+  </tr>
+</tbody>
+</table>
+
+<br>Kunden:
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"><u>Knr</u></th>
+    <th class="tg-0lax">Name</th>
+    <th class="tg-0lax">Straße</th>
+    <th class="tg-0lax">Ort</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">100</td>
+    <td class="tg-0lax">Meyer</td>
+    <td class="tg-0lax">Hofweg 6</td>
+    <td class="tg-0lax">Berlin</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">101</td>
+    <td class="tg-0lax">Müller</td>
+    <td class="tg-0lax">Klupf 5</td>
+    <td class="tg-0lax">Berlin</td>
+  </tr>
+</tbody>
+</table>
+
+<br>Reparaturen:
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"><u>RahmenNr</u></th>
+    <th class="tg-0lax">ReparaturDatum</th>
+    <th class="tg-0lax">Diagnose</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">123</td>
+    <td class="tg-0lax">12.12.99</td>
+    <td class="tg-0lax">Platten</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">432</td>
+    <td class="tg-0lax">15.12.99</td>
+    <td class="tg-0lax">Ölverlust</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">690</td>
+    <td class="tg-0lax">14.12.99</td>
+    <td class="tg-0lax">Schleicher</td>
+  </tr>
+</tbody>
+</table>
+
+<br>Jedoch gibt es noch immer transitive Abhängigkeiten:<br>
+Rahmennummer → Versicherung → Ort der Versicherung<br>
+
+Diese werden nun in der 3NF behoben. Die Tabellen Kunden und Reparaturen bleiben unverändert, jedoch werden die Versicherungen aus den Fahrrädern rausgeholt:<br>
+Fahrräder:
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"><u>RahmenNr</u></th>
+    <th class="tg-0lax"><u>K</u>n<u>r</u></th>
+    <th class="tg-0lax">Marke</th>
+    <th class="tg-0lax"><u>V</u>e<u>r</u>s<u>i</u>c<u>h</u>e<u>r</u>u<u>n</u>g</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">123</td>
+    <td class="tg-0lax">100</td>
+    <td class="tg-0lax">Diamant</td>
+    <td class="tg-0lax">Allianz</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">432</td>
+    <td class="tg-0lax">100</td>
+    <td class="tg-0lax">Kettler</td>
+    <td class="tg-0lax">Allianz</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">690</td>
+    <td class="tg-0lax">101</td>
+    <td class="tg-0lax">Winora</td>
+    <td class="tg-0lax">Signal</td>
+  </tr>
+</tbody>
+</table>
+
+<br>Versicherungen:
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"><u>Versicherung</u></th>
+    <th class="tg-0lax">Ort der Versicherung</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">Allianz</td>
+    <td class="tg-0lax">Köln</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Signal</td>
+    <td class="tg-0lax">Mainz</td>
+  </tr>
+</tbody>
+</table>
+

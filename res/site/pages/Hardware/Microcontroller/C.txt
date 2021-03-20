@@ -1,4 +1,4 @@
-# 2. C!
+# 2. C!Hier wird nicht genug auf die Syntaxunterschiede zu Assembler eingegangen, Beispiele fehlen
 
 Im Gegensatz zu [Assembler|Assembler] ist C eine Hochsprache, die erweiterte Konstrukte erlaubt. Man kann zwar noch immer auf die einzelnen Bits der Register
 und Ports zugreifen, jedoch nicht mehr unbedingt so direkt, wie es bei Assembler möglich ist. Dies hat zur Folge, dass der Code wesentlich übersichtlicher

@@ -91,7 +91,7 @@ mit `in r16, SREG`. Anschließend holt man noch das eigentliche Register `r16` a
 Hier ist der Ablauf eines solchen Interrupts (hier für das eben implementierte `INT0`) einmal zu sehen:
 img pages/image19.png
 
-Nun haben wir für unseren Fall die ISR fertig implementiert.<br><br>
+Nun haben wir für unseren Fall die ISR fertig implementiert.
 
 ## Allgemein Interrupts initialisieren
 Allgemein sind folgende Schritte notwendig, um ein Interrupt zu initialisieren:

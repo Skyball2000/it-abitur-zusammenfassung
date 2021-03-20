@@ -1,0 +1,45 @@
+# 2. Relationenschreibweise
+
+Datenbanktabellen können neben Primär- und Fremdschlüsseln auch Attribute speichern. Diese sind die eigentlichen „Daten” der Datenbank
+(z.B oben: max. Reichweite oder Thrust). Um die Attribute eines Datenbanksystems darzustellen verwendet man die Relationenschreibweise.
+Für das [Beispiel|Entity Relationship Model|Beispiel] würde diese folgendermaßen aussehen:<br><br>
+
+<b>Flugzeug(</b><u>Kennzeichen</u>, max. Reichweite, Thrust<b>)</b><br>
+<b>Flugstrecke(</b><u>Flugstr.-ID</u>, Takeofftime, ETA<b>)</b><br>
+<b>Flug(</b><u>Kennzeichen</u>, Flugstr.-ID<b>)</b><br><br>
+
+Zunächst wird der Tabellenname aufgeschrieben. Hinter diesen schreibt man in Klammern zuerst den Primärschlüssel, dann alle Attribute und Fremdschlüssel.
+Primärschlüssel werden mit einer durchgezogenen Linie unterstrichen und Fremdschlüssel werden entweder kursiv oder mit einer gestrichelten Linie gekennzeichnet.
+Es können auch mehrere Einträge zusammen den Primärschlüssel bilden, so wie bei Flug. Hier werden dann einfach wieder alle, zum Primärschlüssel gehörigen Einträge,
+mit einer durchgezogenen Linie unterstrichen.
+
+## ERM in Relationenschreibweise auflösen
+Eine 1 : 1 Beziehung kann in der Relationenschreibweise in eine gemeinsame Tabelle aufgelöst werden, da hier ja zwei Einträge fest zueinander gehören.
+In der neuen Tabelle ist einer der beiden Primärschlüssel weiterhin der Primärschlüssel. Der andere wird zu einem normale Attribut.
+
+Beispiel
+img pages/image76.png
+Bei diesem Beispiel hat ein Spiel genau eine Anleitung und eine Anleitung gehört genau zu einem Spiel.
+Diese kann man in eine folgendermaßen in die Relationenschreibweise bringen und in eine Tabelle auflösen:<br>
+<b>Spiel(</b><u>SpielName</u>, Spieler, Seiten<b>)</b><br><br>
+
+Bei einer 1 : n Beziehung kann dies nicht getan werden, da nicht jeder Eintrag genau einem anderen Eintrag zuzuordnen ist.
+img pages/image17.png
+Gehen wir wieder von einem der obigen Beispiele aus und nehmen an, dass <b>Skier</b> als Primärschlüssel
+<u>Ski-ID</u> und als weiteres Attribut die <b>Marke</b> hat.
+Die Tabelle <b>Skityp</b> hat als Primärschlüssel <u>Typ-ID</u>
+und als weiteres Attribut den <b>Typnamen</b>.<br>
+
+Um aus diesen Informationen die Relationenschreibweise zu bilden, müssen zunächst wieder die Tabellennamen untereinander geschrieben werden.
+Danach kann man die bekannten Primärschlüssel und Attribute der jeweiligen Tabellen in Klammern dahinter schreiben.<br>
+<b>Skier(</b><u>Ski-ID</u>, Marke ...<br>
+<b>Skityp(</b><u>Typ-ID</u>, Typname ...<br><br>
+
+Nun muss noch die „Verbindung” hergestellt werden: Da der Primärschlüssel von Skityp (1) bei mehreren Einträgen in Skier (n) auftauchen kann,
+wird der Primärschlüssel von Skityp (<u>Typ-ID</u>) als Fremdschlüssel in die Tabelle Skier geschrieben. Die fertige Relationenschreibweise sieht folgendermaßen aus:<br>
+<b>Skier(</b><u>Ski-ID</u>, Marke, <i>Typ-ID</i><b>)</b><br>
+<b>Skityp(</b><u>Typ-ID</u>, Typname<b>)</b><br><br>
+
+Als Datenbank mit Einträgen würde dies so aussehen:
+img pages/image28.png
+Hier sind die Skier 0 & 2 vom selben Skityp: Carving. Deshalb steht der Primärschlüssel von Carving (0) bei diesen beiden Skiern als Fremdschlüssel in der Tabelle.

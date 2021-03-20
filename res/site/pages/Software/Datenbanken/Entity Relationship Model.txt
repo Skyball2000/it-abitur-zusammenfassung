@@ -1,0 +1,46 @@
+# 1. Entity Relationship Model
+
+Das ERM ist ein Diagramm, das die Beziehungen zwischen Datenbankobjekten aufzeigt. Eine Datenbanktabelle ist ein solches Objekt / Entität (Entity).
+Mittels Linien werden die Verbindungen zwischen den Tabellen und der Kardinalität dieser Verbindungen angezeigt. Dieses Beispiel zeigt ein solches ERM:
+img pages/image27.png
+
+Jede Tabelle hat einen Primärschlüssel. Der Wert eines Primärschlüssels muss in einer Tabelle einmalig sein, da er jeden Datensatz eindeutig kennzeichnet.
+Um Beziehungen zwischen Tabellen herzustellen, wird der Primärschlüssel einer Tabelle in einer anderen Tabelle eingetragen.
+Diesen nennt man dann Sekundärschlüssel (Fremdschlüssel).<br>
+Damit können Tabellen verschiedene Beziehungen zueinander haben, die hier gezeigt werden:<br><br>
+
+<b>Möglichkeit 1</b>
+img pages/image33.png
+img pages/image102.png
+Hier haben die beiden Tabellen eine 1 : 1 Beziehung. In der unteren Zeichnung steht jeder Punkt für einen Eintrag und damit auch für einen individuellen Schlüssel.
+Der Primärschlüssel eines Eintrags (einer Zeile) der einen Tabelle kann nur ein mal in der anderen vorkommen.
+Das heißt, jeder Eintrag ist genau einem anderen Eintrag zuzuordnen.<br><br>
+
+<b>Möglichkeit 2</b>
+img pages/image18.png
+img pages/image87.png
+Diese beiden Tabellen haben eine 1 : n Beziehung. Das bedeutet, dass der Primärschlüssel von einem Eintrag in Entität 1 bei mehreren
+Einträgen als Fremdschlüssel in Entität 2 vorkommen kann.<br><br>
+
+Man kann gut sehen, dass in der unteren Grafik der oberste Primärschlüssel der linken Tabelle in mehreren Einträgen der rechten Tabelle (n) als Fremdschlüssel steht.
+Die Punkte auf der rechten Seite sind alle eindeutig einem Punkt auf der linken Seite zuzuordnen. Allgemein gilt:<br>
+- Mehrere (n) Einträge der Entität 2 sind genau einem (1) Eintrag der Entität 2 zugewiesen
+- Ein (1) Eintrag der Entität 1 kann mehrere (n) Einträgen der Entität 2 zugewiesen sein
+
+Ein Beispiel dazu:
+img pages/image17.png
+Hier haben mehrere Skier einen bestimmten Skityp und ein Skityp hat mehrere Skier.<br><br>
+
+<b>Möglichkeit 3</b>
+img pages/image78.png
+img pages/image105.png
+Hier haben die beiden Tabellen eine m : n Beziehung.  Das bedeutet, dass der Primärschlüssel von einem Eintrag in Entität 1 bei mehreren Einträgen
+als Fremdschlüssel in Entität 2 vorkommen kann und das der Primärschlüssel von einem Eintrag in Entität 2 bei mehreren Einträgen als Fremdschlüssel in Entität 1
+vorkommen kann, also: sowohl von der linken, als auch von der rechten Tabelle kommen die Primärschlüssel in der je anderen Tabelle mehrfach als Fremdschlüssel vor.<br>
+Die Einträge beider Seiten sind nicht eindeutig einem Eintrag auf der anderen Seite zuzuordnen. Solche Beziehungen löst man üblicherweise mit einer weiteren Tabelle auf:
+img pages/image107.png
+In der Hilfstabelle stehen für jede der obigen Verbindungen jeweils die Primärschlüssel der linken und
+der rechten Tabelle in einem Eintrag, die dann damit eine einzigartige Verbindung bilden. In der Hilfstabelle sind die Primärschlüssel aus Entität 1 und Entität 2
+jeweils die Fremdschlüssel. Der Primärschlüssel bildet sich aus beiden Fremdschlüsseln oder es wird ein weiterer Schlüssel für die jeweilige Zeile hinzugefügt.<br>
+Ein [Beispiel]:
+img pages/image51.png

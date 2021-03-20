@@ -1,0 +1,113 @@
+# 1. Einheiten & Potenzen
+
+Um Größen anzugeben werden oft Bezeichner wie kilo oder mega verwendet. Hier ist eine Übersicht dieser.
+
+## Binärpräfixe (zur Basis 2)
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Bezeichnung</th>
+    <th class="tg-0lax">Präfix</th>
+    <th class="tg-0lax">Wert</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">kibi</td>
+    <td class="tg-0lax">Ki</td>
+    <td class="tg-0lax">2^10 = 1024</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">mebi</td>
+    <td class="tg-0lax">Mi</td>
+    <td class="tg-0lax">2^20</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">gibi</td>
+    <td class="tg-0lax">Gi</td>
+    <td class="tg-0lax">2^30</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">tebi</td>
+    <td class="tg-0lax">Ti</td>
+    <td class="tg-0lax">2^40</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">pebi</td>
+    <td class="tg-0lax">Pi</td>
+    <td class="tg-0lax">2^50</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">exbi</td>
+    <td class="tg-0lax">Ei</td>
+    <td class="tg-0lax">2^60</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">zebi</td>
+    <td class="tg-0lax">Zi</td>
+    <td class="tg-0lax">2^70</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">yobi</td>
+    <td class="tg-0lax">Yi</td>
+    <td class="tg-0lax">2^80</td>
+  </tr>
+</tbody>
+</table>
+
+Diese Weise, Werte anzugeben, wird vor allem bei der Größenangabe von Speicherplatz / Datenmengen verwendet. Siehe [hier|Dateisysteme].
+
+## Dezimalpräfixe (zur Basis 10)
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Bezeichnung</th>
+    <th class="tg-0lax">Präfix</th>
+    <th class="tg-0lax">Wert</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">kilo</td>
+    <td class="tg-0lax">k</td>
+    <td class="tg-0lax">10^3 = 1000</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">mega</td>
+    <td class="tg-0lax">M</td>
+    <td class="tg-0lax">10^6</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">giga</td>
+    <td class="tg-0lax">G</td>
+    <td class="tg-0lax">10^9</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">tera</td>
+    <td class="tg-0lax">T</td>
+    <td class="tg-0lax">10^12</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">peta</td>
+    <td class="tg-0lax">P</td>
+    <td class="tg-0lax">10^15</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">exa</td>
+    <td class="tg-0lax">E</td>
+    <td class="tg-0lax">10^18</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">zetta</td>
+    <td class="tg-0lax">Z</td>
+    <td class="tg-0lax">10^21</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">yotta</td>
+    <td class="tg-0lax">Y</td>
+    <td class="tg-0lax">10^24</td>
+  </tr>
+</tbody>
+</table>
+
+Diese werden vor allem für die wissenschaftliche Schreibweise verwendet.

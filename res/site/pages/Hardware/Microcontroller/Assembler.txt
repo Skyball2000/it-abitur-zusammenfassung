@@ -1,4 +1,4 @@
-# 1. Assembler!
+# 1. Assembler!Es wird nicht tief genug in das Thema eingegangen.
 
 Assembler ist eine (die allererste!) Programmiersprache, die von einem Programm names 'Assemblierer' in Maschinensprache übersetzt (kompiliert) wird,
 also zu tatsächlichen Einsen und Nullen gemacht wird. Sie arbeitet fast nur mit den Anweisungen, die dann später tatsächlich von der CPU ausgeführt werden und kommt

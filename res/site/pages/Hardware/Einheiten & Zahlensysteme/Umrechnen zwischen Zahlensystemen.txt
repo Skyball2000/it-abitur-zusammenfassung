@@ -1,0 +1,27 @@
+# Umrechnen zwischen Zahlensystemen
+
+Es gibt folgende relevante Zahlensysteme:
+- Dezimal (10) (d)
+- Binär (2) (b)
+- Hexadezimal (16) (h / 0x)
+
+Um zwischen diesen Systemen mit unterschiedlicher Basis umrechnen zu können, gibt es mehrere Wege:
+
+## Mit dem Taschenrechner
+Zunächst wird die Zahl, die umgerechnet werden soll, eingegeben. Dann muss das Umrechnen-Menü aufgerufen werden:
+img pages/image36.png
+Nun muss man das passende Ursprungs-Zahlensystem auswählen und mit enter bestätigen. Dieser Schritt wird fast gleich wiederholt:
+img pages/image36_2.png
+Dieses mal muss das Ziel-Zahlensystem ausgewählt und mit enter bestätigt werden. Mit einem letzten enter wird das Ergebnis angezeigt.<br>
+Ein Beispiel könnte dann so aussehen: `10b ⏵ Dec = 2`<br>
+Versuche einmal, diese Eingabe zu reproduzieren.
+
+## Von Hand
+Es gibt eine allgemeine Methode, wie zwischen Zahlensystemen von Hand umgerechnet werden kann:<br>
+Die umzurechnende Zahl wird durch die Basis des Ziel-Zahlensystems geteilt. Der Rest ist die letzte Stelle der umgerechneten Zahl.<br>
+Das Ergebnis (ohne den Rest) wird nun erneut durch die Basis geteilt, so lange, bis als Ergebnis 0 rauskommt.<br><br>
+Hier ist ein Beispiel, von Hexadezimal zu Dezimal (31A):<br>
+`31A / A = 4F R 4`   → rest = 4 → kleinste Stelle = 4<br>
+`4F / A = 7 R 9`       → rest = 9 → vor-kleinste Stelle = 9<br>
+`7 / A = 0 R 7`          → rest = 7 → größte Stelle = 7<br>
+→ Ergebnis 497

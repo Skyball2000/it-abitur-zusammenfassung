@@ -14,7 +14,7 @@ templatePlaceSearchList:BUILDER-PLACE-SEARCH-LIST
 templateInsert:INSERT
 templateSubTitle:<h1 class="u-text u-text-palette-5-dark-3 u-text-2">INSERT</h1>
 templateMainTitle:<h1 class="u-text u-text-1">INSERT</h1>
-templateTextTitle:<h4 class="u-text u-text-1" style="margin-top:0px;">INSERT</h4>
+templateTextTitle:<br><h4 class="u-text u-text-1" style="margin-top:0px;">INSERT</h4>
 templateTextParagraphIntro:<p class="u-text u-text-2">
 templateCss:<link rel="stylesheet" href="INSERT" media="screen">
 templateWebsiteTitle:<title>INSERT - IT ABI</title>
@@ -25,7 +25,7 @@ templateMainCss:nicepage.css
 templateInformationCss:information.css
 
 siteImageIcon:itabiicon.png
-siteTitleImage:227231823-carl-bosch-schule-Lef1.jpg
+siteTitleImage:itabiiconmain.png
 mainPageUrl:index.html
 
 regexLink:\[\[href=([^|]+)\|([^]]+)]]

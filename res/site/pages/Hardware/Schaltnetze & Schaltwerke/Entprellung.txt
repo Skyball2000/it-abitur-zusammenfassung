@@ -1,4 +1,4 @@
-# 7. Entprellung!!
+# 7. Entprellung!!Hier sind wir uns nicht sicher, ob die Erklärung wirklich stimmt. Es sollte jedoch für das Abitur ausreichend erklärt sein.
 
 Da die Realität nicht digital, sondern analog funktioniert, gibt es bei Tastern, Schaltern und anderen Eingabegeräten nicht immer eindeutig ‘High’ oder ‘Low’.
 Dies kann durch Störeinwirkungen oder durch das Federn des Tasters auf dem Kontakt passieren, was zu scheinbar willkürlichen Eingabeveränderungen und

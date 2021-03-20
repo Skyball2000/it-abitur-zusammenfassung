@@ -97,6 +97,12 @@ public class SiteBuilder {
         FileUtils.copyFile(new File(siteImagesDir + siteImageIcon), new File(siteOutDir + "images\\" + siteImageIcon));
         FileUtils.copyFile(new File(siteImagesDir + siteTitleImage), new File(siteOutDir + "images\\" + siteTitleImage));
         buildMainPage();
+
+        if (warnings.size() > 0) {
+            System.out.println("---------------- warnings ----------------");
+            warnings.stream().sorted().forEach(System.out::println);
+            System.out.println("------------- warnings over --------------");
+        }
     }
 
     private void buildMainPage() {
@@ -126,7 +132,7 @@ public class SiteBuilder {
             }
         }
 
-        FileUtils.writeFile(new File(siteOutDir + "index.html"), optimizeGenerated(generatedPage.toString()));
+        FileUtils.writeFile(new File(siteOutDir + "index.html"), optimizeGeneratedPage(generatedPage.toString()));
     }
 
     private String generateSearchList() {
@@ -159,8 +165,8 @@ public class SiteBuilder {
         String pageTitle = "Title";
         for (String line : FileUtils.readFileToArrayList(siteFile))
             if (line.startsWith("# ")) { //main title
-                if (line.endsWith("!!")) line = line.replace("!!", "");
-                if (line.endsWith("!")) line = line.replaceAll("(.*)!", "$1");
+                if (line.contains("!!")) line = line.replaceAll("!!.*", "");
+                if (line.contains("!")) line = line.replaceAll("(.*)!.*", "$1");
                 pageTitle = line.replace("# ", "");
                 break;
             }
@@ -169,6 +175,7 @@ public class SiteBuilder {
         informationPages.add(new InformationPage(pageTitle, siteFile, path.replace(templateSubTitleDefault, "")));
     }
 
+    private final ArrayList<String> warnings = new ArrayList<>();
     private final ArrayList<InformationPage> informationPages = new ArrayList<>();
     private String pathToMainDirectory;
 
@@ -179,6 +186,7 @@ public class SiteBuilder {
         pathToMainDirectory = IntStream.range(0, GeneralUtils.countOccurrences(path, "\\") + (path.equals(templateSubTitleDefault) ? 0 : 1))
                 .mapToObj(i -> "..\\").collect(Collectors.joining());
         boolean pageErrorWarning = false, pageIncompleteWarning = false;
+        String warningMessage = "";
 
         LineBuilder generatedBody = new LineBuilder();
         boolean isCurrentlyTextOrImage = false;
@@ -186,12 +194,14 @@ public class SiteBuilder {
         for (int i = 0; i < readFileToArrayList.size(); i++) {
             String line = readFileToArrayList.get(i);
             if (line.startsWith("# ")) { //main title
-                if (line.endsWith("!!")) {
-                    pageTitle = "<font style=\"color:red\">" + line.replace("# ", "").replace("!!", "") + "</font>";
+                if (line.contains("!!")) {
+                    pageTitle = "<font style=\"color:red\">" + line.replace("# ", "").replaceAll("!!.*", "") + "</font>";
                     pageErrorWarning = true;
-                } else if (line.endsWith("!")) {
-                    pageTitle = "<font style=\"color:orange\">" + line.replace("# ", "").replaceAll("(.+)!", "$1") + "</font>";
+                    warningMessage = line.replaceAll(".+!!(.*)", "$1");
+                } else if (line.contains("!")) {
+                    pageTitle = "<font style=\"color:orange\">" + line.replace("# ", "").replaceAll("(.+)!.*", "$1") + "</font>";
                     pageIncompleteWarning = true;
+                    warningMessage = line.replaceAll(".+!(.*)", "$1");
                 } else
                     pageTitle = line.replace("# ", "");
             } else if (line.startsWith("## ")) { //title in text
@@ -298,6 +308,8 @@ public class SiteBuilder {
             generatedBody.append(templateTextTitle.replace(templateInsert, "<br><font style=\"color:red\"><b>Warnung:</b></font>"));
             generatedBody.append(templateTextParagraphIntro);
             generatedBody.append(prepareBodyText("Diese Seite könnte Fehler oder Ungenauigkeiten enthalten oder noch nicht fertig sein.<br>", pathToMainDirectory));
+            if (warningMessage.length() > 0)
+                generatedBody.append(prepareBodyText("Grund: <b>" + warningMessage + "</b><br>", pathToMainDirectory));
         }
         if (pageIncompleteWarning) {
             if (!isCurrentlyTextOrImage)
@@ -305,6 +317,8 @@ public class SiteBuilder {
             generatedBody.append(templateTextTitle.replace(templateInsert, "<br><font style=\"color:orange\"><b>Warnung:</b></font>"));
             generatedBody.append(templateTextParagraphIntro);
             generatedBody.append(prepareBodyText("Diese Seite entspricht noch nicht den Ansprüchen, die wir für diese Website haben.<br>", pathToMainDirectory));
+            if (warningMessage.length() > 0)
+                generatedBody.append(prepareBodyText("Grund: <b>" + warningMessage + "</b><br>", pathToMainDirectory));
         }
         if (pageErrorWarning || pageIncompleteWarning) {
             generatedBody.append(prepareBodyText("Falls du einen Verbesserungsvorschlag hast, kontaktiere uns bitte über den Link `Hilf mit!` in der grauen Footer-Leiste direkt unten diesem Text:", pathToMainDirectory));
@@ -344,8 +358,15 @@ public class SiteBuilder {
 
         System.out.println("Generated " + pageSubtitle + " / " + pageTitle.replaceAll("<[^>]+>", "") +
                 (pageErrorWarning ? " WARNING 1" : "") + (pageIncompleteWarning ? " WARNING 2" : ""));
+        String warningMessageDisplay = warningMessage.length() > 0 ? " --> " + warningMessage : "";
+        if (pageErrorWarning)
+            warnings.add("WARNING 1: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
+                    warningMessageDisplay);
+        if (pageIncompleteWarning)
+            warnings.add("WARNING 2: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
+                    warningMessageDisplay);
 
-        FileUtils.writeFile(new File(siteOutDir + path.replace(templateSubTitleDefault, "") + "\\" + siteFile.getName().replace(".txt", ".html")), optimizeGenerated(generatedPage.toString()));
+        FileUtils.writeFile(new File(siteOutDir + path.replace(templateSubTitleDefault, "") + "\\" + siteFile.getName().replace(".txt", ".html")), optimizeGeneratedPage(generatedPage.toString()));
     }
 
     private String prepareImageLink(String link) {
@@ -362,8 +383,9 @@ public class SiteBuilder {
 
     private String prepareBodyText(String text, String pathToMainDirectory) {
         text = text.replaceAll(regexLink, regexLinkReplace).replace("``", "`&nbsp`").replaceAll("^` ", "`&nbsp")
-                .replaceAll("`([^`]+)`", "<code>$1</code>").replace("  ", "&nbsp;&nbsp;").
-                        replace("<<", "&lt&lt").replace(">>", "&gt&gt");
+                .replaceAll("`([^`]+)`", "<code>$1</code>").replace("  ", "&nbsp;&nbsp;")
+                .replace("<<", "&lt&lt").replace(">>", "&gt&gt")
+                .replaceAll("\\^([^ <>]+)", "<sup>$1</sup>");
         if (text.matches(".*\\[([^]]+)].*")) {
             Pattern pattern = Pattern.compile("\\[([^]]+)]");
             Matcher matcher = pattern.matcher(text);
@@ -396,7 +418,7 @@ public class SiteBuilder {
         return path.contains("\\") ? path.replaceAll("(.+)\\\\.+", "$1") : templateSubTitleDefault;
     }
 
-    private String optimizeGenerated(String generated) {
+    private String optimizeGeneratedPage(String generated) {
         return generated.replaceAll("\n<br>", "<br>");
     }
 }
