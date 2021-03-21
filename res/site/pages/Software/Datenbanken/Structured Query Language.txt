@@ -41,9 +41,11 @@ Ein `LEFT` / `RIGHT JOIN` nimmt alle Einträge der linken / rechten Tabelle und 
 Ein `FULL JOIN` verbindet alle möglichen Kombinationen mit zueinander passenden Datensätzen und kann möglicherweise eine sehr große Tabelle generieren.<br><br>
 
 Ein JOIN in SQL sieht so aus:<br>
-`SELECT *`<br>
-`FROM Bestellungen INNER JOIN Kunden ON Bestellungen.KundenID = Kunden.KundenID`<br>
-`WHERE Kunden.Name LIKE "T%";`<br>
+````
+SELECT *<br>
+FROM Bestellungen INNER JOIN Kunden ON Bestellungen.KundenID = Kunden.KundenID<br>
+WHERE Kunden.Name LIKE "T%";
+````
 Diese Abfrage im Speziellen vereint die Tabellen `Bestellungen` (links) und `Kunden` (rechts) dort, wo die `KundenID` gleich ist.
 Danach sortiert er aber alle Kunden aus, deren Namen nicht mit einem T beginnen (später mehr dazu).<br>
 Wenn mehr als zwei Tabellen vereint werden sollen, so kann mit geschickter Klammersetzung das Ergebnis des ersten `JOIN`s als linke oder rechte
@@ -178,11 +180,13 @@ Gruppenfunktionen werden mit `GROUP BY` angekündigt.
 Mit `HAVING` können dann Bedingungen auf diese einzelnen Gruppen angewandt werden. Der Unterschied zwischen `HAVING` und `WHERE`:
 - `WHERE` eliminiert einzelne Zeilen
 - `HAVING` eliminiert einzelne Gruppen
-Ein Beispiel:<br>
-`SELECT ProduktID, SUM(Menge) AS Gesamtmenge, AVG(Menge) AS DurchschnMenge`<br>
-`FROM Bestellungen`<br>
-`GROUP BY ProduktID`<br>
-`HAVING AVG(Menge) < 12;`<br>
+Ein Beispiel:
+````
+SELECT ProduktID, SUM(Menge) AS Gesamtmenge, AVG(Menge) AS DurchschnMenge<br>
+FROM Bestellungen<br>
+GROUP BY ProduktID<br>
+HAVING AVG(Menge) < 12;
+````
 Hier wird zunächst nach der `ProduktID` gruppiert. Dann werden alle Gruppen ausgeschlossen, die mehr als 12 mal im Durchschnitt gekauft werden,
 um diese dann mit ihrer `ProduktID`, der Summe der gekauften Menge und der Durchschnittsmenge anzuzeigen.<br>
 

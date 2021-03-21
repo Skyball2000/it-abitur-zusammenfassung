@@ -1,0 +1,9 @@
+# 1. Algorithmen
+
+Ein Algorithmus in der Programmierung ist nichts anderes als ein Stückchen Code, das sich um ein bestimmtes Problem kümmert (z.B. Sortieralgorithmen, Berechnung von Werten, ...)
+
+<br>Ein Algorithmus muss folgende Eigenschaften haben:
+- <b>Endlichkeit</b>/<b>Finitheit</b><br>Er muss von sich selbst aus irgendwann aufhören, darf nicht endlos weiterlaufen (wie bei einem Microcontroller z.B.)
+- <b>Eindeutigkeit</b>/<b>Deterministisch</b><br>Bei den gleichen Eingabeparametern kommt auch die gleich Ausgabe hinten raus
+- <b>Ausführbarkeit</b><br>Er ist immer ausführbar
+- <b>Allgemeingültigkeit</b><br>Alle Eingaben werden korrekt verarbeitet, alle Sonderfälle werden korrekt abgearbeitet

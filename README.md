@@ -30,7 +30,20 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - ``` `code` ``` - Code, also mit backticks umschließen
 - `- Text` für eine ungeordnete Liste (mehrere `-` für Einrückungen)
 - `~ Text` für eine geordnete Liste (mehrere `~` für Einrückungen)
+- `$code$` - Spoiler
+- `$$code$$` - Spoiler mit schwarzem Hintergrund bei hover
+- `$$ Frage 1` - Text in einer kleinen Box
+- `$$ Frage 2:Was ist 4 + 6?` - Text in einer kleinen Box mit Titel
+- `$$ Frage 3:Was ist 7 - 3?->Lösung` - Text in einer kleinen Box mit Titel und spoiler box reveal (Ende des Spoilers mit `$$$` markieren)
+- `$$ Was ist 7 - 3?->Lösung` - Text in einer kleinen Box und spoiler box reveal (Ende des Spoilers mit `$$$` markieren)
+- `$$$ Lösungen`  
+  `Dies ist eine Lösung`  
+  `$$$` - Spoiler-box mit reveal/hide button
+- `$$$$`  
+  `Text in einem Kasten`  
+  `$$$$` - Box mit Text
 - `<table class="tg">` - Tabellen (muss Klasse `tg` sein, ansonsten eine normale HTML Tabelle mit `<tr>` und `<td>`)
+- `<center>` - Zentriert Elemente auf der Seite
 
 
 ## Neues
@@ -44,17 +57,24 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Es können nun Nachrichten mit den Warnungen angezeigt werden: `!!Nachricht`
 - Eine Überschrift mit `##` erzeugt nun einen Zeilenabstand zum vorherigen Absatz
 - Neues Icon!
-- `[]^` können nun mit einem \ escaped werden: `\[ \] \^`
+- `[]^<>` können nun mit einem \ escaped werden: `\[ \] \^ \< \>`
 - Bilder, die direkt nach einem anderen Bild oder einer Liste kommen, haben jetzt einen kleineren Abstand zu diesen
 - Die Suchleiste zeigt jetzt zufällige Suchbegriffe basierend auf den vorhandenen Seiten an
 - Die Suchleiste wählt nun alle 10 Sekunden einen neuen Suchbegriff
 - Haupt/Startseiten-Texte endlich geschrieben
+- Seiten mit Zahlen >= 10 wurden alphabetisch sortiert und daher direkt nach der Seite 1 platziert. Diese werden nun richtig sortiert.
+- Elemente können nun auf der Seite zentriert werden: `<center> ... </center>`
+- Tabellen haben jetzt nicht mehr einen so großen Abstand oben zum Text
+- Spoiler in text & Spoiler boxen
+- Fragen mit spoiler Antworten
+- Out dir zur `.gitignore` hinzugefügt
+- Multiline code (+ warnings, wenn diese nicht verwendet werden)
 
 ## Todo
 
 - Luca Bild für Hauptseite unten
 - Mehr Beispiele
-- Aufgaben
+- Aufgaben zu Themen (Lösungen mit spoiler-boxen)
 - Seiten fertig importieren
 - Seiten überarbeiten
 - Keywords für Seiten erstellen

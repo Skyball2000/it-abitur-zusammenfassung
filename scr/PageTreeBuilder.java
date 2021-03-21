@@ -4,6 +4,9 @@ import yanwittmann.GeneralUtils;
 import yanwittmann.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class PageTreeBuilder {
 
@@ -107,7 +110,15 @@ public class PageTreeBuilder {
     }
 
     private void sortLeaves(ArrayList<String> leaves) {
-        String k;
+        Leaf[] sorted = new Leaf[leaves.size()];
+        Arrays.setAll(sorted, i -> new Leaf(leaves.get(i)));
+        Arrays.sort(sorted);
+        leaves.clear();
+        for (int i = sorted.length - 1; i >= 0; i--) {
+            leaves.add(sorted[i].getLinkText());
+        }
+
+        /*String k;
         for (int i = 0; i < leaves.size() - 1; i++) {
             if (leaves.get(i).matches(".+>(.+)</a>"))
                 if (leaves.get(i).replaceAll(".+>(.+)</a>", "$1").compareTo(leaves.get(i + 1).replaceAll(".+>(.+)</a>", "$1")) > 0)
@@ -118,6 +129,6 @@ public class PageTreeBuilder {
             leaves.set(i, leaves.get(i + 1));
             leaves.set(i + 1, k);
             sortLeaves(leaves);
-        }
+        }*/
     }
 }

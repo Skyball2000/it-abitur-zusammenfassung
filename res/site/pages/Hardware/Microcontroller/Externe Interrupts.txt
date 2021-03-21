@@ -15,8 +15,10 @@ Die Aktivierung des Interrupts wird ganz oben im Hauptprogramm vorgenommen, dort
 Bits in solchen speziellen Registern kann man nicht direkt mit z.B. `LDI` verändern. Daher muss der gewünschte Wert zuerst in ein normales Register wie
 z.B. `r16` geladen werden, was dann auf das spezielle Register ausgegeben wird. Als Assembler-Code würde das so aussehen:<br>
 
-`ldi r16, (1<<ISC00) | (1<<ISC01) ; Bits ISC00 & ISC01 werden in r16 gesetzt`<br>
-`out MCUCR, r16                   ; Bitmaske für INT0 wird auf MCUCR ausgegeben`<br>
+````
+ldi r16, (1<<ISC00) | (1<<ISC01) ; Bits ISC00 & ISC01 werden in r16 gesetzt<br>
+out MCUCR, r16                   ; Bitmaske für INT0 wird auf MCUCR ausgegeben
+````
 
 Wenn nun das entsprechende Ereignis auftritt, auf das der Interrupt reagiert, wird durch die `MCUCR` das zum Interrupt passende Bit
 im Register `GIFR` gesetzt (siehe Grafik unten).<br><br>
@@ -27,8 +29,10 @@ oder `INT1` (für `INT1`) gesetzt sein. Welchen Wert dieses Bit hat, steht wiede
 Um das Interrupt `INT0` zu aktivieren muss das Bit `INT0` im `GIMSK`-Register gesetzt werden. Für das Interrupt `INT1` entsprechend das Bit `INT1`.
 Die Aktivierung des Interrupts wird ganz oben im Hauptprogramm vorgenommen, wo auch die `MCUCR` initialisiert wird. So sähe es aus:<br>
 
-`ldi r16, 1<<INT0 ; Bit wird um INT0 geschiftet und in r16 gesetzt`<br>
-`out GIMSK, r16   ; INT0 aus r16 wird auf GIMSK ausgegeben `<br><br>
+````
+ldi r16, 1<<INT0 ; Bit wird um INT0 geschiftet und in r16 gesetzt<br>
+out GIMSK, r16   ; INT0 aus r16 wird auf GIMSK ausgegeben
+````
 
 <b>Bedingung 3</b><br>
 Der letzte Schritt ist, dass man Interrupts allgemein im Microcontroller aktivieren muss. Das wird mit dem Befehl `sei` gemacht, was üblicherweise an das Ende des Codes

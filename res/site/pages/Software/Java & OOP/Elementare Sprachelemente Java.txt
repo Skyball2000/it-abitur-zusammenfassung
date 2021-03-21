@@ -1,0 +1,344 @@
+# 2. Elementare Sprachelemente in Java
+
+## Kommentare
+Durch die Kommentierung des Quellcodes wird die Lesbarkeit und Teamwork erleichtert und man kann die Gedankengänge hinter den Algorithmen dokumentieren.
+Das, was in einem Kommentar steht, wird vom Programm später ignoriert, das heißt, man kann alles schreiben, was man möchte, ohne eine bestimmte Syntax befolgen zu müssen.<br>
+Kommentare werden durch folgende Zeichenketten ein-/ausgeleitet:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Typ</th>
+    <th class="tg-0lax">Java</th>
+    <th class="tg-0lax">JS<br></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">einzeilliger Kommentar</td>
+    <td class="tg-0lax">`// ...`</td>
+    <td class="tg-0lax">`// ...`</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">mehrzeilliger Kommentar</td>
+    <td class="tg-0lax">`/*<br>...<br>*/`</td>
+    <td class="tg-0lax">`/*<br>...<br>*/`</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">JavaDocs</td>
+    <td class="tg-0lax">`/**<br>...<br>*/`</td>
+    <td class="tg-0lax"></td>
+  </tr>
+</tbody>
+</table>
+
+z.B.<br>
+`//initialisierung einer Variable:`<br>
+`int x = 0;`
+
+
+## Reservierte Schlüsselwörter
+[Diese] Wörter sind in einer Sprache bereits vordefiniert, man darf sie also z.B. nicht als Variablennamen verwenden. In Java sind einige dieser:<br>
+`abstract boolean break byte catch case char class const continue default do double if else extends implements import instanceof long native new package private protected public return short static super switch synchronized this throw throws transient try void volatile while`<br>
+
+Hier noch einige für C:<br>
+`auto break case char const continue default do double else enum extern float for goto if int long register return short signed sizeof static struct switch typedef union unsigned void volatile while`
+
+
+## Einfache Datentypen
+In Java gibt es folgende primitiven Datentypen:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Typ</th>
+    <th class="tg-0lax">Bits</th>
+    <th class="tg-0lax">Hinweis</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">boolean</td>
+    <td class="tg-0lax">1</td>
+    <td class="tg-0lax">Wahrheitswert, entweder wahr oder falsch (`true` / `false`)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">byte</td>
+    <td class="tg-0lax">8</td>
+    <td class="tg-0lax">-128 ... 0 ... 127</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">char</td>
+    <td class="tg-0lax">16</td>
+    <td class="tg-0lax">0 ... 65535; wird i.d.R. für einzelne Zeichen verwendet</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">short</td>
+    <td class="tg-0lax">16</td>
+    <td class="tg-0lax">-2^15 ... 2^15 - 1; kleine Ganzzahlen</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">int</td>
+    <td class="tg-0lax">32</td>
+    <td class="tg-0lax">-2^31 ... 2^31 - 1; Ganzzahlen</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">long</td>
+    <td class="tg-0lax">64</td>
+    <td class="tg-0lax">-2^63 ... 2^63 - 1; sehr große Ganzzahlen (z.B. Millisekunden seit Unix Epoch)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">float</td>
+    <td class="tg-0lax">32</td>
+    <td class="tg-0lax">Fließkommazahlen</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">double</td>
+    <td class="tg-0lax">64</td>
+    <td class="tg-0lax">Genauere Fließkommazahlen</td>
+  </tr>
+</tbody>
+</table>
+
+'Primitiv' oder 'Einfach' bedeutet, dass sie nicht weiter in andere Datentypen unterteilbar sind, so wie es Objekte, die von Klassen erzeugt wurden, sind.
+Ihnen ist ein konkreter Wert zugeordnet und nicht weitere Referenzen auf andere Objekte oder primitive Daten.<br>
+Man kann erkennen, dass es sich um einen primitiven Datentyp handelt, indem man auf den ersten Buchstaben des Typs schaut: Nur wenn dieser klein geschrieben
+ist, ist es ein primitiver Typ (z.B. <b>i</b>nt). So ist z.B. ein <b>S</b>tring (also ein Text) ein Objekt einer Klasse und kein primitiver Typ.
+
+## Variablen / Konstanten
+Eine Variable (oder Konstante) ist nichts anderes als eine Schublade, die im Hauptspeicher liegt und Werte enthalten kann.<br>
+Um die benötigte 'Schubladengröße' zu bestimmen verwendet das Programm den zugeordneten Datentyp: z.B. int, char (siehe Tabelle oben).<br>
+Variablen haben einen Namen, den man vor der Verwendung festlegen muss. Dieser Name muss gewissen Kriterien entsprechen, doch dazu später mehr.<br><br>
+
+Der Unterschied zwischen Variablen und Konstanten:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Variablen</th>
+    <th class="tg-0lax">Konstanten</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">Es können beliebig oft neue Werte zugeordnet werden</td>
+    <td class="tg-0lax">Ihnen wird ein einziges mal ein Wert zugeordnet</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Es kann schreibend und lesend zugegriffen werden</td>
+    <td class="tg-0lax">Es kann nur lesend zugegriffen werden</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`DatenTyp variablenName;`<br></td>
+    <td class="tg-0lax">`final static DatenTyp VARIABLEN_NAME = wert;`</td>
+  </tr>
+</tbody>
+</table>
+Also, um eine Variable zu initialisieren (zu definieren), muss man in Java einfach den Datentyp und dann den Namen der Variable schreiben:<br>
+Allgemein: `DatenTyp VariablenName;`<br>
+Beispiel:     `String einText;`<br>
+Wenn es sich um eine Konstante handelt, muss man zudem noch `final` und `static` als Schlüsselwörter hinzufügen.<br><br>
+
+Wichtig ist, dass man diese Variablen und Konstanten vor dem ersten Lesezugriff erst einmal beschreiben muss, ansonsten weiß das Programm nicht, was für einen
+Wert die Variable hat und wirft einen Fehler und das Programm wird gestoppt.
+
+## Bezeichner / Namen
+Wie sollte man seine Variablen benennen?<br>
+An diese Regeln <i>muss</i> man sich bei der Benennung halten:
+- keine [Schlüsselwörter|Elementare Sprachelemente|Diese]
+- Variablen beginnen mit einem kleinbuchstaben, `\$` oder `_`, danach können beliebige Buchstaben, Ziffern `\$` und `_` folgen
+- Konstanten enthalten nur Großbuchstaben, `\$` oder `_`
+- Klassennamen beginnen mit einem Großbuchstaben, danach können beliebige Buchstaben, Ziffern `\$` und `_` folgen
+- Bei zusammengesetzten Wörtern wird ab dem zweiten Wort der erste Buchstabe der Wörter großgeschrieben
+
+Also:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"></th>
+    <th class="tg-0lax">Variablen</th>
+    <th class="tg-0lax">Konstanten</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">Erlaubt</td>
+    <td class="tg-0lax">`t123`, `ichBinEineVariable`, `ein_text`</td>
+    <td class="tg-0lax">`IST_VORHANDEN`, `INPUT_TEMPLATE`, `kannManSollteManAberNicht`</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Verboten</td>
+    <td class="tg-0lax">`groß/klein`, `1test`, `LDF-NR`</td>
+    <td class="tg-0lax">`HMMM...`, `ICH_BIN_TOLL_&amp;_SO`</td>
+  </tr>
+</tbody>
+</table>
+
+## Zuweisung
+Doch wie setzt man den Wert einer Variable? Sagen wir, wir haben folgende integer Variable (= Ganzzahl) deklariert:<br>
+`int meinWert;`<br>
+Um den Wert der Variable zu setzen, muss man lediglich den Variablenname, ein `=` und den zuzuordnenden Wert hintereinander schreiben:<br>
+`meinWert = 12;`<br><br>
+
+Doch man kann nicht einfach nur einen Wert zuordnen, sondern auch das Ergebnis eines ganzen Ausdrucks:<br>
+````
+int anzahl = 3;<br>
+int gewicht = 23;<br>
+int gesamtGewicht = anzahl * gewicht;
+````
+Zunächst werden also die Werte der Variablen `anzahl` und `gewicht` aus dem Speicher geladen, multipliziert und das Ergebnis der Variable `gesamtGewicht` zugeordnet.
+
+## Operationen
+Doch was gibt es für Operationen, mit denen wir die Ausdrücke erstellen können? Es gibt für unterschiedliche Datentypen auch unterschiedliche Operationen.<br>
+Diese hier liefern einen boolean zurück, also `true` oder `false`:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky">Operator</th>
+    <th class="tg-0pky">Erklärung</th>
+    <th class="tg-0pky">Beispiel</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">`==`</td>
+    <td class="tg-0pky">Gleichheit</td>
+    <td class="tg-0pky">`12 == 45` → `false`</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">`!=`</td>
+    <td class="tg-0pky">Ungleichheit</td>
+    <td class="tg-0pky">`33 != 89` → `true`</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">`&amp;&amp;`</td>
+    <td class="tg-0pky">logisches `UND`</td>
+    <td class="tg-0pky">`true &amp;&amp; true` → `true`</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">`||`</td>
+    <td class="tg-0pky">logisches `ODER`</td>
+    <td class="tg-0pky">`true || false` → `true`</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">`\>`</td>
+    <td class="tg-0pky">Größer</td>
+    <td class="tg-0pky">`23 > 5` → `true`</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">`\<`</td>
+    <td class="tg-0pky">Kleiner</td>
+    <td class="tg-0pky">`23 < 5` → `false`</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">`\<=`</td>
+    <td class="tg-0pky">Kleiner gleich</td>
+    <td class="tg-0pky">`23 <= 5` → `false`</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">`\>=`</td>
+    <td class="tg-0pky">Größer gleich</td>
+    <td class="tg-0pky">`23 >= 23` → `true`</td>
+  </tr>
+</tbody>
+</table>
+
+Für Rechenoperationen mit Ganzzahlen oder Fließkommazahlen gibt es diese hier:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"></th>
+    <th class="tg-0pky">Operator</th>
+    <th class="tg-0pky">Erklärung</th>
+    <th class="tg-0pky">Beispiel</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax" rowspan="5">Arithmetische</td>
+    <td class="tg-0pky">`+`</td>
+    <td class="tg-0pky">Addition</td>
+    <td class="tg-0pky">`7 + 9` = `16`</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">`-`<br></td>
+    <td class="tg-0pky">Subtraktion</td>
+    <td class="tg-0pky">`20 - 5` = `15`<br></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">`*`</td>
+    <td class="tg-0pky">Multiplikation</td>
+    <td class="tg-0pky">`10 * 70` = `700`</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">`/`</td>
+    <td class="tg-0pky">Division</td>
+    <td class="tg-0pky">`15 / 3` = `5`</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`%`</td>
+    <td class="tg-0lax">Modulo (Divisionsrest)</td>
+    <td class="tg-0lax">`12 % 5` = `2`<br></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax" rowspan="4">Unäre</td>
+    <td class="tg-0lax">`-`</td>
+    <td class="tg-0lax">Negation</td>
+    <td class="tg-0lax">`-10`</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`~`</td>
+    <td class="tg-0lax">Bitweise Komplement</td>
+    <td class="tg-0lax">`~10010` = `01101`</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`++`</td>
+    <td class="tg-0lax">Inkrement</td>
+    <td class="tg-0lax">`a++` = `a + 1`</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">`--`</td>
+    <td class="tg-0lax">Dekrement</td>
+    <td class="tg-0lax">`a--` = `a - 1`</td>
+  </tr>
+</tbody>
+</table>
+
+Höhere Sprachen wie Java können beliebig komplexe Ausdrücke dieser Art richtig auflösen und befolgen Klammer-vor-Punkt-vor-Strich.<br>
+`int a = (34 * 3 + 6 / 2) % 6;`<br>
+→ a = 3
+
+## Aufgaben
+$$ Frage 1:Was für primitive Datentypen gibt es in Java?->Lösung
+`boolean, byte, char, short, int, long, float, double`<br>
+Und jetzt überlege noch: Wofür sind diese jeweils gut?
+$$$
+
+$$ Frage 2:Lesend und/oder schreibend: Wie kann auf eine Variable/Konstante zugegriffen werden?->Lösung
+Variablen: Lesend & schreiben<br>
+Konstanten: Nach der ersten initialisierung nur lesend
+$$$
+
+$$ Frage 3:Wie erstellt man in Java einen Blockkommentar?->Lösung
+`/*`<br>
+`Dies ist ein Kommentar`<br>
+`*/`
+$$$
+
+$$ Frage 4:Was sind die Regeln, wie man eine Variable/Konstante benennen darf?->Lösung
+1. Variablen beginnen mit einem kleinbuchstaben, `\$` oder `_`, danach können beliebige Buchstaben, Ziffern `\$` und `_` folgen<br>
+2. Konstanten enthalten nur Großbuchstaben, `\$` oder `_`<br>
+3. keine [Schlüsselwörter|Elementare Sprachelemente|Diese]
+$$$
+
+$$ Frage 5:Denk dir 5 gültige Variablennamen und 5 gültige Konstantennamen aus!
+
+$$ Frage 6:Bestimme: `(2 == 7) || (3 != 0)` und `(8 > 7) && ((77 % 10) == 5)`->Lösung
+1. `true`<br>2. `false`
+$$$
+
+$$ Frage 7:Was ist der Unterschied zwischen Deklarieren und Initialisieren?->Lösung
+Deklarieren bedeutet, dass eine Variable definiert wird, aber noch nicht auf einen Wert gesetzt wird:<br>`int e;`<br>
+Initialisieren bedeutet, dass einer Variable zum ersten mal ein Wert zugeordnet wird:<br>`e = 23;`
+$$$
+
+$$ Frage 8:Initialisiere eine Kommazahl-Variable `x` und setze ihren Wert auf das dreifache von `k`->Lösung
+`double x = k * 3;`
+$$$

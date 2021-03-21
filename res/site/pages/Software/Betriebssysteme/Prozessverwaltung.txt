@@ -1,0 +1,45 @@
+# 11. Prozessverwaltung
+> First come first served, Last come first served, Shortest job first, Longest job first, Round Robin, verdrängend, mit Prioritäten
+
+Ein Prozess ist ein Programm in Ausführung. Prozesse benötigen (zumeist) den Hauptspeicher, einen externen Speicher und bestimmte Betriebsmittel (BM).<br>
+In einem Zustandsdiagramm dargestellt sieht ein Prozess so aus:
+img pages/image74.png
+
+Hier noch eine realitätsnähere Darstellungsweise:
+img pages/image63.png
+
+<br>Die Aufgabe der Prozessverwaltung ist es, die CPU den Prozessen immer so zuzuweisen, dass möglichst viele der folgenden Ziele erfüllt sind:
+- kurze Antwortzeiten
+- fairness (kein Prozess wird benachteiligt)
+- effiziente CPU-Nutzung
+- möglichst kurze Verweilzeit
+- Durchsatz (möglichst viele Prozesse gleichzeitig bearbeiten / beenden)
+
+Es gibt verschiedene Scheduling-Strategien, die diese Kriterien unterschiedlich gut erfüllen:
+
+- First come, first served / Last come, first served<br>Der Prozess, der als erstes / letztes eingetroffen ist, wird zuerst behandelt.
+- Shortest / Longest job first<br>Der kürzeste / längste Prozess wird zuerst behandelt
+- Round Robin<br>Zuteilung der Prozesse erfolgt reihum (wie mit einer Drehscheibe)
+
+Bei jeder dieser Strategien können folgende zusätzliche Faktoren dazukommen:
+
+- verdrängend: Prozesse können wieder aus der CPU verdrängt werden
+- mit Prioritäten: Prozesse mit höchster / niedrigster Priorität werden bevorzugt
+
+Um die Einlagerung in der CPU darzustellen, kann folgende Diagrammart verwendet werden:
+img pages/image69.png
+Hierbei steht jeder Kasten auf der horizontalen für einen Zyklus in der CPU. So dauert es nur 2 Zyklen, um Prozess 1 abzuarbeiten, aber ganze 6 um Prozess 2 abzuarbeiten.
+
+<br><br>Ohne Betriebsmittel können Prozesse nicht weiterarbeiten. Die Abhängigkeiten der Prozesse zu den Betriebsmitteln werden in Betriebsmittel-Allokationsgraphen dargestellt:
+<center>
+img pages/image53.png
+B1 wird durch P1 angefordert<br>
+img pages/image75.png
+P2 belegt B2
+</center>
+
+<br>Hierbei kann es zu einem sogenannten Deadlock kommen, bei dem sich zwei oder mehr Prozesse gegenseitig blockieren, da sie je das vom anderen belegte
+Betriebsmittel haben wollen und sich so gegenseitig blockieren. Nicht immer ist dies so einfach zu erkennen wie in diesem Graphen:
+<center>
+img pages/image66.png
+</center>

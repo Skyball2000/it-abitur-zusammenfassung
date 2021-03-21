@@ -1,0 +1,48 @@
+# 13. Aufgabenarten
+
+Hier sind einige Aufgabentypen und Rechnungen aufgelistet, wie sie drankommen könnten:
+
+## Speicherverwaltung
+Bits für Seitenoffset (n → Seitenoffset):
+img pages/image4.png
+
+Adressierbare virtuelle Seiten:
+img pages/image5.png
+
+Größe virtueller Speicher:
+img pages/image6.png
+oder
+img pages/image7.png
+
+Adresse im Hauptspeicher (reelle Adresse):
+img pages/image9.png
+
+Anzahl Adressbits:
+img pages/image10.png
+
+Bits für Seitenadressierung:
+img pages/image11.png
+
+Größe realer Speicher:
+img pages/image12.png
+
+Bits für Speicherverwaltung:
+img pages/image13.png
+
+## Prozessverwaltung
+- CPU-Zuweisung bei verschiedenen Scheduling-Strategien
+- Betriebsmittelzuweisung
+- Deadlock finden
+
+## Dateisysteme
+- Größe der Dateisysteme bestimmen
+- Cluster einer Datei in einem bestimmten Dateisystem bestimmen
+- Wissensfragen
+
+## Sicherungsverfahren
+- Mbits / 8 = MB
+- z.B: Byte zu KiByte:  Zahl / 2^10
+- Richtiges Verfahren erkennen/anwenden
+- Benötigte Übertragungsgeschwindigkeiten bestimmen
+
+Natürlich gibt es noch endlos mehr, aber das hier sollte einen kleinen Überblick geben.

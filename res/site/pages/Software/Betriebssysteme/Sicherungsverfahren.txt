@@ -1,0 +1,62 @@
+# 12. Sicherungsverfahren
+> Großvater, Vater, Sohn, Vollsicherung, Inkrementell, Differentiell
+
+Um sich vor Datenverlust zu schützen, gibt es unterschiedliche Sicherungsverfahren:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky">Name</th>
+    <th class="tg-0lax">Sichern</th>
+    <th class="tg-0lax">Zurückspielen</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">Vollsicherung / vollständige Sicherung</td>
+    <td class="tg-0lax">Alle Daten</td>
+    <td class="tg-0lax">Letzte Vollsicherung</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Differenzielle Sicherung</td>
+    <td class="tg-0lax">Alle Daten seit der letzten Vollsicherung</td>
+    <td class="tg-0lax">Letzte Vollsicherung und letzte Differenzielle</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Inkrementelle Sicherung</td>
+    <td class="tg-0lax">Alle Daten seit der letzten Sicherung</td>
+    <td class="tg-0lax">Letzte Vollsicherung und alle Inkrementellen seit dem</td>
+  </tr>
+</tbody>
+</table>
+
+Diese können mit der <b>Großvater-Vater-Sohn</b> - Sicherungsstrategie angewandt werden:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Name</th>
+    <th class="tg-0lax">Zeitpunkt(e)</th>
+    <th class="tg-0lax">Sicherungstyp</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">Großväter</td>
+    <td class="tg-0lax">Letzte Freitage der letzten 12 Monate</td>
+    <td class="tg-0lax">Vollsicherung</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Väter</td>
+    <td class="tg-0lax">1., 2. &amp; 3. Freitag im Monat</td>
+    <td class="tg-0lax">Vollsicherung</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Söhne</td>
+    <td class="tg-0lax">Mo. Di. Mi. Do. der letzten Woche</td>
+    <td class="tg-0lax">Differentiell / Inkrementell</td>
+  </tr>
+</tbody>
+</table>
+
+Die Zeit, die es dauert, ein solches Backup zu erstellen, kann folgendermaßen bestimmt werden:
+img pages/image3.png
+tB ist hierbei die Dauer, m die Datenmenge und rB die Schreibrate.

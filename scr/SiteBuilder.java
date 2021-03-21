@@ -23,6 +23,8 @@ public class SiteBuilder {
     private final String templatePlaceSearchList;
     private final String templatePlaceSearchRandomSite;
     private final String templateInsert;
+    private final String templateInsert1;
+    private final String templateInsert2;
     private final String templateSubTitle;
     private final String templateMainTitle;
     private final String templateTextTitle;
@@ -55,6 +57,8 @@ public class SiteBuilder {
         templatePlaceSearchList = configuration.getOrDefault("templatePlaceSearchList", "BUILDER-PLACE-SEARCH-LIST");
         templatePlaceSearchRandomSite = configuration.getOrDefault("templatePlaceSearchRandomSite", "BUILDER-PLACE-SEARCH-RANDOM-SITE");
         templateInsert = configuration.getOrDefault("templateInsert", "INSERT");
+        templateInsert1 = configuration.getOrDefault("templateInsert1", "INSERT-1");
+        templateInsert2 = configuration.getOrDefault("templateInsert2", "INSERT-2");
         templateSubTitle = configuration.getOrDefault("templateSubTitle", "<h1>INSERT</h1>");
         templateMainTitle = configuration.getOrDefault("templateMainTitle", "<h1>INSERT</h1>");
         templateTextTitle = configuration.getOrDefault("templateTextTitle", "<h4>INSERT</h4>");
@@ -223,6 +227,8 @@ public class SiteBuilder {
                 .mapToObj(i -> "..\\").collect(Collectors.joining());
         boolean pageErrorWarning = false, pageIncompleteWarning = false;
         String warningMessage = "";
+        isCurrentlyInTextBlock = false;
+        isCurrentlyInCodeBlock = false;
 
         LineBuilder generatedBody = new LineBuilder();
         boolean isCurrentlyTextOrImage = false;
@@ -333,8 +339,15 @@ public class SiteBuilder {
                     isCurrentlyTextOrImage = true;
                     generatedBody.append(templateTextParagraphIntro);
                 }
+                if (line.trim().matches("`{1,2}(?:[^`].+)?")) multilineCodeWarning++;
+                else multilineCodeWarning = 0;
+                if (multilineCodeWarning >= 2) {
+                    String msg = "WARNING 3: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
+                            " --> Multiple lines of code without code block detected";
+                    if (!warnings.contains(msg)) warnings.add(msg);
+                }
                 generatedBody.append(prepareBodyText(line, pathToMainDirectory));
-                if (line.contains("</table>")) {
+                if (line.contains("</table>") || line.contains("</center>") || line.equals("$$$")) {
                     generatedBody.append("</p>");
                     generatedBody.append(templateTextParagraphIntro);
                 }
@@ -420,13 +433,59 @@ public class SiteBuilder {
         return (pathToMainDirectory + "\\images\\" + link).replaceAll("^\\\\", "");
     }
 
+    private boolean isCurrentlyInTextBlock = false;
+    private boolean isCurrentlyInCodeBlock = false;
+    private int multilineCodeWarning = 0;
+    private String currentInformationPage = "";
+
     private String prepareBodyText(String text, String pathToMainDirectory) {
         text = text.replace("\\[", "ESCAPEDSQUAREBRACKETSOPEN").replace("\\]", "ESCAPEDSQUAREBRACKETSCLOSE")
-                .replace("\\^", "ESCAPEDCARROT");
-        text = text.replaceAll(regexLink, regexLinkReplace).replace("``", "`&nbsp`").replaceAll("^` ", "`&nbsp")
-                .replaceAll("`([^`]+)`", "<code>$1</code>").replace("  ", "&nbsp;&nbsp;")
+                .replace("\\^", "ESCAPEDCARROT").replace("\\$", "ESCAPEDDOLLAR").replace("\\>", "ESCAPEDSMALLERTHAN")
+                .replace("\\<", "ESCAPEDLARGERTHAN");
+        if (text.matches("\\$\\$\\$ .+")) {
+            String spoilerBoxId = "spoiler-" + GeneralUtils.randomNumber(100, 999999);
+            String spoilerBoxLabel = text.replace("$$$", "").replaceAll("`([^`]+)`", "<code>$1</code>");
+            return "<button class=\"spoilerButton\" title=\"Klick mich!\" type=\"button\" onclick=\"if(document.getElementById('" + spoilerBoxId + "').style.display=='none')" +
+                    "{document.getElementById('" + spoilerBoxId + "') .style.display=''}else{document.getElementById('" + spoilerBoxId + "') .style.display='none'}\">" + spoilerBoxLabel + "</button>\n" +
+                    "<div class=\"spoilerContents\" id=\"" + spoilerBoxId + "\" style=\"display:none\">" + templateTextParagraphIntro;
+        } else if (text.matches("\\$\\$ ?([^$:]+):([^$]+)->([^$]+)")) {
+            String spoilerBoxId = "spoiler-" + GeneralUtils.randomNumber(100, 999999);
+            String spoilerBoxTitle = text.replaceAll("\\$\\$ ?([^$:]+):([^$]+)->([^$]+)", "$1").replaceAll("`([^`]+)`", "<code>$1</code>");
+            String spoilerBoxLabel = text.replaceAll("\\$\\$ ?([^$:]+):([^$]+)->([^$]+)", "$2").replaceAll("`([^`]+)`", "<code>$1</code>");
+            String spoilerBoxHoverText = text.replaceAll("\\$\\$ ?([^$:]+):([^$]+)->([^$]+)", "$3");
+            return "<span class=\"boxTextTitle\">&nbsp;&nbsp;&nbsp;&nbsp;" + spoilerBoxTitle + "</span><br>" +
+                    "<span class=\"boxTextSpoiler\" title=\"" + spoilerBoxHoverText + "\" onclick=\"if(document.getElementById('" + spoilerBoxId + "').style.display=='none')" +
+                    "{document.getElementById('" + spoilerBoxId + "') .style.display=''}else{document.getElementById('" + spoilerBoxId + "') .style.display='none'}\">" +
+                    spoilerBoxLabel + "</span>" +
+                    "<div class=\"spoilerContents\" id=\"" + spoilerBoxId + "\" style=\"display:none\">" + templateTextParagraphIntro;
+        } else if (text.matches("\\$\\$ ?([^$]+)->([^$]+)")) {
+            String spoilerBoxId = "spoiler-" + GeneralUtils.randomNumber(100, 999999);
+            String spoilerBoxLabel = text.replaceAll("\\$\\$ ([^$]+)->([^$]+)", "$1").replaceAll("`([^`]+)`", "<code>$1</code>");
+            String spoilerBoxHoverText = text.replaceAll("\\$\\$ ([^$]+)->([^$]+)", "$2");
+            return "<span class=\"boxTextSpoiler\" title=\"" + spoilerBoxHoverText + "\" onclick=\"if(document.getElementById('" + spoilerBoxId + "').style.display=='none')" +
+                    "{document.getElementById('" + spoilerBoxId + "') .style.display=''}else{document.getElementById('" + spoilerBoxId + "') .style.display='none'}\">" +
+                    spoilerBoxLabel + "</span>" +
+                    "<div class=\"spoilerContents\" id=\"" + spoilerBoxId + "\" style=\"display:none\">" + templateTextParagraphIntro;
+        } else if (text.equals("$$$")) {
+            return "</p></div>";
+        } else if (text.equals("$$$$") && !isCurrentlyInTextBlock) {
+            isCurrentlyInTextBlock = true;
+            return "<div class=\"spoilerContents\">";
+        } else if (text.equals("$$$$")) {
+            isCurrentlyInTextBlock = false;
+            return "</p></div>";
+        }
+        if (text.trim().startsWith("````")) isCurrentlyInCodeBlock = !isCurrentlyInCodeBlock;
+        text = text.replaceAll(regexLink, regexLinkReplace).replace("  ", "&nbsp;&nbsp;")
                 .replace("<<", "&lt&lt").replace(">>", "&gt&gt")
-                .replaceAll("\\^([^ <>]+)", "<sup>$1</sup>");
+                .replaceAll("\\^([^ <>]+)", "<sup>$1</sup>")
+                .replaceAll("\\$\\$([^$]+)\\$\\$", "<span class=\"spoiler\">$1</span>")
+                .replaceAll("\\$([^$]+)\\$", "<span class=\"spoiler2\">$1</span>")
+                .replaceAll("\\$\\$ ?([^$:]+):([^$]+)", "<span class=\"boxTextTitle\">&nbsp;&nbsp;&nbsp;&nbsp;$1</span><br><span class=\"boxText\">$2</span><br><br>")
+                .replaceAll("\\$\\$ ?([^$]+)", "<span class=\"boxText\">$1</span><br><br>")
+                .replaceAll("````", !isCurrentlyInCodeBlock ? "</div>" + templateTextParagraphIntro : "</p><div class=\"multilineCode\">")
+                .replace("``", "`&nbsp`").replaceAll("^` ", "`&nbsp")
+                .replaceAll("`([^`]+)`", "<code>$1</code>");
         if (text.matches(".*\\[([^]]+)].*")) {
             Pattern pattern = Pattern.compile("\\[([^]]+)]");
             Matcher matcher = pattern.matcher(text);
@@ -436,7 +495,8 @@ public class SiteBuilder {
             }
         }
         return text.replace("ESCAPEDSQUAREBRACKETSOPEN", "[").replace("ESCAPEDSQUAREBRACKETSCLOSE", "]")
-                .replace("ESCAPEDCARROT", "^");
+                .replace("ESCAPEDCARROT", "^").replace("ESCAPEDDOLLAR", "$").replace("ESCAPEDSMALLERTHAN", ">")
+                .replace("ESCAPEDLARGERTHAN", "<");
     }
 
     private String getMostLikelyLink(String linkText, String pathToMainDirectory) {

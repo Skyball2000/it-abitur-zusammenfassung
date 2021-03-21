@@ -39,7 +39,7 @@ BUILDER-PLACE-SEARCH-RANDOM-SITE
 
 async function rollRandomSearchTerm() {
 	var i;
-	for (i = 5; i < 15; i++) {
+	for (i = 3; i < 15; i++) {
 		await sleep(i * 20);
 		randomSearchTerm();
 	}

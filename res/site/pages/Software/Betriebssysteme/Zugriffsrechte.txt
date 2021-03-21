@@ -1,0 +1,17 @@
+# 10. Zugriffsrechte
+
+NTFS und EXT bieten die Möglichkeit, Verzeichnisse und Dateien gegen Zugriff von Fremden zu schützen. Hierfür werden Zugriffsrechte gesetzt.<br>
+
+EXT bietet drei verschiedene Arten von Zugriffsrechten:
+
+- <font style="color:red"><b>r</b></font> für read (lesen)
+- <font style="color:blue"><b>w</b></font> für write (schreiben)
+- <font style="color:ForestGreen"><b>x</b></font> für execute (ausführen)
+
+Diese Zugriffsrechte werden bei EXT für den Besitzer, eine Gruppe und die anderen Benutzer angegeben. Also zum Beispiel:<br>
+
+Besitzer <font style="color:red"><b>r</b></font> <font style="color:blue"><b>w</b></font> <font style="color:ForestGreen"><b>x</b></font><br>
+
+Gruppe <font style="color:red"><b>r</b></font> - <font style="color:ForestGreen"><b>x</b></font><br>
+
+Andere <font style="color:red"><b>r</b></font> - -<br>
