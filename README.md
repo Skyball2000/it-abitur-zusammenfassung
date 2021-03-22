@@ -28,6 +28,9 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
   `Marker` springt mit dem Text `Klick mich!`
 - `<b>, <i>, ...` - HTML Formatierungszeichen
 - ``` `code` ``` - Code, also mit backticks umschließen
+- ````` ````Java `````  
+  `Java code`  
+  ````` ```` ````` - Code blocks mit Sprache des Codes (Sprachlabel um eins nach oben verschieben: `Sprache<br>&nbsp;`)
 - `- Text` für eine ungeordnete Liste (mehrere `-` für Einrückungen)
 - `~ Text` für eine geordnete Liste (mehrere `~` für Einrückungen)
 - `$code$` - Spoiler
@@ -69,6 +72,15 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Fragen mit spoiler Antworten
 - Out dir zur `.gitignore` hinzugefügt
 - Multiline code (+ warnings, wenn diese nicht verwendet werden)
+- Progress bar, wie weit der Website-Generierungsprozess ist
+- Für multiline code muss nun kein `<br>` mehr am Ende der Zeile platziert werden
+- Mehr & bessere warnings
+- Code blocks in spoiler boxen werden nun richtig angezeigt
+- Code blocks haben nun einen 📋 button neben sich, mit dem man den code block kopieren kann
+- Code blocks können nun eine Sprache angeben, indem man die Sprache hinter die Anfangs-Backticks schreibt
+- Favicon
+- Click counter pro Seite
+- Google AdSense (?)
 
 ## Todo
 
@@ -78,3 +90,5 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Seiten fertig importieren
 - Seiten überarbeiten
 - Keywords für Seiten erstellen
+- Werbung (AdSense)  
+  Bin ich dabei! Theoretisch sollte es schon gehen, aber Google ist gerade etwas komisch.

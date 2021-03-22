@@ -1,0 +1,136 @@
+# 4. Wiederholungsanweisungen
+
+Sagen wir, wir wollen die Zahlen von 0 bis 10 in der Konsole ausgeben. Mit diesem (Java) Code wäre dies möglich:
+````Java
+System.out.println(0);
+System.out.println(1);
+System.out.println(2);
+System.out.println(3);
+System.out.println(4);
+System.out.println(5);
+System.out.println(6);
+System.out.println(7);
+System.out.println(8);
+System.out.println(9);
+System.out.println(10);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+````
+Aber das wäre enorm unpraktisch, vor allem, wenn man das für 100 Zeilen machen müsste. Es muss einen schnelleren Weg geben.<br>
+Darum gibt es sogenannte Wiederholungsanweisungen, die einen gewissen Code eine gewisse Anzahl an Malen ausführen können.
+
+## Kopfgesteuerte Schleife (while)
+`while` führt den Code, der innerhalb der `{` `}` geschweiften Klammern steht, so lange aus, bis die in den `(` `)` normalen Klammern hinter dem `while` stehende
+Bedingung nicht mehr `true` ist. Hierbei wird die Bedingung schon vor dem ersten Betreten geprüft, das heißt, sie wird gar nicht erst betreten, wenn die Bedingung `false` ist.
+````Java
+int x = 0;
+int max = 5;
+while (x < max) {
+    System.out.println(x);
+    x = x + 1;
+}
+````
+In dem Beispiel hier direkt darüber würden die Zahlen von 0 bis 4 ausgegeben werden.<br>
+Zu Beginn hat `x` den Wert 0. Nun treffen wir auf die Schleife: Die Bedingung wird überprüft: `x < max`, also in diesem Fall `0 < 5`, was `true` zurückgibt.
+Das heißt, die Schleife wird betreten: `x` wird in die Konsole ausgegeben (`System.out.println(x)`) und um 1 erhöht: `x = x + 1;`<br>
+Nun treffen wir auf das Schleifenende und überprüfen erneut die Schleifenbedingung: ist `x` noch immer kleiner als `max`? In diesem Fall noch immer ja: `1 < 5`,
+also wird die Schleife erneut durchlaufen.<br>
+Dies wird so lange wiederholt, bis die Bedingung nicht mehr `true`, sondern `false` ist. In unserem Beispiel wäre dies bei `x = 5` der Fall: `5 < 5` ist `false`.
+Damit wird die Schleife verlassen und der Code danach wird ausgeführt.
+
+## Fußgesteuerte Schleife (do while)
+`do while` funktioniert so ähnlich wie `while`, mit dem Unterschied, dass die Bedingung nicht schon beim ersten Betreten der Schleife, sondern nur die ganzen Male danach überprüft wird.<br>
+Ein Beispiel, das den unterschied zur normalen `while` Schleife zeigt:
+````Java
+int x = 0;
+int max = 5;
+do {
+    System.out.println(x);
+    x = x + 1;
+} while (x < max && x != 0);
+````
+Auch hier werden die Zahlen von 0 bis 4 ausgegeben. Die Bedingung in der Klammer (`x < max && x != 0`) sagt zwar aus, dass `x` nicht 0 sein darf, was es ja beim Betreten der
+Schleife ist, aber die Bedingung wird ja nicht beim Betreten, sondern erst nach der ersten Ausführung geprüft. Damit wurde `x` schon um 1 erhöht, wenn man bei der
+Bedingung ankommt und `x != 0` ist `true`. `x < max` ist genau wie bei dem anderen Beispiel so lange `true` wie `x` noch kleiner als 5 ist.
+
+## Zählschleife (for)
+Diese Schleifenart ist diejenige, die man in der Realität am Häufigsten verwendet. Sie führt die angegebenen Anweisungen eine gewisse Anzahl an malen aus.<br>
+````Java
+for (int i = 0; i < 5; i++) {
+    System.out.println(i);
+}
+````
+Auch dieses Beispiel würde die Zahlen von 0 bis 4 ausgeben.<br>
+Die `for`-Schleife hat in der Klammer drei Parameter, die je von einem `;` getrennt werden.<br>
+Der Erste wird vor der ersten Ausführung ausgeführt, hier initialisiert er eine Variable `i` mit dem Wert 0.<br>
+Der Zweite ist die Bedingung, die, wie bei `while`, vor jedem Schleifendurchlauf geprüft wird. Sollte hier also `i` größer oder gleich 5 sein, wird die Schleife abgebrochen.<br>
+Der Dritte wird <i>nach</i> jedem Schleifendurchlauf ausgeführt, das heißt, `i` wird jedes mal, wenn das Ende der Schleife erreicht wird, um 1 erhöht.<br>
+Also: Beim Betreten wird `i` auf 0 gesetzt und `i < 5` (`0 < 5` = `true`) wird überprüft. Der Schleifeninhalt wird ausgeführt. `i` wird um 1 erhöht (`i++`), die Bedingung
+`i < 5` (`1 < 5` = `true`) wird überprüft und der Schleifeninhalt wird ausgeführt. Dies wird so lange wiederholt, bis die Bedingung `false` ist.<br><br>
+Mit `for` lässt sich z.B. ein Array (also ein Feld) sehr einfach durchlaufen:
+````Java
+int\[\] foo = new int\[\]{0, 10, 2, 36, 96};
+for (int i = 0; i < foo.length; i++) {
+    System.out.println(i);
+}
+````
+Damit z.B. wird jeder Eintrag in dem Array ausgegeben.
+
+<br><br><br>
+Es gibt zwar noch mehr, mächtigere Schleifenarten (wie `for each` oder `Iterator`s) aber diese sind hier nicht relevant.
+
+## Aufgaben
+$$ Frage 1:Was ist der Unterschied von `while` und `do while`?->Lösung
+`while` prüft die Bedingung der Schleife bereits vor dem ersten Betreten.<br>
+`do while` tut dies nach dem ersten und den darauf folgenden Schleifendurchläufen.
+$$$
+
+$$ Frage 2:Was sind die drei Parameter der `for`-Schleife?->Lösung
+1. Wird vor dem ersten Betreten ausgeführt (initialisieren einer Zählvariable)<br>
+2. Bedingung, ob die Schleife noch mal ausgeführt werden soll. Bei `true` wird sie noch mal ausgeführt.<br>
+3. Wird nach jedem Schleifendurchlauf überprüft.
+$$$
+
+$$ Frage 3:Erstelle von jeder Art eine Schleife, die die Zahlen von 2 bis 6 ausgibt (versuche kreativ zu sein!)->Lösung
+Diese Lösungen sind nur Beispiele! Probiere deine Lösung an einem Computer aus.<br><br>
+while:<br>
+````Java
+int x = 1;
+while (x < 6) {
+    x++;
+    System.out.println(x);
+}
+````
+<br><br>do while:<br>
+````Java
+int x = 200;
+boolean istWahr;
+do {
+    System.out.println(x / 100);
+    x = x + 100;
+    istWahr = x < 700;
+} while (istWahr);
+````
+<br><br>for:<br>
+````Java
+for (int i = 2; i < 7; i++) {
+    System.out.println(i);
+}
+````
+$$$
+
+$$ Frage 4:Schreibe eine `for` Schleife, die das Beispiel ganz am Anfang ersetzen würde (die ganzen `System.out`s)->Lösung
+````Java
+for (int i = 0; i < 11; i++) {
+    System.out.println(i);
+}
+````
+$$$
+
+$$ Frage 5:Schreibe eine `for` Schleife, die jeden Wert eines integer arrays `werte` um 1 erhöht und dann ausgibt->Lösung
+````Java
+int[] werte = new int[]{0, 10, 2, 36, 96};
+for (int i = 0; i < werte.length; i++) {
+    werte\[i\]++;
+    System.out.println(werte\[i\]);
+}
+````
+$$$

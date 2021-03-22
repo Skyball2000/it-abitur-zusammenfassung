@@ -1,0 +1,134 @@
+# 3. Kontrollstrukturen
+
+Ohne Kontrollstrukturen läuft ein Programm einfach der Reihe nach die Anweisungen ab, ohne eine große Logik dahinter zu haben. Doch was, wenn man Teile des Codes
+nicht immer ausführen möchte oder einen gewissen Teil [ganz oft|Wiederholungsanweisungen]? Ein Programm ohne Kontrollstrukturen sähe z.B. so aus:
+````Java<br>&nbsp;
+int x = 23;
+int y = 54;
+int z = x + y;
+z = z * 3;
+System.out.println(z);
+````
+
+Doch was, wenn wir zum Beispiel `z` nur dann ausgeben wollen, wenn `x` größer als 80 ist? Oder `z` so oft ausgeben, wie `y` groß ist?<br><br>
+Darum gibt es die Kontrollstrukturen. Sie erlauben es einem, den linearen Programmablauf mit Bedingungen und Schleifen zu bestücken.
+
+## Verzweigung (if / else if / else)
+Mittels Verzweigungen können Bedingungen realisiert werden:
+````Java
+int x = 12;
+if (x > 4) {
+    System.out.println("x ist größer als 4!");
+}
+````
+Ein `if` mit einem `(` `)` Klammerpaar dahinter signalisiert eine solche Bedingung: Wenn die Bedingung in den Klammern `true` zurückgibt, dann wird der Code
+in den `{` `}` geschweiften Klammern ausgeführt, ansonsten nicht. In dem Beispiel über diesem Text würde also nichts in die Konsole ausgegeben werden, da
+`(12 > 4)` keine wahre Aussage ist.<br><br>
+
+Wenn man Code ausführen möchte, wenn die bei `if` angegebene Bedingung `false` ist, kann man ein `else` hinter die `}` schließende geschweifte Klammer des `if`s schreiben:
+````Java
+int x = 12;
+if (x > 4) {
+    System.out.println("x ist größer als 4!");
+} else {
+    System.out.println("x ist kleiner oder gleich 4!");
+}
+````
+Hier würde nun `x ist kleiner oder gleich 4!` ausgegeben werden, da die Bedingung `false` ist.<br><br>
+
+Doch nicht einfach nur ein `else` ist möglich, auch mehrere aufeinander folgende `else if`s sind möglich (auch mit abschließendem `else`):
+````Java
+int x = 4;
+if (x > 4) {
+    System.out.println("x ist größer als 4!");
+} else if (x == 4) {
+    System.out.println("x ist gleich 4!");
+} else {
+    System.out.println("x ist kleiner als 4!");
+}
+````
+Hierbei würde nun `x ist gleich 4!` ausgegeben werden, da die erste Bedingung (`x > 4`) `false` ist, die Zweite (`x == 4`) aber `true`. Damit wird der `else`-Zweig
+ganz am Ende übersprungen.
+
+## Mehrfachauswahl (switch)
+Wenn man ganz viele verschiedene Bedingungen abfragen muss, können die vielen `else if`s schnell unübersichtlich werden. Darum gibt es `switch` statements:
+Man gibt ihr eine Variable und kann dann beliebig viele Zustände von dieser abfragen, ohne sie bei jedem Vergleich zu nennen.<br><br>
+In diesem Beispiel würde `x ist 3` ausgegeben werden. Warum?
+````Java
+int x = 3;
+switch (x) {
+    case 1:
+        System.out.println("x ist 1");
+        break;
+    case 3:
+        System.out.println("x ist 3");
+        break;
+    case 8:
+        System.out.println("x ist 8");
+        break;
+}
+````
+Man gibt oben, nach dem `switch`, in den Klammern die zu überprüfende Variable an. Hier ist es `x` mit dem Wert 3.<br>
+In den `{` `}` geschweiften Klammern dahinter kommen dann die verschiedenen Fälle, also `case`s. Man schreibt für jeden zu prüfenden Fall ein solches Konstrukt:
+````Java
+case WERT:
+    //auszuführender Code
+    break;
+````
+Wenn das Programm einen `case` findet, bei dem der Wert von der nach `switch` genannten Variable dem `WERT` hinter dem `case` entspricht, führt es den Code aus, der hinter
+dem `:` steht. Am Ende eines `case`s muss immer `break;` stehen, um das `switch` statement zu verlassen.<br><br>
+
+Es können allerdings auch mehrere `case`s hintereinander geschrieben werden und wenn egal welche dieser Bedingungen zutrifft, wird der Code dahinter ausgeführt.<br>
+Hier würde `x ist 1, 3 oder 8` ausgegeben werden, da das zweite Label `case 3:` zutrifft und damit der Code hinter den `case`s ausgeführt wird.
+````Java
+int x = 3;
+switch (x) {
+    case 1:
+    case 3:
+    case 8:
+        System.out.println("x ist 1, 3 oder 8");
+        break;
+}
+````
+
+## Verschachtelte Verzweigungen
+[Einstufige Verzweigungen] erlauben es einem also Entscheidungen zu treffen und basierend darauf Code auszuführen oder zu überspringen.<br>
+Doch man kann nicht einfach nur ein `if` haben und fertig - es können beliebig viele socher Kontrollstrukturen ineinander platziert werden:
+````Java
+if (x == 6) {
+    switch (y) {
+        case 3:
+            System.out.println("x ist 6 und y ist 3");
+            break;
+        case 14:
+            System.out.println("x ist 6 und y ist 14");
+            break;
+    }
+} else {
+    if (y > 12) {
+        System.out.println("x ist nicht 6 und y größer als 12");
+    } else if (y == 12) {
+        System.out.println("x ist nicht 6 und y gleich 12");
+    } else {
+        System.out.println("x ist nicht 6 und y kleiner als 12");
+    }
+}
+````
+<br>
+Nun fehlen nur noch die Schleifen, diese werden aber auf der [nächsten Seite|Wiederholungsanweisungen] erklärt.
+
+## Aufgaben
+$$ Frage 1:Was für Anweisungen kennst du jetzt, mit denen man Verzweigungen erstellen kann?->Lösung
+1. if / else if / else<br>
+2. switch
+$$$
+
+$$ Frage 2:Wie viele Verzweigungen kann man ineinander platzieren?->Lösung
+Beliebig viele! (okay, es sind eigentlich nur etwa 20,000)
+$$$
+
+$$ Frage 3:Was würde in dem Beispiel mit den verschachtelten Verzweigungen ausgegeben werden, wenn `x = 9` und `y = 14`?->Lösung
+⇾ `x ist nicht 6 und y größer als 12`
+$$$
+
+$$ Frage 4:Erstelle eine verschachtelte Verzweigung mit mindestens einem `if`, `else if`, `else` und `switch`!

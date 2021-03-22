@@ -30,9 +30,9 @@ img pages/image25.png
 Da nicht immer alle Interrupts benötigt werden, müssen nur die Interrupts angelegt werden, die später auch verwendet werden sollen.
 Der im Beispiel (Grafik oben) dargestellte Interrupt `INT0` (externer Interrupt 0) wird wie folgt erstellt:<br>
 
-````
-.include "tn2313def.inc"<br>
-.org INT0addr<br>
+````Assembler
+.include "tn2313def.inc"
+.org INT0addr
 rjmp isrINT0
 ````
 
@@ -52,9 +52,9 @@ Eine <b>I</b>nterrupt <b>s</b>ervice <b>r</b>outine beginnt eigendlich immer mit
 der wieder zur ursprünglichen Adresse im Programmspeicher springt, die vor der Interruptbehandlung zuletzt ausgeführt wurde.
 Zwischen diesen beiden Befehlen befinden sich normale Befehle.<br>
 
-````
-isrINT0:  ; Marker zu dem aus der Interruptvektortabelle gesprungen wird<br>
-  ; weitere Befehle in der ISR<br>
+````Assembler
+isrINT0:  ; Marker zu dem aus der Interruptvektortabelle gesprungen wird
+  ; weitere Befehle in der ISR
 reti      ; zur Tabelle zurückspringen
 ````
 
@@ -68,10 +68,10 @@ dann Richtung Anfang, man setzt daher den Stackpointer zu Beginn auf die letzte 
 Da die bei uns verwendeten Microcontroller 16 Bit-Adressen verwenden, setzt sich die Adresse aus einem oberen und einem unteren Bit zusammen, die je gesichert werden müssen.<br>
 Das wird wie folgt getan:<br>
 
-````
-ldi r16, LOW(RAMEND)   ; untere 8 Bit werden in r16 geladen<br>
-out SPL, r16           ; speichern der Position der unteren 8 Bit<br>
-ldi r16, HIGH(RAMEND)  ; das gleiche für die oberen 8 Bit<br>
+````Assembler
+ldi r16, LOW(RAMEND)   ; untere 8 Bit werden in r16 geladen
+out SPL, r16           ; speichern der Position der unteren 8 Bit
+ldi r16, HIGH(RAMEND)  ; das gleiche für die oberen 8 Bit
 out SPH, r16
 ````
 
@@ -79,13 +79,13 @@ Somit befindet sich nun die Adresse in `SPL` und `SPH`. Für gewöhnlich findet 
 
 Das eigentliche Sichern der Register auf dem Stack erfolgt dann in den jeweiligen ISRs:<br>
 
-````
-push r16        ; sichern des Registers r16<br>
-in   r16, SREG  ; das Statusregister wird in r16 geladen<br>
-push r16        ; und wird ebenfalls gesichert<br>
-  ; ... Befehle der Interruptbehandlung<br>
-pop  r16        ; das Statusregister wird wieder runtergeholt<br>
-out  SREG, r16  ; und zurückgeschrieben<br>
+````Assembler
+push r16        ; sichern des Registers r16
+in   r16, SREG  ; das Statusregister wird in r16 geladen
+push r16        ; und wird ebenfalls gesichert
+  ; ... Befehle der Interruptbehandlung
+pop  r16        ; das Statusregister wird wieder runtergeholt
+out  SREG, r16  ; und zurückgeschrieben
 pop  r16        ; r16 wird wiederhergestellt
 ````
 

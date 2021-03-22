@@ -1,0 +1,35 @@
+# 5. Felder / Arrays
+> arrays
+
+Die bisher behandelten Variablen und Konstanten sind sogenannte [einfache Datentypen|Elementare Sprach|primitiven Datentypen].
+Eine weitere Datenstruktur ist das Array oder auch Feld genannt.<br><br>
+
+Was ist ein Feld? Ein Feld kann eine gewisse Anzahl an Werten, die alle vom gleichen Typ sind, enthalten.
+In diesem Beispiel handelt es sich um ein Integer Feld mit der Größe 6. Jeder der 6 Feldplätze kann somit einem Integer-Wert zugeordnet werden.
+img pages/felder_arrays.png
+
+<br>Man kann die Größe eines Feldes nur ein einziges mal festlegen, danach ist diese unveränderlich gesetzt. Darum sollte man sich vor der initialisierung
+Gedanken darüber machen, wie viele Werte man in dem Feld speichern können möchte.<br><br>
+
+Um ein Array zu deklarieren muss man einfach den Typ, von dem das Feld sein soll, und ein `\[\]` eckiges Klammerpaar dahinter setzen. Um es zu initialisieren
+muss man das Schlüsselwort `new` verwenden, denn ein Feld ist kein primitiver Typ mehr. Bei der Initialisierung muss man zudem die Feldgröße in den `\[\]` eckigen Klammern angeben.<br>
+Eine alternative Initialisierungsmethode ist, gleich Werte für die Feldplätze anzugeben. Die Feldgröße wird dann auf die Anzahl der angegebenen Werte gesetzt.
+````Java
+int\[\] meinFeld;
+meinFeld = new int[6];
+int\[\] anderesFeld = {12, 54, 78, 2, 34, 5};&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+````
+In beiden Fällen wäre die Feldgröße 6, nur, dass `anderesFeld` bereits Werte auf den Feldplätzen hat.<br><br>
+
+Nun kann man sowohl lesend als auch schreibend auf die Feldelemente zugreifen. Dazu muss man einfach nur den Feldnamen mit `\[\]` eckigen Klammern
+und dem Index in den Klammern schreiben. Wichtig ist hierbei zu wissen, dass der erste Feldplatz den Index 0 und nicht 1 hat, man beginnt also bei 0 zu zählen.
+````Java
+int\[\] meinFeld = new int\[6\];
+meinFeld\[0\] = 3;
+meinFeld\[1\] = 57;
+meinFeld\[2\] = 31;
+meinFeld\[3\] = 98;
+meinFeld\[4\] = -4;
+meinFeld\[5\] = 12;
+System.out
+````

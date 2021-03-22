@@ -22,6 +22,8 @@ public class SiteBuilder {
     private final String templatePlaceContents;
     private final String templatePlaceSearchList;
     private final String templatePlaceSearchRandomSite;
+    private final String templatePlaceScript;
+    private final String templatePlaceClickCounter;
     private final String templateInsert;
     private final String templateInsert1;
     private final String templateInsert2;
@@ -56,6 +58,8 @@ public class SiteBuilder {
         templatePlaceContents = configuration.getOrDefault("templatePlaceContents", "BUILDER-PLACE-CONTENTS");
         templatePlaceSearchList = configuration.getOrDefault("templatePlaceSearchList", "BUILDER-PLACE-SEARCH-LIST");
         templatePlaceSearchRandomSite = configuration.getOrDefault("templatePlaceSearchRandomSite", "BUILDER-PLACE-SEARCH-RANDOM-SITE");
+        templatePlaceScript = configuration.getOrDefault("templatePlaceScript", "BUILDER-PLACE-SCRIPT");
+        templatePlaceClickCounter = configuration.getOrDefault("templatePlaceClickCounter", "BUILDER-PLACE-CLICK-COUNTER");
         templateInsert = configuration.getOrDefault("templateInsert", "INSERT");
         templateInsert1 = configuration.getOrDefault("templateInsert1", "INSERT-1");
         templateInsert2 = configuration.getOrDefault("templateInsert2", "INSERT-2");
@@ -77,6 +81,12 @@ public class SiteBuilder {
 
         regexLink = configuration.getOrDefault("regexLink", "\\[\\[href=([^|]+)\\|([^]]+)]]");
         regexLinkReplace = configuration.getOrDefault("regexLinkReplace", "<a href=\"$1\">$2</a>");
+
+        experiment();
+    }
+
+    private void experiment() {
+
     }
 
     public void clearOldSite() {
@@ -94,14 +104,19 @@ public class SiteBuilder {
         orderedPages = pageTreeBuilder.getOrderedPages();
 
         ArrayList<String> template = FileUtils.readFileToArrayList(new File(siteTemplateDir + "informationtemplate.html"));
+        System.out.println("Generating pages...");
+        numberOfPages = informationPages.size();
         files.forEach(siteFile -> buildInformationPage(siteFile, template));
+        System.out.println("\n" + informationPages.size() + " pages generated");
 
         FileUtils.copyFile(new File(siteTemplateDir + "information.css"), new File(siteOutDir + "information.css"));
         FileUtils.copyFile(new File(siteTemplateDir + "Hauptseite.css"), new File(siteOutDir + "Hauptseite.css"));
         FileUtils.copyFile(new File(siteTemplateDir + "nicepage.css"), new File(siteOutDir + "nicepage.css"));
+        FileUtils.copyFile(new File(siteTemplateDir + "information.js"), new File(siteOutDir + "information.js"));
         FileUtils.copyFile(new File(siteImagesDir + siteImageIcon), new File(siteOutDir + "images\\" + siteImageIcon));
         FileUtils.copyFile(new File(siteImagesDir + siteTitleImage), new File(siteOutDir + "images\\" + siteTitleImage));
         FileUtils.copyFile(new File(siteImagesDir + "yangifsmall.gif"), new File(siteOutDir + "images\\yangifsmall.gif"));
+        FileUtils.copyFile(new File(siteImagesDir + "arrow-cursor.svg"), new File(siteOutDir + "images\\arrow-cursor.svg"));
 
         String[] searchJs = FileUtils.readFileToStringArray(new File(siteTemplateDir + "search.js"));
         IntStream.range(0, searchJs.length).filter(i -> searchJs[i].equals(templatePlaceSearchRandomSite)).forEach(i -> searchJs[i] = generateSearchRandomKeywords());
@@ -227,6 +242,7 @@ public class SiteBuilder {
                 .mapToObj(i -> "..\\").collect(Collectors.joining());
         boolean pageErrorWarning = false, pageIncompleteWarning = false;
         String warningMessage = "";
+        currentPage = "no page";
         isCurrentlyInTextBlock = false;
         isCurrentlyInCodeBlock = false;
 
@@ -246,6 +262,7 @@ public class SiteBuilder {
                     warningMessage = line.replaceAll(".+!(.*)", "$1");
                 } else
                     pageTitle = line.replace("# ", "");
+                currentPage = pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "");
             } else if (line.startsWith("## ")) { //title in text
                 if (isCurrentlyTextOrImage) {
                     isCurrentlyTextOrImage = false;
@@ -339,11 +356,17 @@ public class SiteBuilder {
                     isCurrentlyTextOrImage = true;
                     generatedBody.append(templateTextParagraphIntro);
                 }
-                if (line.trim().matches("`{1,2}(?:[^`].+)?")) multilineCodeWarning++;
+                String trimmedLine = line.trim();
+                if (trimmedLine.matches("`{1,2}(?:[^`].+)?")) multilineCodeWarning++;
                 else multilineCodeWarning = 0;
-                if (multilineCodeWarning >= 2) {
+                if (multilineCodeWarning >= 2 && !isCurrentlyInTextBlock) {
                     String msg = "WARNING 3: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
                             " --> Multiple lines of code without code block detected";
+                    if (!warnings.contains(msg)) warnings.add(msg);
+                }
+                if (isCurrentlyInCodeBlock && trimmedLine.endsWith("<br>")) {
+                    String msg = "WARNING 4: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
+                            " --> Code block contains <br>";
                     if (!warnings.contains(msg)) warnings.add(msg);
                 }
                 generatedBody.append(prepareBodyText(line, pathToMainDirectory));
@@ -403,13 +426,15 @@ public class SiteBuilder {
                 generatedPage.append(templateIcon.replace(templateInsert, pathToMainDirectory + "images\\" + siteImageIcon));
             } else if (line.contains(templatePlaceMainPage)) {
                 generatedPage.append(line.replace(templatePlaceMainPage, pathToMainDirectory + mainPageUrl));
+            } else if (line.contains(templatePlaceScript)) {
+                generatedPage.append(line.replace(templatePlaceScript, "<script src=\"" + pathToMainDirectory + "information.js\"></script>"));
+            } else if (line.contains(templatePlaceClickCounter)) {
+                generatedPage.append(line.replace(templatePlaceClickCounter, generateClickCounter(pathToMainDirectory, pageTitle)));
             } else {
                 generatedPage.append(line);
             }
         }
 
-        System.out.println("Generated " + pageSubtitle + " / " + pageTitle.replaceAll("<[^>]+>", "") +
-                (pageErrorWarning ? " WARNING 1" : "") + (pageIncompleteWarning ? " WARNING 2" : ""));
         String warningMessageDisplay = warningMessage.length() > 0 ? " --> " + warningMessage : "";
         if (pageErrorWarning)
             warnings.add("WARNING 1: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
@@ -418,8 +443,47 @@ public class SiteBuilder {
             warnings.add("WARNING 2: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
                     warningMessageDisplay);
 
+        currentPageNumber++;
+        printProgressBar(currentPageNumber, numberOfPages);
+
         FileUtils.writeFile(new File(siteOutDir + path.replace(templateSubTitleDefault, "") + "\\" + siteFile.getName().replace(".txt", ".html")), optimizeGeneratedPage(generatedPage.toString()));
     }
+
+    private final ArrayList<String> clickCounters = new ArrayList<>();
+    private final static boolean CREATE_COUNTERS = true;
+
+    private String generateClickCounter(String pathToMainDirectory, String pageTitle) {
+        String counterKey = pageTitle.replaceAll("<[^>]+>", "").toLowerCase().replaceAll("[^a-z]", "");
+        if (counterKey.length() == 0) {
+            warnings.add("WARNING 6: " + pageTitle + " --> Click counter has length of 0");
+            return "";
+        } else if (counterKey.length() == 1) counterKey += "aa";
+        else if (counterKey.length() == 2) counterKey += "a";
+        else if (counterKey.length() > 25) counterKey = counterKey.substring(0, 25);
+        if (clickCounters.contains(counterKey)) {
+            warnings.add("WARNING 7: " + pageTitle + " --> Click counter already exists on other site");
+            return "";
+        }
+        clickCounters.add(counterKey);
+
+        CountApi countApi = new CountApi("itabisite", counterKey);
+        if (CREATE_COUNTERS)
+            new Thread(() -> countApi.create(true)).start();
+
+        LineBuilder lineBuilder = new LineBuilder();
+        lineBuilder.append("<div class=\"clickCounter\">");
+        if (CREATE_COUNTERS)
+            lineBuilder.append("<span id=\"counterPage\" style=\"display:none;\">" + countApi.getKeyNamespace() + "</span>");
+        else
+            lineBuilder.append("<span id=\"counterPage\" style=\"display:none;\">yan/test</span>");
+        lineBuilder.append("<span id=\"counterInsert\">0</span>");
+        lineBuilder.append("<img width=\"20\" src=\"" + pathToMainDirectory + "images/arrow-cursor.svg\"/>");
+        lineBuilder.append("</div>");
+        return lineBuilder.toString();
+    }
+
+    private int currentPageNumber = 0;
+    private int numberOfPages = 0;
 
     private String prepareImageLink(String link) {
         if (link.contains("http"))
@@ -435,20 +499,28 @@ public class SiteBuilder {
 
     private boolean isCurrentlyInTextBlock = false;
     private boolean isCurrentlyInCodeBlock = false;
+    private boolean firstCodeBlockLine = true;
     private int multilineCodeWarning = 0;
-    private String currentInformationPage = "";
+    private String currentPage = "";
+    private String currentCodeBlockID = "";
+    private String currentCodeBlockLanguage = "";
 
     private String prepareBodyText(String text, String pathToMainDirectory) {
         text = text.replace("\\[", "ESCAPEDSQUAREBRACKETSOPEN").replace("\\]", "ESCAPEDSQUAREBRACKETSCLOSE")
                 .replace("\\^", "ESCAPEDCARROT").replace("\\$", "ESCAPEDDOLLAR").replace("\\>", "ESCAPEDSMALLERTHAN")
                 .replace("\\<", "ESCAPEDLARGERTHAN");
+        if (!firstCodeBlockLine && isCurrentlyInCodeBlock && !text.endsWith("<br>") && !text.trim().equals("````"))
+            text = "<br>" + text;
+        if (isCurrentlyInCodeBlock && firstCodeBlockLine) firstCodeBlockLine = false;
         if (text.matches("\\$\\$\\$ .+")) {
+            isCurrentlyInTextBlock = true;
             String spoilerBoxId = "spoiler-" + GeneralUtils.randomNumber(100, 999999);
             String spoilerBoxLabel = text.replace("$$$", "").replaceAll("`([^`]+)`", "<code>$1</code>");
             return "<button class=\"spoilerButton\" title=\"Klick mich!\" type=\"button\" onclick=\"if(document.getElementById('" + spoilerBoxId + "').style.display=='none')" +
                     "{document.getElementById('" + spoilerBoxId + "') .style.display=''}else{document.getElementById('" + spoilerBoxId + "') .style.display='none'}\">" + spoilerBoxLabel + "</button>\n" +
                     "<div class=\"spoilerContents\" id=\"" + spoilerBoxId + "\" style=\"display:none\">" + templateTextParagraphIntro;
         } else if (text.matches("\\$\\$ ?([^$:]+):([^$]+)->([^$]+)")) {
+            isCurrentlyInTextBlock = true;
             String spoilerBoxId = "spoiler-" + GeneralUtils.randomNumber(100, 999999);
             String spoilerBoxTitle = text.replaceAll("\\$\\$ ?([^$:]+):([^$]+)->([^$]+)", "$1").replaceAll("`([^`]+)`", "<code>$1</code>");
             String spoilerBoxLabel = text.replaceAll("\\$\\$ ?([^$:]+):([^$]+)->([^$]+)", "$2").replaceAll("`([^`]+)`", "<code>$1</code>");
@@ -459,6 +531,7 @@ public class SiteBuilder {
                     spoilerBoxLabel + "</span>" +
                     "<div class=\"spoilerContents\" id=\"" + spoilerBoxId + "\" style=\"display:none\">" + templateTextParagraphIntro;
         } else if (text.matches("\\$\\$ ?([^$]+)->([^$]+)")) {
+            isCurrentlyInTextBlock = true;
             String spoilerBoxId = "spoiler-" + GeneralUtils.randomNumber(100, 999999);
             String spoilerBoxLabel = text.replaceAll("\\$\\$ ([^$]+)->([^$]+)", "$1").replaceAll("`([^`]+)`", "<code>$1</code>");
             String spoilerBoxHoverText = text.replaceAll("\\$\\$ ([^$]+)->([^$]+)", "$2");
@@ -473,9 +546,29 @@ public class SiteBuilder {
             return "<div class=\"spoilerContents\">";
         } else if (text.equals("$$$$")) {
             isCurrentlyInTextBlock = false;
-            return "</p></div>";
+            return "";
+            //return "</p></div>";
         }
-        if (text.trim().startsWith("````")) isCurrentlyInCodeBlock = !isCurrentlyInCodeBlock;
+        if (text.trim().startsWith("````")) {
+            isCurrentlyInCodeBlock = !isCurrentlyInCodeBlock;
+            if (isCurrentlyInCodeBlock) {
+                currentCodeBlockID = "code_block_" + GeneralUtils.randomNumber(100, 99999);
+                if (text.matches(".*````.+")) {
+                    currentCodeBlockLanguage = text.replaceAll(".*````(.+)", "$1");
+                    text = "````";
+                } else {
+                    currentCodeBlockLanguage = "";
+                    String msg = "WARNING 5: " + currentPage +
+                            " --> Code block without language";
+                    if (!warnings.contains(msg)) warnings.add(msg);
+                }
+            }
+            firstCodeBlockLine = true;
+            if (isCurrentlyInTextBlock)
+                return "";
+        }
+
+        if (isCurrentlyInCodeBlock && isCurrentlyInTextBlock) text = "`" + text + "`";
         text = text.replaceAll(regexLink, regexLinkReplace).replace("  ", "&nbsp;&nbsp;")
                 .replace("<<", "&lt&lt").replace(">>", "&gt&gt")
                 .replaceAll("\\^([^ <>]+)", "<sup>$1</sup>")
@@ -483,7 +576,10 @@ public class SiteBuilder {
                 .replaceAll("\\$([^$]+)\\$", "<span class=\"spoiler2\">$1</span>")
                 .replaceAll("\\$\\$ ?([^$:]+):([^$]+)", "<span class=\"boxTextTitle\">&nbsp;&nbsp;&nbsp;&nbsp;$1</span><br><span class=\"boxText\">$2</span><br><br>")
                 .replaceAll("\\$\\$ ?([^$]+)", "<span class=\"boxText\">$1</span><br><br>")
-                .replaceAll("````", !isCurrentlyInCodeBlock ? "</div>" + templateTextParagraphIntro : "</p><div class=\"multilineCode\">")
+                .replaceAll("````", !isCurrentlyInTextBlock ? (
+                        !isCurrentlyInCodeBlock ? "<button id=\"" + currentCodeBlockID + "_button\" class=\"copyClipboardButton\" onclick=\"copyToClipboard('" + currentCodeBlockID + "', '" + currentCodeBlockID + "_button', '" + currentCodeBlockID + "_language')\">\uD83D\uDCCB</button>" +
+                                "<div id=\"" + currentCodeBlockID + "_language\" class=\"multilineCodeTitle\" >" + currentCodeBlockLanguage + "</div></div>" +
+                                templateTextParagraphIntro : "</p><div class=\"multilineCode\" id=\"" + currentCodeBlockID + "\">") : "")
                 .replace("``", "`&nbsp`").replaceAll("^` ", "`&nbsp")
                 .replaceAll("`([^`]+)`", "<code>$1</code>");
         if (text.matches(".*\\[([^]]+)].*")) {
@@ -522,5 +618,29 @@ public class SiteBuilder {
 
     private String optimizeGeneratedPage(String generated) {
         return generated.replaceAll("\n<br>", "<br>");
+    }
+
+    public static String generateProgressBar(int currentValue, int maxValue) {
+        int progressBarLength = 33;
+        int currentProgressBarIndex = (int) Math.ceil(((double) progressBarLength / maxValue) * currentValue);
+        String formattedPercent = String.format(" %5.1f %% ", (100 * currentProgressBarIndex) / (double) progressBarLength);
+        int percentStartIndex = ((progressBarLength - formattedPercent.length()) / 2);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (int progressBarIndex = 0; progressBarIndex < progressBarLength; progressBarIndex++) {
+            if (progressBarIndex <= percentStartIndex - 1
+                    || progressBarIndex >= percentStartIndex + formattedPercent.length()) {
+                sb.append(currentProgressBarIndex <= progressBarIndex ? " " : "=");
+            } else if (progressBarIndex == percentStartIndex) {
+                sb.append(formattedPercent);
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    private void printProgressBar(int currentValue, int maxValue) {
+        System.out.print(String.format("\r%s", generateProgressBar(currentValue, maxValue)));
     }
 }

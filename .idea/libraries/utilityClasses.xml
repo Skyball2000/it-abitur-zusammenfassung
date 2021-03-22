@@ -6,6 +6,9 @@
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/utilityClasses.jar!/JavaDocs" />
     </JAVADOC>
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/utilityClasses.jar!/JavaDocs" />
+      <root url="jar://$PROJECT_DIR$/lib/utilityClasses.jar!/JavaDocs" />
+    </SOURCES>
   </library>
 </component>

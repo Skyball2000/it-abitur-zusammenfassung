@@ -31,9 +31,11 @@ Kommentare werden durch folgende Zeichenketten ein-/ausgeleitet:
 </tbody>
 </table>
 
-z.B.<br>
-`//initialisierung einer Variable:`<br>
-`int x = 0;`
+z.B.
+````Java
+//initialisierung einer Variable:
+int x = 0;
+````
 
 
 ## Reservierte Schlüsselwörter
@@ -45,7 +47,7 @@ Hier noch einige für C:<br>
 
 
 ## Einfache Datentypen
-In Java gibt es folgende primitiven Datentypen:
+In Java gibt es folgende [primitiven Datentypen]:
 <table class="tg">
 <thead>
   <tr>
@@ -178,9 +180,9 @@ Um den Wert der Variable zu setzen, muss man lediglich den Variablenname, ein `=
 `meinWert = 12;`<br><br>
 
 Doch man kann nicht einfach nur einen Wert zuordnen, sondern auch das Ergebnis eines ganzen Ausdrucks:<br>
-````
-int anzahl = 3;<br>
-int gewicht = 23;<br>
+````Java
+int anzahl = 3;
+int gewicht = 23;
 int gesamtGewicht = anzahl * gewicht;
 ````
 Zunächst werden also die Werte der Variablen `anzahl` und `gewicht` aus dem Speicher geladen, multipliziert und das Ergebnis der Variable `gesamtGewicht` zugeordnet.

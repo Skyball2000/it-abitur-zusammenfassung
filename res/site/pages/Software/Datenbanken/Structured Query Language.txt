@@ -21,9 +21,11 @@ da bestimmte Tabellenspalten ausgewählt werden. Dabei sind folgende Parameter z
 
 Es gibt einen weiteren Parameter, der angegeben werden kann: `DISTINCT`. Mit diesem werden nur Einträge im Ergebnis zugelassen,
 wenn sie nicht schon mal vorkommen, heißt, jedes Ergebnis taucht nur ein mal auf.<br>
-`SELECT *`<br>
-`SELECT Spalte`<br>
-`SELECT DISTINCT Spalte, AndereSpalte`<br><br>
+````SQL
+SELECT *
+SELECT Spalte
+SELECT DISTINCT Spalte, AndereSpalte
+````
 
 Nun müssen allerdings noch die Tabellen angegeben werden, von denen die Daten geholt werden sollen. Dies passiert mit `FROM`,
 welches auch zu der <b>Projektion</b> gehört. Hierbei werden einfach alle benötigten Tabellen hinter das `FROM` geschrieben:<br>
@@ -41,9 +43,9 @@ Ein `LEFT` / `RIGHT JOIN` nimmt alle Einträge der linken / rechten Tabelle und 
 Ein `FULL JOIN` verbindet alle möglichen Kombinationen mit zueinander passenden Datensätzen und kann möglicherweise eine sehr große Tabelle generieren.<br><br>
 
 Ein JOIN in SQL sieht so aus:<br>
-````
-SELECT *<br>
-FROM Bestellungen INNER JOIN Kunden ON Bestellungen.KundenID = Kunden.KundenID<br>
+````SQL
+SELECT *
+FROM Bestellungen INNER JOIN Kunden ON Bestellungen.KundenID = Kunden.KundenID
 WHERE Kunden.Name LIKE "T%";
 ````
 Diese Abfrage im Speziellen vereint die Tabellen `Bestellungen` (links) und `Kunden` (rechts) dort, wo die `KundenID` gleich ist.
@@ -149,11 +151,13 @@ welche als Joker innerhalb eines Textes dienen:
 Manchmal gibt es mehrere verschiedene, die das gleiche tun.<br><br>
 
 Einige Beispiele für `WHERE`:<br>
-`SELECT * FROM Teilnehmer WHERE TeilnehmerNr = 3;`<br>
-`SELECT VName FROM Teilnehmer WHERE VName LIKE "T?m";`<br>
-`SELECT PName FROM Projekt WHERE VName IS NOT NULL AND Datum BETWEEN #1/1/1968# AND #1/1/1988#;`<br>
-`SELECT * FROM Projekt WHERE NOT (PName LIKE "c[a-z]t*" OR AnzTeilnehmer > 100);`<br>
-`SELECT * FROM Kunden WHERE Land IN (SELECT Land FROM Anbieter);`<br><br>
+````SQL
+SELECT * FROM Teilnehmer WHERE TeilnehmerNr = 3;
+SELECT VName FROM Teilnehmer WHERE VName LIKE "T?m";
+SELECT PName FROM Projekt WHERE VName IS NOT NULL AND Datum BETWEEN #1/1/1968# AND #1/1/1988#;
+SELECT * FROM Projekt WHERE NOT (PName LIKE "c[a-z]t*" OR AnzTeilnehmer > 100);
+SELECT * FROM Kunden WHERE Land IN (SELECT Land FROM Anbieter);
+````
 
 ## Aggregatfunktionen
 [Aggregatfunktionen] (auch Spaltenfunktionen) fassen die Werte einer gesamten Spalte zu einem kombinierten (aggregierten) Wert zusammen.
@@ -181,10 +185,10 @@ Mit `HAVING` können dann Bedingungen auf diese einzelnen Gruppen angewandt werd
 - `WHERE` eliminiert einzelne Zeilen
 - `HAVING` eliminiert einzelne Gruppen
 Ein Beispiel:
-````
-SELECT ProduktID, SUM(Menge) AS Gesamtmenge, AVG(Menge) AS DurchschnMenge<br>
-FROM Bestellungen<br>
-GROUP BY ProduktID<br>
+````SQL
+SELECT ProduktID, SUM(Menge) AS Gesamtmenge, AVG(Menge) AS DurchschnMenge
+FROM Bestellungen
+GROUP BY ProduktID
 HAVING AVG(Menge) < 12;
 ````
 Hier wird zunächst nach der `ProduktID` gruppiert. Dann werden alle Gruppen ausgeschlossen, die mehr als 12 mal im Durchschnitt gekauft werden,
