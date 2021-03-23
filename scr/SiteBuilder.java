@@ -40,6 +40,7 @@ public class SiteBuilder {
     private final String siteImageIcon;
     private final String siteTitleImage;
     private final String mainPageUrl;
+    public static String informationPageEnding;
     private final String regexLink;
     private final String regexLinkReplace;
 
@@ -78,6 +79,8 @@ public class SiteBuilder {
         siteImageIcon = configuration.getOrDefault("siteImageIcon", "itabiicon.png");
         siteTitleImage = configuration.getOrDefault("siteTitleImage", "227231823-carl-bosch-schule-Lef1.jpg");
         mainPageUrl = configuration.getOrDefault("mainPageUrl", "http://yanwittmann.de");
+
+        informationPageEnding = configuration.getOrDefault("informationPageEnding", ".html");
 
         regexLink = configuration.getOrDefault("regexLink", "\\[\\[href=([^|]+)\\|([^]]+)]]");
         regexLinkReplace = configuration.getOrDefault("regexLinkReplace", "<a href=\"$1\">$2</a>");
@@ -198,7 +201,7 @@ public class SiteBuilder {
 
     private Pair<String, String> getSurroundingInfoPages(File page) {
         Pair<String, String> pair = new Pair<>();
-        String lookingForPage = page.toString().replace(".txt", ".html").replace(sitePagesDir, "");
+        String lookingForPage = page.toString().replace(".txt", informationPageEnding).replace(sitePagesDir, "");
         for (int i = 0, orderedPagesSize = orderedPages.size(); i < orderedPagesSize; i++) {
             String orderedPage = orderedPages.get(i);
             if (orderedPage.contains(lookingForPage)) {
@@ -245,6 +248,7 @@ public class SiteBuilder {
         currentPage = "no page";
         isCurrentlyInTextBlock = false;
         isCurrentlyInCodeBlock = false;
+        codeBlockMaxLength = 0;
 
         LineBuilder generatedBody = new LineBuilder();
         boolean isCurrentlyTextOrImage = false;
@@ -396,7 +400,7 @@ public class SiteBuilder {
                 generatedBody.append(prepareBodyText("Grund: <b>" + warningMessage + "</b><br>", pathToMainDirectory));
         }
         if (pageErrorWarning || pageIncompleteWarning) {
-            generatedBody.append(prepareBodyText("Falls du einen Verbesserungsvorschlag hast, kontaktiere uns bitte über den Link `Hilf mit!` in der grauen Footer-Leiste direkt unten diesem Text:", pathToMainDirectory));
+            generatedBody.append(prepareBodyText("Falls du eine Idee hast, wie man dieses Problem beheben könnte, kontaktiere uns bitte über den Link `Hilf mit!` in der grauen Footer-Leiste unten.", pathToMainDirectory));
         }
 
         LineBuilder generatedPage = new LineBuilder();
@@ -446,7 +450,7 @@ public class SiteBuilder {
         currentPageNumber++;
         printProgressBar(currentPageNumber, numberOfPages);
 
-        FileUtils.writeFile(new File(siteOutDir + path.replace(templateSubTitleDefault, "") + "\\" + siteFile.getName().replace(".txt", ".html")), optimizeGeneratedPage(generatedPage.toString()));
+        FileUtils.writeFile(new File(siteOutDir + path.replace(templateSubTitleDefault, "") + "\\" + siteFile.getName().replace(".txt", SiteBuilder.informationPageEnding)), optimizeGeneratedPage(generatedPage.toString()));
     }
 
     private final ArrayList<String> clickCounters = new ArrayList<>();
@@ -468,15 +472,19 @@ public class SiteBuilder {
 
         CountApi countApi = new CountApi("itabisite", counterKey);
         if (CREATE_COUNTERS)
-            new Thread(() -> countApi.create(true)).start();
+            new Thread(() -> countApi.create(false)).start();
 
         LineBuilder lineBuilder = new LineBuilder();
         lineBuilder.append("<div class=\"clickCounter\">");
+        lineBuilder.append("<span id=\"counterInsert\">");
+        lineBuilder.append("<?php");
         if (CREATE_COUNTERS)
-            lineBuilder.append("<span id=\"counterPage\" style=\"display:none;\">" + countApi.getKeyNamespace() + "</span>");
-        else
-            lineBuilder.append("<span id=\"counterPage\" style=\"display:none;\">yan/test</span>");
-        lineBuilder.append("<span id=\"counterInsert\">0</span>");
+            lineBuilder.append("$url=\"http://yanwittmann.de/projects/countapi/hit.php?key=" + countApi.getKey() + "&namespace=" + countApi.getNamespace() + "\";");
+        else lineBuilder.append("$url=\"http://yanwittmann.de/projects/countapi/hit.php?key=test&namespace=yan\";");
+        lineBuilder.append("$result = file_get_contents($url);");
+        lineBuilder.append("echo $result;");
+        lineBuilder.append("?>");
+        lineBuilder.append("</span>");
         lineBuilder.append("<img width=\"20\" src=\"" + pathToMainDirectory + "images/arrow-cursor.svg\"/>");
         lineBuilder.append("</div>");
         return lineBuilder.toString();
@@ -501,6 +509,7 @@ public class SiteBuilder {
     private boolean isCurrentlyInCodeBlock = false;
     private boolean firstCodeBlockLine = true;
     private int multilineCodeWarning = 0;
+    private int codeBlockMaxLength = 0;
     private String currentPage = "";
     private String currentCodeBlockID = "";
     private String currentCodeBlockLanguage = "";
@@ -551,6 +560,7 @@ public class SiteBuilder {
         }
         if (text.trim().startsWith("````")) {
             isCurrentlyInCodeBlock = !isCurrentlyInCodeBlock;
+            codeBlockMaxLength = 0;
             if (isCurrentlyInCodeBlock) {
                 currentCodeBlockID = "code_block_" + GeneralUtils.randomNumber(100, 99999);
                 if (text.matches(".*````.+")) {
@@ -569,6 +579,13 @@ public class SiteBuilder {
         }
 
         if (isCurrentlyInCodeBlock && isCurrentlyInTextBlock) text = "`" + text + "`";
+        if (isCurrentlyInCodeBlock && !isCurrentlyInTextBlock && !text.contains("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;") && text.length() > 1 &&
+                !text.equals("````") && codeBlockMaxLength < text.length()) {
+            codeBlockMaxLength = text.length();
+            StringBuilder sb = new StringBuilder();
+            sb.append("&nbsp;".repeat(currentCodeBlockLanguage.length()));
+            text += "<span id=\"nocopy\">&nbsp;"+sb.toString()+"</span>";
+        }
         text = text.replaceAll(regexLink, regexLinkReplace).replace("  ", "&nbsp;&nbsp;")
                 .replace("<<", "&lt&lt").replace(">>", "&gt&gt")
                 .replaceAll("\\^([^ <>]+)", "<sup>$1</sup>")
@@ -606,7 +623,7 @@ public class SiteBuilder {
                     if (splitted.length == 3) section = "#" + splitted[2];
                     else section = "";
                     return "<a href=\"" + pathToMainDirectory + informationPage.getPath() + "\\" +
-                            informationPage.getFile().getName().replace(".txt", ".html") + section + "\">" + splitted[0] + "</a>";
+                            informationPage.getFile().getName().replace(".txt", informationPageEnding) + section + "\">" + splitted[0] + "</a>";
                 }
         return splitted[0];
     }

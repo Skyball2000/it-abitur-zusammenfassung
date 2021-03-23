@@ -16,13 +16,13 @@ muss man das Schlüsselwort `new` verwenden, denn ein Feld ist kein primitiver T
 Eine alternative Initialisierungsmethode ist, gleich Werte für die Feldplätze anzugeben. Die Feldgröße wird dann auf die Anzahl der angegebenen Werte gesetzt.
 ````Java
 int\[\] meinFeld;
-meinFeld = new int[6];
-int\[\] anderesFeld = {12, 54, 78, 2, 34, 5};&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+meinFeld = new int\[6\];
+int\[\] anderesFeld = {12, 54, 78, 2, 34, 5};
 ````
 In beiden Fällen wäre die Feldgröße 6, nur, dass `anderesFeld` bereits Werte auf den Feldplätzen hat.<br><br>
 
-Nun kann man sowohl lesend als auch schreibend auf die Feldelemente zugreifen. Dazu muss man einfach nur den Feldnamen mit `\[\]` eckigen Klammern
-und dem Index in den Klammern schreiben. Wichtig ist hierbei zu wissen, dass der erste Feldplatz den Index 0 und nicht 1 hat, man beginnt also bei 0 zu zählen.
+Nun kann man sowohl lesend als auch schreibend auf die Feldelemente zugreifen. Dazu braucht es den Feldnamen mit `\[\]` eckigen Klammern mit dem Index in diesen.
+Wichtig ist hierbei zu wissen, dass der erste Feldplatz den Index 0 und nicht 1 hat, man beginnt also bei 0 zu zählen.
 ````Java
 int\[\] meinFeld = new int\[6\];
 meinFeld\[0\] = 3;
@@ -31,5 +31,92 @@ meinFeld\[2\] = 31;
 meinFeld\[3\] = 98;
 meinFeld\[4\] = -4;
 meinFeld\[5\] = 12;
-System.out
+System.out.println(meinFeld\[1\]);
 ````
+Dies würde `57` ausgeben, da wir den Feldplatz mit dem Index `1` auf `57` gesetzt haben: `meinFeld\[1\] = 57;`<br><br>
+
+## Kein primitiver Datentyp
+Doch was bedeutet es, dass ein Feld kein [primitiver Datentyp|Elementare Sprach|primitiven Datentypen] mehr ist?<br>
+Ein primitiver Datentyp besteht einfach nur aus einem konkreten Wert, also z.B. bei einem integer eine `78` oder bei einem character ein `'y'`.
+Das heißt, an seiner Adresse steht nur dieser Wert und nichts weiter.<br>
+Bei allen anderen Datentypen, wie Objekte von Klassen oder eben wie hier Felder, ist dies anders: An deren Adresse im Speicher steht nicht einfach nur ein Wert, es befindet
+sich eine Referenz zu einem Wert dort (also eine weitere Adresse im Speicher).
+Wenn man dieser Referenz folgt (also zu der angegebenen Adresse geht), stößt man dann entweder auf einen primitiven Datentyp oder weitere Referenzen.<br>
+img pages/datentypen_und_referenzen.png
+Im Bild oben ist folgendes zu sehen:<br>
+Die Variable `x` vom Typ `int` hat bei seiner Adresse im Speicher direkt eine `45` eingetragen, da es sich bei dem integer um einen primitiven Datentyp handelt.<br>
+Als nächstes kommt ein `int\[\]` integer Feld `meinFeld`. Dieses hat erst mal keinen konkreten Wert im Speicher, sondern eine Referenz: `64783`.
+Bei der Adresse `64783` sind also die konkreten Werte des Feldes angegeben, dazu müssen wir einfach der Referenz, also dem Pfeil, folgen und landen bei: `23, 54364`.
+`meinFeld` ist also ein Feld das zwei Stellen groß ist mit den Werten `23` und `54364`.<br>
+Doch was ist das? Weiter unten gibt es noch ein weiteres Feld `zweitesFeld`, das auch auf die Adresse `64783` zeigt! Das ist der Unterschied zu primitiven Datentypen: Es
+kann mehrere Variablen mit der gleichen Referenz geben. Wenn wir also einen Wert in `zweitesFeld` verändern, so verändern wir diesen auch in `meinFeld` gleichermaßen, da
+beide Felder auf die gleiche Adresse im Speicher zeigen und damit auch auf das gleiche reale Feld zugreifen.<br>
+Hier wäre die initialisierung dieser im Code:
+````Java
+int\[\] meinFeld = {23, 54364};
+int\[\] zweitesFeld = meinFeld;
+meinFeld\[1\] = 984; //Aufgabe 1 weiter unten!
+System.out.println(zweitesFeld\[1\]);
+````
+Mit `zweitesFeld = meinFeld` wird nicht das Feld `meinFeld` kopiert, sondern die Referenz zum eigentlichen Feld kopiert. Damit greifen also beide auf das gleiche Feld zu.<br><br>
+
+Für die Variable `wahrheitstabelle` ist es das gleiche, ein `boolean[]` Feld, das auf die eigentlichen Werte mit einer Referenz verweist.
+
+## Mehrdimensionale Felder / Arrays
+Bisher sahen unsere Felder so aus:
+img pages/felder_arrays.png
+Doch Felder können nicht nur eine Dimension, sondern beliebig viele Dimensionen enthalten! <sup>(okay, eigentlich nur 255)</sup><br>
+Man kann also Felder auch so aussehen lassen:
+img pages/felder_arrays_2_dimensions.png
+Dieses Feld hätte 2 Dimensionen. Pro Dimension kommt ein `\[\]` eckiges Klammerpaar dazu
+
+## Aufgaben
+$$ Frage 1:Was würde in dem Beispiel mit `meinFeld` und `zweitesFeld` ausgegeben werden?->Lösung
+⇾ `984`<br>
+Da: Die Referenz auf das eigentliche Feld wurde von `meinFeld` auf `zweitesFeld` kopiert und damit verändert sich der Wert von `zweitesFeld` auch, wenn `meinFeld` verändert
+wird (und umgekehrt auch!)
+$$$
+
+$$ Frage 2:Erstelle ein integer Feld mit der Größe 5 und platziere auf dem letzten Feldplatz eine `8`.->Lösung
+````Java
+int\[\] meinFeld = new int\[5\];
+meinFeld\[4\] = 8;
+````
+$$$
+
+$$ Frage 3:Was ist der Unterschied zwischen einem primitiven Datentyp und den anderen Typen?->Lösung
+<b>Primitive Datentypen</b>: Enthalten direkt einen konkreten Wert, werden in Java klein geschrieben und sind keine Felder (`int`, `float`)<br>
+<b>Objekte / Felder</b>: Enthalten eine Referenz zu den eigentlichen Konkreten Werten, sie zeigen also auf die Adresse im Speicher, wo die Werte gespeichert sind.
+Damit können mehrere Variablen die gleiche Referenz enthalten und damit auch auf die gleichen Objekte/Felder zeigen. Wenn man dann in der einen Variable das Objekt/Feld
+verändert, verändert es sich auch in allen anderen Variablen, die diese Referenz enthalten.
+$$$
+
+$$ Frage 4:Warum hat in dem großen Bild oben auch ein `String` eine Referenz, die dann auf eine weitere Referenz zeigt?->Lösung
+Ein erzeugter `String` ist kein primitiver Datentyp (daran zu erkennen, dass er groß geschrieben wird), sondern ein Objekt. Darum hat er eine Referenz bei sich eingetragen.<br>
+Diese Referenz zeigt dann auf ein `char\[\]` character Feld, denn ein String ist nichts anderes, als eine aneinanderreihung von mehreren `char`s, also Zeichen.<br>
+Da ein `char\[\]` character Feld auch kein primitiver Datentyp ist, zeigt dieses wieder auf eine andere Adresse, wo die konkreten Zeichen des Strings stehen.
+$$$
+
+$$ Frage 5:Initialisiere ein 2-dimensionales double Feld (5x9) bei dem jeder Feldwert `9.3` ist. Verwende for-Schleifen.->Lösung
+````Java
+double\[\]\[\] meinFeld = new double\[5\]\[9\];
+for (int i = 0; i < meinFeld.length; i++) {
+    for (int j = 0; j < meinFeld\[i\].length; j++) {
+        meinFeld\[i\]\[j\] = 9.3d;
+    }
+}
+
+````
+<br><br>Oder alternativ:<br>
+````Java
+int groesseX = 5, groesseY = 9;
+double wert = 9.3d;
+double\[\]\[\] meinFeld = new double\[groesseX\]\[groesseY\];
+for (int i = 0; i < groesseX; i++) {
+    for (int j = 0; j < groesseY; j++) {
+        meinFeld\[i\]\[j\] = wert;
+    }
+}
+
+````
+$$$

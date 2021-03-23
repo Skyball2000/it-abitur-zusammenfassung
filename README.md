@@ -81,6 +81,10 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Favicon
 - Click counter pro Seite
 - Google AdSense (?)
+- Click counter wird nun auf yanwittmann.de gehostet (darum müssen die Seiten nun auch `.php` sein)
+- Code blocks fügen jetzt automatisch Leerstellen ans Ende der Zeile hinzu, wenn es sich um die bisher
+  längste Zeile im code block handelt, damit die Sprache richtig dargestellt werden kann
+- Code blocks copy kopiert nun keine automatisch generierten Leerstellen am Ende einer Zeile
 
 ## Todo
 
@@ -91,4 +95,5 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Seiten überarbeiten
 - Keywords für Seiten erstellen
 - Werbung (AdSense)  
-  Bin ich dabei! Theoretisch sollte es schon gehen, aber Google ist gerade etwas komisch.
+  Bin ich dabei! Theoretisch sollte es schon gehen, aber offenbar muss man da etwas warten bis die die
+  Website untersucht haben.

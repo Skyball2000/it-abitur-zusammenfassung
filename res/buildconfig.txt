@@ -33,5 +33,7 @@ siteImageIcon:itabiicon.png
 siteTitleImage:itabiiconmain.png
 mainPageUrl:index.html
 
+informationPageEnding:.php
+
 regexLink:\[\[href=([^|]+)\|([^]]+)]]
 regexLinkReplace:<a href="$1">$2</a>

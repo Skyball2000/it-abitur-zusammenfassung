@@ -69,13 +69,13 @@ public class InformationPage {
 
     public String generateSearchEntry() {
         return "<li class=\"searchElement\"> " +
-                "<a href=\"" + path + "\\" + file.getName().replace(".txt", ".html") + "\">" +
+                "<a href=\"" + path + "\\" + file.getName().replace(".txt", SiteBuilder.informationPageEnding) + "\">" +
                 path.replace("\\", " > ") + " > " + displayName +
                 (keywords.size() > 0 ? "<font style=\"display:none\">" + SiteBuilder.prepareSearchKeyword(String.join(" ", keywords)) + "</font>" : "") + "</a></li>";
     }
 
     @Override
     public String toString() {
-        return "<a href=\"" + path + "\\" + file.getName().replace(".txt", ".html") + "\">" + displayName + "</a>";
+        return "<a href=\"" + path + "\\" + file.getName().replace(".txt", SiteBuilder.informationPageEnding) + "\">" + displayName + "</a>";
     }
 }

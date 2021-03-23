@@ -2,6 +2,14 @@ function copyToClipboard(containerid, copySymbolId, languageId) {
     var langText = document.getElementById(languageId).innerHTML;
     document.getElementById(languageId).innerHTML = "";
     document.getElementById(containerid).innerHTML = document.getElementById(containerid).innerHTML.trim();
+
+    var noCopys = document.getElementById(containerid).getElementsByTagName('span');
+    var spaces = '';
+    for(var i = 0; i < noCopys.length; i++) {
+        spaces = noCopys[i].innerHTML;
+        noCopys[i].innerHTML = '';
+    }
+
     if (document.selection) {
         var range = document.body.createTextRange();
         range.moveToElementText(document.getElementById(containerid));
@@ -17,17 +25,7 @@ function copyToClipboard(containerid, copySymbolId, languageId) {
     window.getSelection().removeAllRanges();
     document.getElementById(copySymbolId).innerHTML = "✅";
     document.getElementById(languageId).innerHTML = langText;
+    for(var i = 0; i < noCopys.length; i++) {
+        noCopys[i].innerHTML = spaces;
+    }
 }
-
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function getClicks() {
-  await sleep(300);
-  var namespaceKey = document.getElementById('counterPage').innerHTML;
-  var clicksJSON = await(await fetch('https://api.countapi.xyz/hit/' + namespaceKey)).json();
-  document.getElementById('counterInsert').innerHTML = clicksJSON.value;
-}
-
-getClicks();
