@@ -1,4 +1,4 @@
-# 5. Felder / Arrays
+# 5. Felder / Arrays!Mehrdimensionale Arrays werden noch nicht so gut erklärt.
 > arrays
 
 Die bisher behandelten Variablen und Konstanten sind sogenannte [einfache Datentypen|Elementare Sprach|primitiven Datentypen].
@@ -68,7 +68,7 @@ img pages/felder_arrays.png
 Doch Felder können nicht nur eine Dimension, sondern beliebig viele Dimensionen enthalten! <sup>(okay, eigentlich nur 255)</sup><br>
 Man kann also Felder auch so aussehen lassen:
 img pages/felder_arrays_2_dimensions.png
-Dieses Feld hätte 2 Dimensionen. Pro Dimension kommt ein `\[\]` eckiges Klammerpaar dazu
+Dieses Feld hätte 2 Dimensionen. Pro Dimension kommt ein `\[\]` eckiges Klammerpaar dazu.
 
 ## Aufgaben
 $$ Frage 1:Was würde in dem Beispiel mit `meinFeld` und `zweitesFeld` ausgegeben werden?->Lösung

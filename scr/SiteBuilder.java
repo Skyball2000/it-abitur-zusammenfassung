@@ -1,6 +1,7 @@
 import yanwittmann.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,10 +42,11 @@ public class SiteBuilder {
     private final String siteTitleImage;
     private final String mainPageUrl;
     public static String informationPageEnding;
+    public static String informationPageEndingForLink;
     private final String regexLink;
     private final String regexLinkReplace;
 
-    public SiteBuilder(Configuration configuration) {
+    public SiteBuilder(Configuration configuration, boolean buildSiteForWeb) {
         siteOutDir = configuration.getOrDefault("siteOutDir", "out\\site\\");
         sitePagesDir = configuration.getOrDefault("sitePagesDir", "res\\site\\pages\\");
         siteTemplateDir = configuration.getOrDefault("siteTemplateDir", "res\\site\\templates\\");
@@ -81,6 +83,12 @@ public class SiteBuilder {
         mainPageUrl = configuration.getOrDefault("mainPageUrl", "http://yanwittmann.de");
 
         informationPageEnding = configuration.getOrDefault("informationPageEnding", ".html");
+        if (buildSiteForWeb) {
+            informationPageEndingForLink = "";
+        } else {
+            informationPageEnding = ".html";
+            informationPageEndingForLink = informationPageEnding;
+        }
 
         regexLink = configuration.getOrDefault("regexLink", "\\[\\[href=([^|]+)\\|([^]]+)]]");
         regexLinkReplace = configuration.getOrDefault("regexLinkReplace", "<a href=\"$1\">$2</a>");
@@ -99,9 +107,9 @@ public class SiteBuilder {
     private ArrayList<String> orderedPages;
     private final PageTreeBuilder pageTreeBuilder = new PageTreeBuilder();
 
-    public void buildSite() {
+    public void buildSite() throws IOException {
         ArrayList<File> files = FileUtils.getFiles(new File(sitePagesDir));
-        files.forEach(this::registerPage);
+        for (File file : files) registerPage(file);
         informationPages.forEach(pageTreeBuilder::add);
         pageTreeBuilder.finish();
         orderedPages = pageTreeBuilder.getOrderedPages();
@@ -109,7 +117,14 @@ public class SiteBuilder {
         ArrayList<String> template = FileUtils.readFileToArrayList(new File(siteTemplateDir + "informationtemplate.html"));
         System.out.println("Generating pages...");
         numberOfPages = informationPages.size();
-        files.forEach(siteFile -> buildInformationPage(siteFile, template));
+        files.forEach(siteFile -> {
+            try {
+                buildInformationPage(siteFile, template);
+            } catch (IOException e) {
+                System.out.println("Unable to build page!");
+                e.printStackTrace();
+            }
+        });
         System.out.println("\n" + informationPages.size() + " pages generated");
 
         FileUtils.copyFile(new File(siteTemplateDir + "information.css"), new File(siteOutDir + "information.css"));
@@ -134,7 +149,7 @@ public class SiteBuilder {
         }
     }
 
-    private void buildMainPage() {
+    private void buildMainPage() throws IOException {
         ArrayList<String> template = FileUtils.readFileToArrayList(new File(siteTemplateDir + "Hauptseite.html"));
 
         HTMLListBuilder mainList = pageTreeBuilder.finish();
@@ -201,7 +216,7 @@ public class SiteBuilder {
 
     private Pair<String, String> getSurroundingInfoPages(File page) {
         Pair<String, String> pair = new Pair<>();
-        String lookingForPage = page.toString().replace(".txt", informationPageEnding).replace(sitePagesDir, "");
+        String lookingForPage = page.toString().replace(".txt", informationPageEndingForLink).replace(sitePagesDir, "");
         for (int i = 0, orderedPagesSize = orderedPages.size(); i < orderedPagesSize; i++) {
             String orderedPage = orderedPages.get(i);
             if (orderedPage.contains(lookingForPage)) {
@@ -218,7 +233,7 @@ public class SiteBuilder {
         return pair;
     }
 
-    private void registerPage(File siteFile) {
+    private void registerPage(File siteFile) throws IOException {
         String path = prepareInformationPagePath(siteFile.getPath());
         String pageTitle = "Title";
         for (String line : FileUtils.readFileToArrayList(siteFile))
@@ -237,7 +252,7 @@ public class SiteBuilder {
     private final ArrayList<InformationPage> informationPages = new ArrayList<>();
     private String pathToMainDirectory;
 
-    private void buildInformationPage(File siteFile, ArrayList<String> template) {
+    private void buildInformationPage(File siteFile, ArrayList<String> template) throws IOException {
         String path = prepareInformationPagePath(siteFile.getPath());
         String pageSubtitle = path.replace("\\", " >> ");
         String pageTitle = "Title";
@@ -414,7 +429,7 @@ public class SiteBuilder {
                 beforeNext.setRight(beforeNext.getRight().replace("href=\"", "href=\"" + pathToMainDirectory)
                         .replaceAll("(.*)>(.+)</a>", "$1 title=\"$2\">$2</a>")
                         .replaceAll(">(.+)</a>", ">&gt;</a>"));
-                generatedPage.append(templateMainTitle.replace(templateInsert, beforeNext.getLeft() + " &#160&#160&#160 " + pageTitle + " &#160&#160&#160 " + beforeNext.getRight()));
+                generatedPage.append(templateMainTitle.replace(templateInsert, beforeNext.getLeft() + " &nbsp;&nbsp;&nbsp; " + pageTitle + " &nbsp;&nbsp;&nbsp; " + beforeNext.getRight()));
                 if (pageErrorWarning || pageIncompleteWarning)
                     generatedPage.append(templateSubTitle.replace(templateInsert, "Bitte Warnung ganz unten lesen!<br><br>" + pageSubtitle));
                 else
@@ -457,6 +472,7 @@ public class SiteBuilder {
     private final static boolean CREATE_COUNTERS = true;
 
     private String generateClickCounter(String pathToMainDirectory, String pageTitle) {
+        if(informationPageEndingForLink.length() > 0) return "";
         String counterKey = pageTitle.replaceAll("<[^>]+>", "").toLowerCase().replaceAll("[^a-z]", "");
         if (counterKey.length() == 0) {
             warnings.add("WARNING 6: " + pageTitle + " --> Click counter has length of 0");
@@ -493,7 +509,7 @@ public class SiteBuilder {
     private int currentPageNumber = 0;
     private int numberOfPages = 0;
 
-    private String prepareImageLink(String link) {
+    private String prepareImageLink(String link) throws IOException {
         if (link.contains("http"))
             return link;
         File image = new File(siteImagesDir + link);
@@ -579,12 +595,11 @@ public class SiteBuilder {
         }
 
         if (isCurrentlyInCodeBlock && isCurrentlyInTextBlock) text = "`" + text + "`";
-        if (isCurrentlyInCodeBlock && !isCurrentlyInTextBlock && !text.contains("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;") && text.length() > 1 &&
-                !text.equals("````") && codeBlockMaxLength < text.length()) {
-            codeBlockMaxLength = text.length();
-            StringBuilder sb = new StringBuilder();
-            sb.append("&nbsp;".repeat(currentCodeBlockLanguage.length()));
-            text += "<span id=\"nocopy\">&nbsp;"+sb.toString()+"</span>";
+        int actualLength = text.replace("ESCAPEDSQUAREBRACKETSOPEN", " ").replace("ESCAPEDSQUAREBRACKETSCLOSE", " ").length();
+        if (isCurrentlyInCodeBlock && !isCurrentlyInTextBlock && !text.contains("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;") && actualLength > 1 &&
+                codeBlockMaxLength < actualLength && !text.equals("````")) {
+            codeBlockMaxLength = actualLength;
+            text += "<span id=\"nocopy\">&nbsp;" + "&nbsp;".repeat(currentCodeBlockLanguage.length()) + "</span>";
         }
         text = text.replaceAll(regexLink, regexLinkReplace).replace("  ", "&nbsp;&nbsp;")
                 .replace("<<", "&lt&lt").replace(">>", "&gt&gt")
@@ -623,7 +638,7 @@ public class SiteBuilder {
                     if (splitted.length == 3) section = "#" + splitted[2];
                     else section = "";
                     return "<a href=\"" + pathToMainDirectory + informationPage.getPath() + "\\" +
-                            informationPage.getFile().getName().replace(".txt", informationPageEnding) + section + "\">" + splitted[0] + "</a>";
+                            informationPage.getFile().getName().replace(".txt", informationPageEndingForLink) + section + "\">" + splitted[0] + "</a>";
                 }
         return splitted[0];
     }

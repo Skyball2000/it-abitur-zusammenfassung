@@ -85,6 +85,10 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Code blocks fügen jetzt automatisch Leerstellen ans Ende der Zeile hinzu, wenn es sich um die bisher
   längste Zeile im code block handelt, damit die Sprache richtig dargestellt werden kann
 - Code blocks copy kopiert nun keine automatisch generierten Leerstellen am Ende einer Zeile
+- Wenn man nun die Variable `BUILD_SITE_FOR_WEB` auf `true` setzt, wird die Dateiendung nicht mehr an Links
+  angehängt, somit ist es egal, welche Dateiendung die aufzurufende Seite hat  
+  Zudem: `true` erstellt `php`-Seiten mit Aufruferzähler, `false` `html` ohne Zähler
+- Hier hatte ich gerade meinen ersten `BSOD` (mfg Yan)
 
 ## Todo
 

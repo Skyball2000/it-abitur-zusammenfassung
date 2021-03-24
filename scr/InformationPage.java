@@ -1,6 +1,8 @@
 import yanwittmann.FileUtils;
 
+import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -14,7 +16,7 @@ public class InformationPage {
     private boolean isHidden = false;
     private final File file;
 
-    public InformationPage(String displayName, File file, String path) {
+    public InformationPage(String displayName, File file, String path) throws IOException {
         this.displayName = displayName;
         this.file = file;
         this.path = path;
@@ -28,9 +30,9 @@ public class InformationPage {
             Matcher matcher = pattern.matcher(line);
             while (matcher.find()) {
                 String found = matcher.group().replaceAll("<[^<>]+>", "");
-                keywords.add(found);
+                addKeyword(found);
             }
-            if (line.startsWith("## ")) keywords.add(line.replace("##", ""));
+            if (line.startsWith("## ")) addKeyword(line.replace("##", ""));
         }
 
         for (int i = 0, keywordsLength = keywords.size(); i < keywordsLength; i++) {
@@ -40,6 +42,15 @@ public class InformationPage {
                 keywords.remove(i);
                 break;
             }
+        }
+    }
+
+    public void addKeyword(String keyword) {
+        for (String s : keyword.split(" ?[&/] ?")) {
+            s = s.trim().replaceAll("^([^)]*)\\(([^)]*)$", "$1$2")
+                    .replaceAll("^([^(]*)\\)([^)]*)$", "$1$2");
+            if (!keyword.contains(s))
+                keywords.add(s);
         }
     }
 
@@ -69,13 +80,13 @@ public class InformationPage {
 
     public String generateSearchEntry() {
         return "<li class=\"searchElement\"> " +
-                "<a href=\"" + path + "\\" + file.getName().replace(".txt", SiteBuilder.informationPageEnding) + "\">" +
+                "<a href=\"" + path + "\\" + file.getName().replace(".txt", SiteBuilder.informationPageEndingForLink) + "\">" +
                 path.replace("\\", " > ") + " > " + displayName +
                 (keywords.size() > 0 ? "<font style=\"display:none\">" + SiteBuilder.prepareSearchKeyword(String.join(" ", keywords)) + "</font>" : "") + "</a></li>";
     }
 
     @Override
     public String toString() {
-        return "<a href=\"" + path + "\\" + file.getName().replace(".txt", SiteBuilder.informationPageEnding) + "\">" + displayName + "</a>";
+        return "<a href=\"" + path + "\\" + file.getName().replace(".txt", SiteBuilder.informationPageEndingForLink) + "\">" + displayName + "</a>";
     }
 }

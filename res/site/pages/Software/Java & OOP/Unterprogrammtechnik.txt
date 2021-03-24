@@ -1,0 +1,46 @@
+# Unterprogrammtechnik
+
+Unterprogramme dienen dazu, Programmcode übersichtlicher und weniger repetitiv zu machen, indem Teile eines Programms in besagte Unterprogramme ausgelagert werden.<br>
+Hier sind einige Eigenschaften von Unterprogrammen:
+- Strukturieren und Organisieren von Programmcode
+- Abstrahieren und Verallgemeinern von Prozessen
+- einzelne Komponenten sind Austauschbar
+- Wiederverwenden von Code
+<br>
+
+Doch was sind Unterprogramme? Unterprogramme können Code enthalten und diesen Ausführen, wenn das Unterprogramm aufgerufen wird. Man stelle sich vor, man hat ein
+Programm, das eine gewisse Menge an immer gleichem Code an verschiedenen Stellen ausführen:
+````Java
+public static void main(String\[\] args) {
+    int x = 23;
+    <b>x = x + 4;</b>
+    <b>if (x < 54)</b>
+        <b>x = 34;</b>
+    System.out.println(x);
+    x = 67;
+    <b>x = x + 4;</b>
+    <b>if (x < 54)</b>
+        <b>x = 34;</b>
+    System.out.println(x);
+}
+````
+Hier müsste man den selben Code zwei mal hinschreiben, was eher umständlich ist. Zudem müsste man wenn man das Stück Code ändern möchte, es zwei mal bearbeiten.<br>
+Die Lösung dazu sind Unterprogramme:
+````Java
+public static void main(String\[\] args) {
+    int x = 23;
+    System.out.println(<b>eineFunktion(x)</b>);
+    x = 67;
+    System.out.println(<b>eineFunktion(x)</b>);
+}
+&nbsp;
+public int eineFunktion(int einParameter) {
+    <b>einParameter = einParameter + 4;</b>
+    <b>if (einParameter < 54)</b>
+        <b>einParameter = 34;</b>
+    return einParameter;
+}
+````
+Und voilà, sehr viel eleganter. Doch was genau ist da jetzt passiert? Schauen wir uns das genauer an.<br><br>
+
+## Erstellen eines Unterprogramms
