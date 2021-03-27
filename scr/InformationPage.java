@@ -1,6 +1,5 @@
-import yanwittmann.FileUtils;
+import yanwittmann.utils.FileUtils;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +45,7 @@ public class InformationPage {
     }
 
     public void addKeyword(String keyword) {
+        if(keyword.contains(";")) return;
         for (String s : keyword.split(" ?[&/] ?")) {
             s = s.trim().replaceAll("^([^)]*)\\(([^)]*)$", "$1$2")
                     .replaceAll("^([^(]*)\\)([^)]*)$", "$1$2");

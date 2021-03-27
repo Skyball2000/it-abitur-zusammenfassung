@@ -1,4 +1,4 @@
-import yanwittmann.Pair;
+import yanwittmann.types.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;

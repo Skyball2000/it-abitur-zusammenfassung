@@ -1,5 +1,5 @@
-import yanwittmann.Configuration;
-import yanwittmann.GoogleTranslate;
+import yanwittmann.notification.BlurNotification;
+import yanwittmann.types.Configuration;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,5 +13,6 @@ public class Main {
         SiteBuilder siteBuilder = new SiteBuilder(configuration, BUILD_SITE_FOR_WEB);
         siteBuilder.clearOldSite();
         siteBuilder.buildSite();
+        new BlurNotification("Generated site" + (BUILD_SITE_FOR_WEB ? "" : " for offline mode"));
     }
 }

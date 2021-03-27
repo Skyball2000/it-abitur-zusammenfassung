@@ -142,7 +142,7 @@ Wichtig ist, dass man diese Variablen und Konstanten vor dem ersten Lesezugriff 
 Wert die Variable hat und wirft einen Fehler und das Programm wird gestoppt.
 
 ## Bezeichner / Namen
-Wie sollte man seine Variablen benennen?<br>
+[Wie sollte man seine Variablen benennen]?<br>
 An diese Regeln <i>muss</i> man sich bei der Benennung halten:
 - keine [Schlüsselwörter|Elementare Sprachelemente|Diese]
 - Variablen beginnen mit einem kleinbuchstaben, `\$` oder `_`, danach können beliebige Buchstaben, Ziffern `\$` und `_` folgen

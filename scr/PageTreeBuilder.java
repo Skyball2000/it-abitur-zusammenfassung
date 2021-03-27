@@ -1,12 +1,10 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
-import yanwittmann.GeneralUtils;
-import yanwittmann.Pair;
+import yanwittmann.types.Pair;
+import yanwittmann.utils.GeneralUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 
 public class PageTreeBuilder {
 

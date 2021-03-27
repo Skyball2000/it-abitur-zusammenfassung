@@ -1,4 +1,4 @@
-# Unterprogrammtechnik
+# 6. Unterprogrammtechnik
 
 Unterprogramme dienen dazu, Programmcode übersichtlicher und weniger repetitiv zu machen, indem Teile eines Programms in besagte Unterprogramme ausgelagert werden.<br>
 Hier sind einige Eigenschaften von Unterprogrammen:
@@ -41,6 +41,86 @@ public int eineFunktion(int einParameter) {
     return einParameter;
 }
 ````
-Und voilà, sehr viel eleganter. Doch was genau ist da jetzt passiert? Schauen wir uns das genauer an.<br><br>
+Und voilà, sehr viel eleganter. Der doppelt vorkommende Code wurde in ein anderes Unterprogramm verschoben. Doch was genau ist da jetzt passiert? Schauen wir uns das genauer an.
 
 ## Erstellen eines Unterprogramms
+Es gibt bei einem Unterprogramm einmal die <b>Definition</b> und einmal die <b>Aufrufe</b> des Unterprogramms. Sagen wir, wir haben ein Unterprogramm `gibAus` was ein eindimensionales Feld ausgeben soll:
+````Java
+public void gibAus(String\[\] meinFeld) {
+    for (int i = 0; i < meinFeld.length; i++) {
+        System.out.println(meinFeld\[i\]);
+    }
+}
+````
+Dies ist die <b>Definition</b> des Unterprogramms. In ihm wird definiert, was passieren soll, wenn das Unterprogramm aufgerufen wird. Die erste Zeile des Unterprogramms,
+also `public void gibAus(String\[\] meinFeld)` in diesem Fall, nennt sich <b>Signatur</b>. Die Signatur des Unterprogramms gibt relativ viele Informationen:
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Name</th>
+    <th class="tg-0lax">Erklärung</th>
+    <th class="tg-0lax">Mögliche Werte</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">Sichtbarkeit</td>
+    <td class="tg-0lax">Die Sichtbarkeit beschreibt, von wo aus das Unterprogramm aus aufgerufen werden kann.<br>`public` macht, dass jeder, der auf ein Objekt der Klasse zugriff hat, darauf zugreifen kann.<br>`private` bedeutet, dass nur das Objekt selbst es aufrufen kann.<br>`protected` heißt, dass nur das Objekt selbst und davon erbende Klassen es aufrufen können.<br></td>
+    <td class="tg-0lax">`public`<br>`private`<br>`protected`</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Rückgabetyp</td>
+    <td class="tg-0lax">Jedes Unterprogramm kann einem einen Wert zurückgeben, nachdem es ausgeführt wurde. Der Rückgabetyp beschreibt den Typ des Wertes, der zurückgegeben werden soll.<br>Wenn ein Unterprogramm keinen Wert zurückgeben soll, muss als Rückgabetyp `void` verwendet werden. Wenn aber etwas anderes da steht, z.B. `String`, dann muss auch ein Wert von diesem Typ zurückgegeben werden. Dies passiert mit `return`.<br></td>
+    <td class="tg-0lax">`void`<br>`String`<br>`int`<br>...</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Name</td>
+    <td class="tg-0lax">Schlicht gesagt: Der Name des Unterprogramms. Für ihn gelten die gleichen Regeln wie für [Variablen|Elementare Sprachelemente in Java|Wie sollte man seine Variablen benennen]. Dieser wird später auch beim Unterprogrammaufruf verwendet.<br><br></td>
+    <td class="tg-0lax">`meinUnterprogramm`<br>`gibAus`<br>`berechneWerte`<br>...</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Parameterliste</td>
+    <td class="tg-0lax">Eine beliebig lange Liste an Werten, die dem Unterprogramm beim Aufruf mitgegeben werden müssen. Die einzelnen Parameter werden durch `,` getrennt und haben zuerst den Typ und dann den Bezeichner. Sie stehen in den Klammern des Unterprogramms.</td>
+    <td class="tg-0lax">`String text, int wert`</td>
+  </tr>
+</tbody>
+</table>
+
+Also, das Unterprogramm `public void gibAus(String\[\] meinFeld)` von oben hat die Sichtbarkeit `public` (kann also von überall aus aufgerufen werden), gibt keinen Wert
+zurück (`void`) und nimmt einen Parameter, ein String Array (`String\[\]`), das es dann `meinFeld` nennt. Hier die einzelnen Teile im Detail:
+
+## Parameter
+Ein Parameter eines Unterprogramms ist das, was man beim Unterprogrammaufruf mitgeben kann. Hier ein Beispiel:
+````Java
+public static void main(String\[\] args) {
+    printCombined(<i>1, "Thomas"</i>);
+
+    int meineID = 2;
+    String name = "Yan";
+    printCombined(<i>meineID, name</i>);
+}
+
+public void printCombined(<i>int id, String username</i>) {
+    System.out.println("(" + id + ") " + username);
+}
+````
+Wenn man in dem Beispiel die `main` ausführen würde, würde `(1) Thomas` und `(2) Yan` ausgegeben werden. Warum?<br>
+Das Unterprogramm `printCombined` nimmt zwei Parameter an: einen integer (`id`) und einen Text (`username`). Der erste Unterprogrammaufruf `printCombined(1, "Thomas");`
+nimmt direkt als Parameter an: `1, "Thomas"`. Diese Werte werden dann den Variablen `id` und `username` unten im Unterprogramm eingesetzt. Das heißt, `id = 1` und
+`username = "Thomas"`. Sobald das Unterprogramm fertig abgelaufen ist, kehrt das Programm zum Aufruf zurück.
+<br>Als nächstes haben wir zwei Variablen `meineID` und `name`. Ihnen sind die Werte `2` und `"Yan"` zugeordnet. Das heißt, hier werden dann die Werte der Variablen
+als Parameter mitgegeben und es wird im Unterprogramm `(2) Yan` ausgegeben.<br><br>
+
+Parameter sind also nichts anderes als Werte, die an das Unterprogramm übergeben werden können.<br>
+Bei der Parameterübergabe gibt es allerdings zwei unterschiedliche Fälle: Call by value und call by reference. Diese beiden wurden bereits bei den
+[Feldern|Felder|Doch was bedeutet es] angedeutet.<br><br>
+
+<b>Call by value</b>
+Bei call by value wird ein Wert als Parameter an das Unterprogramm übergeben. Dies trifft auf alle primitiven Datentypen zu, also alle, die klein geschrieben werden
+(`int`, `char`). Hierbei wird also der Wert kopiert und diese Kopie des Wertes an das Unterprogramm übergeben.<br>
+Wenn also in diesem Beispiel
+````Java
+
+````
+
+<br><br><b>Call by reference</b>

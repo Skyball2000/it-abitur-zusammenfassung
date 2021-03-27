@@ -1,4 +1,10 @@
-import yanwittmann.*;
+
+import yanwittmann.api.CountApi;
+import yanwittmann.types.Configuration;
+import yanwittmann.types.LineBuilder;
+import yanwittmann.types.Pair;
+import yanwittmann.utils.FileUtils;
+import yanwittmann.utils.GeneralUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +53,9 @@ public class SiteBuilder {
     private final String regexLinkReplace;
 
     public SiteBuilder(Configuration configuration, boolean buildSiteForWeb) {
+        if (!buildSiteForWeb)
+            warnings.add(new Warning(Warning.WARNING_BUILD_NOT_ONLINE_READY, "Make sure to set BUILD_SITE_FOR_WEB to true before uploading to server!"));
+
         siteOutDir = configuration.getOrDefault("siteOutDir", "out\\site\\");
         sitePagesDir = configuration.getOrDefault("sitePagesDir", "res\\site\\pages\\");
         siteTemplateDir = configuration.getOrDefault("siteTemplateDir", "res\\site\\templates\\");
@@ -97,7 +106,6 @@ public class SiteBuilder {
     }
 
     private void experiment() {
-
     }
 
     public void clearOldSite() {
@@ -144,7 +152,7 @@ public class SiteBuilder {
 
         if (warnings.size() > 0) {
             System.out.println("---------------- warnings ----------------");
-            warnings.stream().sorted().forEach(System.out::println);
+            warnings.stream().sorted().forEach(Warning::print);
             System.out.println("------------- warnings over --------------");
         }
     }
@@ -248,7 +256,7 @@ public class SiteBuilder {
         informationPages.add(new InformationPage(pageTitle, siteFile, path.replace(templateSubTitleDefault, "")));
     }
 
-    private final ArrayList<String> warnings = new ArrayList<>();
+    private final ArrayList<Warning> warnings = new ArrayList<>();
     private final ArrayList<InformationPage> informationPages = new ArrayList<>();
     private String pathToMainDirectory;
 
@@ -379,20 +387,24 @@ public class SiteBuilder {
                 if (trimmedLine.matches("`{1,2}(?:[^`].+)?")) multilineCodeWarning++;
                 else multilineCodeWarning = 0;
                 if (multilineCodeWarning >= 2 && !isCurrentlyInTextBlock) {
-                    String msg = "WARNING 3: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
-                            " --> Multiple lines of code without code block detected";
-                    if (!warnings.contains(msg)) warnings.add(msg);
+                    warnings.add(new Warning(Warning.WARNING_MULTIPLE_LINES_CODE, pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") + ": " + trimmedLine));
                 }
                 if (isCurrentlyInCodeBlock && trimmedLine.endsWith("<br>")) {
-                    String msg = "WARNING 4: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
-                            " --> Code block contains <br>";
-                    if (!warnings.contains(msg)) warnings.add(msg);
+                    warnings.add(new Warning(Warning.WARNING_CODE_BLOCK_BR, pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") + ": " + trimmedLine));
+                }
+                if (isCurrentlyInCodeBlock && trimmedLine.matches(".*(?<!\\\\)[\\[\\]].*")) {
+                    warnings.add(new Warning(Warning.WARNING_UNESCAPED_SQUARE_BRACKETS_IN_CODE, pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") + ": " + trimmedLine));
+                }
+                if (!isCurrentlyInCodeBlock && trimmedLine.matches(".*`.*(?<!\\\\)[\\[\\]].*`.*")) {
+                    warnings.add(new Warning(Warning.WARNING_UNESCAPED_SQUARE_BRACKETS_IN_CODE, pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") + ": " + trimmedLine));
                 }
                 generatedBody.append(prepareBodyText(line, pathToMainDirectory));
                 if (line.contains("</table>") || line.contains("</center>") || line.equals("$$$")) {
                     generatedBody.append("</p>");
                     generatedBody.append(templateTextParagraphIntro);
                 }
+            } else if(isCurrentlyInCodeBlock) {
+                generatedBody.append(prepareBodyText("", pathToMainDirectory));
             }
         }
 
@@ -456,11 +468,11 @@ public class SiteBuilder {
 
         String warningMessageDisplay = warningMessage.length() > 0 ? " --> " + warningMessage : "";
         if (pageErrorWarning)
-            warnings.add("WARNING 1: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
-                    warningMessageDisplay);
+            warnings.add(new Warning(Warning.WARNING_PAGE_WARNING, pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
+                    warningMessageDisplay));
         if (pageIncompleteWarning)
-            warnings.add("WARNING 2: " + pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
-                    warningMessageDisplay);
+            warnings.add(new Warning(Warning.WARNING_PAGE_ERROR, pageSubtitle + "/ " + pageTitle.replaceAll("<[^>]+>", "") +
+                    warningMessageDisplay));
 
         currentPageNumber++;
         printProgressBar(currentPageNumber, numberOfPages);
@@ -472,16 +484,16 @@ public class SiteBuilder {
     private final static boolean CREATE_COUNTERS = true;
 
     private String generateClickCounter(String pathToMainDirectory, String pageTitle) {
-        if(informationPageEndingForLink.length() > 0) return "";
+        if (informationPageEndingForLink.length() > 0) return "";
         String counterKey = pageTitle.replaceAll("<[^>]+>", "").toLowerCase().replaceAll("[^a-z]", "");
         if (counterKey.length() == 0) {
-            warnings.add("WARNING 6: " + pageTitle + " --> Click counter has length of 0");
+            warnings.add(new Warning(Warning.WARNING_CLICK_COUNTER_TOO_SHORT, pageTitle + ": " + counterKey));
             return "";
         } else if (counterKey.length() == 1) counterKey += "aa";
         else if (counterKey.length() == 2) counterKey += "a";
         else if (counterKey.length() > 25) counterKey = counterKey.substring(0, 25);
         if (clickCounters.contains(counterKey)) {
-            warnings.add("WARNING 7: " + pageTitle + " --> Click counter already exists on other site");
+            warnings.add(new Warning(Warning.WARNING_CLICK_COUNTER_ALREADY_EXISTS, pageTitle + ": " + counterKey));
             return "";
         }
         clickCounters.add(counterKey);
@@ -584,9 +596,7 @@ public class SiteBuilder {
                     text = "````";
                 } else {
                     currentCodeBlockLanguage = "";
-                    String msg = "WARNING 5: " + currentPage +
-                            " --> Code block without language";
-                    if (!warnings.contains(msg)) warnings.add(msg);
+                    warnings.add(new Warning(Warning.WARNING_CODE_BLOCK_NO_LANGUAGE, currentPage));
                 }
             }
             firstCodeBlockLine = true;
@@ -609,9 +619,9 @@ public class SiteBuilder {
                 .replaceAll("\\$\\$ ?([^$:]+):([^$]+)", "<span class=\"boxTextTitle\">&nbsp;&nbsp;&nbsp;&nbsp;$1</span><br><span class=\"boxText\">$2</span><br><br>")
                 .replaceAll("\\$\\$ ?([^$]+)", "<span class=\"boxText\">$1</span><br><br>")
                 .replaceAll("````", !isCurrentlyInTextBlock ? (
-                        !isCurrentlyInCodeBlock ? "<button id=\"" + currentCodeBlockID + "_button\" class=\"copyClipboardButton\" onclick=\"copyToClipboard('" + currentCodeBlockID + "', '" + currentCodeBlockID + "_button', '" + currentCodeBlockID + "_language')\">\uD83D\uDCCB</button>" +
+                        !isCurrentlyInCodeBlock ? "</div><button id=\"" + currentCodeBlockID + "_button\" class=\"copyClipboardButton\" onclick=\"copyToClipboard('" + currentCodeBlockID + "', '" + currentCodeBlockID + "_button', '" + currentCodeBlockID + "_language')\">\uD83D\uDCCB</button>" +
                                 "<div id=\"" + currentCodeBlockID + "_language\" class=\"multilineCodeTitle\" >" + currentCodeBlockLanguage + "</div></div>" +
-                                templateTextParagraphIntro : "</p><div class=\"multilineCode\" id=\"" + currentCodeBlockID + "\">") : "")
+                                templateTextParagraphIntro : "</p><div class=\"multilineCode\">" + "<div id=\"" + currentCodeBlockID + "\">") : "")
                 .replace("``", "`&nbsp`").replaceAll("^` ", "`&nbsp")
                 .replaceAll("`([^`]+)`", "<code>$1</code>");
         if (text.matches(".*\\[([^]]+)].*")) {

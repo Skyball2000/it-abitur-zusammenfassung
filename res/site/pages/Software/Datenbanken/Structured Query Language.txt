@@ -141,7 +141,7 @@ welche als Joker innerhalb eines Textes dienen:
     <td class="tg-0lax">hit, aber nicht hot und hat</td>
   </tr>
   <tr>
-    <td class="tg-0lax">`[-]`</td>
+    <td class="tg-0lax">`\[-\]`</td>
     <td class="tg-0lax">Eine Reihe an Zeichen</td>
     <td class="tg-0lax">`c\[a-b\]t`</td>
     <td class="tg-0lax">cat &amp; cbt</td>
@@ -155,7 +155,7 @@ Einige Beispiele für `WHERE`:<br>
 SELECT * FROM Teilnehmer WHERE TeilnehmerNr = 3;
 SELECT VName FROM Teilnehmer WHERE VName LIKE "T?m";
 SELECT PName FROM Projekt WHERE VName IS NOT NULL AND Datum BETWEEN #1/1/1968# AND #1/1/1988#;
-SELECT * FROM Projekt WHERE NOT (PName LIKE "c[a-z]t*" OR AnzTeilnehmer > 100);
+SELECT * FROM Projekt WHERE NOT (PName LIKE "c\[a-z\]t*" OR AnzTeilnehmer > 100);
 SELECT * FROM Kunden WHERE Land IN (SELECT Land FROM Anbieter);
 ````
 

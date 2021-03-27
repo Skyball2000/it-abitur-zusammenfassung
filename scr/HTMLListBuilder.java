@@ -1,4 +1,4 @@
-import yanwittmann.LineBuilder;
+import yanwittmann.types.LineBuilder;
 
 import java.util.ArrayList;
 
@@ -72,7 +72,7 @@ public class HTMLListBuilder {
             if (elementName.length() > 0)
                 list.append("</div>");
         }
-        return list.toString().replace(br + "\n</div>\n" + br, "</div>\n" +br);
+        return list.toString().replace(br + "\n</div>\n" + br, "</div>\n" + br);
     }
 
     @Override

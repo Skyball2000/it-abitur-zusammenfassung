@@ -1,5 +1,5 @@
 # 5. Felder / Arrays!Mehrdimensionale Arrays werden noch nicht so gut erklärt.
-> arrays
+> arrays, call by value, call by reference
 
 Die bisher behandelten Variablen und Konstanten sind sogenannte [einfache Datentypen|Elementare Sprach|primitiven Datentypen].
 Eine weitere Datenstruktur ist das Array oder auch Feld genannt.<br><br>
@@ -36,7 +36,7 @@ System.out.println(meinFeld\[1\]);
 Dies würde `57` ausgeben, da wir den Feldplatz mit dem Index `1` auf `57` gesetzt haben: `meinFeld\[1\] = 57;`<br><br>
 
 ## Kein primitiver Datentyp
-Doch was bedeutet es, dass ein Feld kein [primitiver Datentyp|Elementare Sprach|primitiven Datentypen] mehr ist?<br>
+[Doch was bedeutet es], dass ein Feld kein [primitiver Datentyp|Elementare Sprach|primitiven Datentypen] mehr ist?<br>
 Ein primitiver Datentyp besteht einfach nur aus einem konkreten Wert, also z.B. bei einem integer eine `78` oder bei einem character ein `'y'`.
 Das heißt, an seiner Adresse steht nur dieser Wert und nichts weiter.<br>
 Bei allen anderen Datentypen, wie Objekte von Klassen oder eben wie hier Felder, ist dies anders: An deren Adresse im Speicher steht nicht einfach nur ein Wert, es befindet
@@ -60,7 +60,7 @@ System.out.println(zweitesFeld\[1\]);
 ````
 Mit `zweitesFeld = meinFeld` wird nicht das Feld `meinFeld` kopiert, sondern die Referenz zum eigentlichen Feld kopiert. Damit greifen also beide auf das gleiche Feld zu.<br><br>
 
-Für die Variable `wahrheitstabelle` ist es das gleiche, ein `boolean[]` Feld, das auf die eigentlichen Werte mit einer Referenz verweist.
+Für die Variable `wahrheitstabelle` ist es das gleiche, ein `boolean\[\]` Feld, das auf die eigentlichen Werte mit einer Referenz verweist.
 
 ## Mehrdimensionale Felder / Arrays
 Bisher sahen unsere Felder so aus:

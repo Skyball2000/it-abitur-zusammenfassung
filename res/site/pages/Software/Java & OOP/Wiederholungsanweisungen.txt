@@ -127,7 +127,7 @@ $$$
 
 $$ Frage 5:Schreibe eine `for` Schleife, die jeden Wert eines integer arrays `werte` um 1 erhöht und dann ausgibt->Lösung
 ````Java
-int[] werte = new int[]{0, 10, 2, 36, 96};
+int\[\] werte = new int\[\]{0, 10, 2, 36, 96};
 for (int i = 0; i < werte.length; i++) {
     werte\[i\]++;
     System.out.println(werte\[i\]);

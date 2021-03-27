@@ -89,6 +89,13 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
   angehängt, somit ist es egal, welche Dateiendung die aufzurufende Seite hat  
   Zudem: `true` erstellt `php`-Seiten mit Aufruferzähler, `false` `html` ohne Zähler
 - Hier hatte ich gerade meinen ersten `BSOD` (mfg Yan)
+- utilityClasses updated auf neueste Version
+- Code blocks copy kopiert auf Chrome nun die 📋 nicht mehr mit
+- Habe mal noch wegen den Werbungen ein paar Sachen getestet und ich bin mir unsicher, was damit jetzt ist.
+- Neue Warnings bezüglich Code `` ` ` `` und unescaped `[]`
+- BlurNotification wird nun angezeigt, wenn die Site generiert wurde
+- Code blocks können nun Leerzeilen enthalten
+- Automatisch generierte Keywords enthalten nun keine Keywords mehr, die ein `;` enthalten würden
 
 ## Todo
 
