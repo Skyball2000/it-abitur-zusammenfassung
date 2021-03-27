@@ -106,6 +106,7 @@ public class SiteBuilder {
     }
 
     private void experiment() {
+
     }
 
     public void clearOldSite() {
@@ -271,6 +272,8 @@ public class SiteBuilder {
         currentPage = "no page";
         isCurrentlyInTextBlock = false;
         isCurrentlyInCodeBlock = false;
+        firstCodeBlockLine = true;
+        evenCodeBlockLine = false;
         codeBlockMaxLength = 0;
 
         LineBuilder generatedBody = new LineBuilder();
@@ -403,7 +406,7 @@ public class SiteBuilder {
                     generatedBody.append("</p>");
                     generatedBody.append(templateTextParagraphIntro);
                 }
-            } else if(isCurrentlyInCodeBlock) {
+            } else if (isCurrentlyInCodeBlock) {
                 generatedBody.append(prepareBodyText("", pathToMainDirectory));
             }
         }
@@ -529,13 +532,14 @@ public class SiteBuilder {
             File destination = new File(siteOutDir + "\\images\\" + link);
             FileUtils.makeDirectories(destination.getPath().replace(image.getName(), ""));
             FileUtils.copyFile(image, destination);
-        } else System.out.println("Image does not exist: " + image.getPath());
+        } else warnings.add(new Warning(Warning.WARNING_IMAGE_NOT_FOUND, ": " + image.getPath()));
         return (pathToMainDirectory + "\\images\\" + link).replaceAll("^\\\\", "");
     }
 
     private boolean isCurrentlyInTextBlock = false;
     private boolean isCurrentlyInCodeBlock = false;
     private boolean firstCodeBlockLine = true;
+    private boolean evenCodeBlockLine = false;
     private int multilineCodeWarning = 0;
     private int codeBlockMaxLength = 0;
     private String currentPage = "";
@@ -545,9 +549,10 @@ public class SiteBuilder {
     private String prepareBodyText(String text, String pathToMainDirectory) {
         text = text.replace("\\[", "ESCAPEDSQUAREBRACKETSOPEN").replace("\\]", "ESCAPEDSQUAREBRACKETSCLOSE")
                 .replace("\\^", "ESCAPEDCARROT").replace("\\$", "ESCAPEDDOLLAR").replace("\\>", "ESCAPEDSMALLERTHAN")
-                .replace("\\<", "ESCAPEDLARGERTHAN");
-        if (!firstCodeBlockLine && isCurrentlyInCodeBlock && !text.endsWith("<br>") && !text.trim().equals("````"))
+                .replace("\\<", "ESCAPEDLARGERTHAN").replace("-->", "\uD83E\uDC1A");
+        if (!firstCodeBlockLine && isCurrentlyInCodeBlock && !text.endsWith("<br>") && !text.trim().equals("````") && isCurrentlyInTextBlock)
             text = "<br>" + text;
+        if(isCurrentlyInCodeBlock && text.length() == 0) text = "<br>";
         if (isCurrentlyInCodeBlock && firstCodeBlockLine) firstCodeBlockLine = false;
         if (text.matches("\\$\\$\\$ .+")) {
             isCurrentlyInTextBlock = true;
@@ -600,6 +605,7 @@ public class SiteBuilder {
                 }
             }
             firstCodeBlockLine = true;
+            evenCodeBlockLine = false;
             if (isCurrentlyInTextBlock)
                 return "";
         }
@@ -631,6 +637,10 @@ public class SiteBuilder {
                 String found = matcher.group();
                 text = text.replace(found, getMostLikelyLink(found.replace("[", "").replace("]", ""), pathToMainDirectory));
             }
+        }
+        if (isCurrentlyInCodeBlock) evenCodeBlockLine = !evenCodeBlockLine;
+        if (!isCurrentlyInTextBlock && isCurrentlyInCodeBlock && !firstCodeBlockLine && evenCodeBlockLine) {
+            text = "<div class=\"multilineCodeEven\">" + text + "</div>";
         }
         return text.replace("ESCAPEDSQUAREBRACKETSOPEN", "[").replace("ESCAPEDSQUAREBRACKETSCLOSE", "]")
                 .replace("ESCAPEDCARROT", "^").replace("ESCAPEDDOLLAR", "$").replace("ESCAPEDSMALLERTHAN", ">")
@@ -683,6 +693,6 @@ public class SiteBuilder {
     }
 
     private void printProgressBar(int currentValue, int maxValue) {
-        System.out.print(String.format("\r%s", generateProgressBar(currentValue, maxValue)));
+        System.out.printf("\r%s", generateProgressBar(currentValue, maxValue));
     }
 }

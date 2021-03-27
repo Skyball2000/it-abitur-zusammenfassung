@@ -69,7 +69,7 @@ also `public void gibAus(String\[\] meinFeld)` in diesem Fall, nennt sich <b>Sig
     <td class="tg-0lax">`public`<br>`private`<br>`protected`</td>
   </tr>
   <tr>
-    <td class="tg-0lax">Rückgabetyp</td>
+    <td class="tg-0lax">[Rückgabetyp]</td>
     <td class="tg-0lax">Jedes Unterprogramm kann einem einen Wert zurückgeben, nachdem es ausgeführt wurde. Der Rückgabetyp beschreibt den Typ des Wertes, der zurückgegeben werden soll.<br>Wenn ein Unterprogramm keinen Wert zurückgeben soll, muss als Rückgabetyp `void` verwendet werden. Wenn aber etwas anderes da steht, z.B. `String`, dann muss auch ein Wert von diesem Typ zurückgegeben werden. Dies passiert mit `return`.<br></td>
     <td class="tg-0lax">`void`<br>`String`<br>`int`<br>...</td>
   </tr>
@@ -111,16 +111,123 @@ nimmt direkt als Parameter an: `1, "Thomas"`. Diese Werte werden dann den Variab
 <br>Als nächstes haben wir zwei Variablen `meineID` und `name`. Ihnen sind die Werte `2` und `"Yan"` zugeordnet. Das heißt, hier werden dann die Werte der Variablen
 als Parameter mitgegeben und es wird im Unterprogramm `(2) Yan` ausgegeben.<br><br>
 
-Parameter sind also nichts anderes als Werte, die an das Unterprogramm übergeben werden können.<br>
+Parameter sind also nichts anderes als Werte, die beim Aufruf an das Unterprogramm übergeben werden können.<br>
 Bei der Parameterübergabe gibt es allerdings zwei unterschiedliche Fälle: Call by value und call by reference. Diese beiden wurden bereits bei den
 [Feldern|Felder|Doch was bedeutet es] angedeutet.<br><br>
 
-<b>Call by value</b>
-Bei call by value wird ein Wert als Parameter an das Unterprogramm übergeben. Dies trifft auf alle primitiven Datentypen zu, also alle, die klein geschrieben werden
-(`int`, `char`). Hierbei wird also der Wert kopiert und diese Kopie des Wertes an das Unterprogramm übergeben.<br>
-Wenn also in diesem Beispiel
+<b>Call by value</b><br>
+Bei call by value wird ein <b>Wert</b> als Parameter an das Unterprogramm übergeben. Dies trifft auf alle primitiven Datentypen zu, also alle, die klein geschrieben werden
+(`int`, `char`). Hierbei wird also der Wert kopiert und diese Kopie des Wertes an das Unterprogramm übergeben.<br><br>
+Wenn also in diesem Beispiel `meinWert` mit dem Wert von `10` an `doStuff` übergeben wird, so wird eine Kopie des Wertes `10` erstellt und in die Variable `meinParameter`
+gepackt. Wenn diese Kopie (`meinParameter`) verändert wird, bleibt das original (`meinWert`) unverändert.
 ````Java
+public static void main(String\[\] args) {
+    int meinWert = 10;
+    doStuff(<i>meinWert</i>);
+}
 
+public void doStuff(<i>int meinParameter</i>) {
+    System.out.println(meinParameter);
+}
 ````
+img pages/call by value.png
+Wie im Bild zu sehen ist, wurde der Wert an eine andere Adresse im Speicher kopiert und beide Variablen haben somit eine eigene Kopie des Wertes.
 
-<br><br><b>Call by reference</b>
+<br><br><b>Call by reference</b><br>
+Bei call by Reference wird nicht der Wert der angegebenen Variable mitgegeben, sondern die <i>Referenz</i>, also ein Zeiger, zum eigentlichen Wert mitgegeben. Hier sind
+das alle restlichen Typen, also Objekte und Felder.<br>
+Bei dem Übergebenen Wert handelt es sich also tatsächlich um den <i>exakt gleichen Wert</i>, nicht bloß eine Kopie davon. Wenn man den Wert der Variable dann im
+Unterprogramm verändert, so verändert sich auch der originale Wert der originalen Variable.
+````Java
+public static void main(String\[\] args) {
+    int\[\] meinFeld = {10, 24, 8, 93, 861, 200};
+    doStuff(<i>meinFeld</i>);
+    System.out.println(meinFeld\[0\]);
+}
+
+public void doStuff(<i>int\[\] meinParameter</i>) {
+    meinParameter\[0\] = 453;
+    System.out.println(meinParameter\[0\]);
+}
+````
+In diesem Beispiel wird ein Feld `int\[\] meinFeld` mitgegeben (also kein primitiver Datentyp). Es wird hierbei also keine Kopie angefertigt, es ist noch immer das
+<i>gleiche</i> Feld wie oben. Wenn es also dort verändert wird: `meinParameter\[0\] = 453`, dann wird es auch oben verändert und der Wert bei `0` ist nicht mehr `10`,
+sondern `453`. Es würde also zwei mal `453` ausgegeben werden.<br>
+img pages/call by reference.png
+Es handelt sich um ein und dasselbe <i>Objekt</i>.
+
+## Rückgabewerte
+Ein Unterprogramm kann einem auch Werte zurückgeben. Dieser wird, wie [oben|Unterprogrammtechnik|Rückgabetyp] beschrieben, ebenfalls in der Signatur des Unterprogramms angegeben.
+Wenn man nicht möchte, dass das Unterprogramm einem einen Wert zurückgibt, muss man als Rückgabetyp `void` angeben.<br><br>
+
+Zurückgegeben wird in einem Unterprogramm mit `return ...;`, wobei der zurückzugebende Wert hinter dem `return` angegeben wird. Sobald das Unterprogramm auf ein `return` stößt,
+verlässt es sofort das Unterprogramm, es ist also immer das letzte, was man in einem Unterprogramm tut. Der angegebene Wert muss von dem Typ sein, der oben in der Signatur des
+Unterprogramms angegeben ist, ansonsten gibt es einen Kompilierfehler.<br><br>
+Es kann auch mehrere `return`-Anweisungen im Programm geben:
+````Java
+public static void main(String\[\] args) {
+    System.out.println(<i>berechne(12, 2)</i>);
+    System.out.println(<i>berechne(3, 8)</i>);
+    System.out.println(<i>berechne(20, 34)</i>);
+}
+
+public <i>int</i> berechne(int a, int b) {
+    a = a * 2;
+    if (a < 10)
+        <i>return a * (b + 2);</i>
+    else if (b < 10)
+        <i>return a * (b - 2);</i>
+    <i>return a + b;</i>
+}
+````
+In diesem Beispiel würde `0`, `60` und `74` ausgegeben werden. Beim `berechne(12, 2)` verlässt es das Unterprogramm beim zweiten `return`, bei `berechne(3, 8)` beim ersten und bei
+`berechne(20, 34)` beim letzten. Wie zu erwarten springt das Programm sobald es auf das `return` stößt zurück zum Unterprogrammaufruf und setzt anstelle des Aufrufs den zurückgegebenen
+Wert ein, also steht in `main` eigentlich das hier:
+````Java
+public static void main(String\[\] args) {
+    System.out.println(<i>0</i>);
+    System.out.println(<i>60</i>);
+    System.out.println(<i>74</i>);
+}
+````
+<br><br>
+
+Basierend auf dem Rückgabewert-Typ wird auch die Namensgebung bestimmt:
+- Wenn ein Unterprogramm einen Wert zurückgibt nennt man es <b>Funktion</b>
+- Wenn es keinen Wert zurückgibt (also `void`), nennt man es <b>Prozedur</b>
+
+## Aufgaben
+$$ Frage 1:Wie werden bei einem Unterprogramm Parameter angegeben?->Lösung
+Parameter befinden sich in den Parameterklammern hinter dem Unterprogrammnamen. Sie bestehen je aus dem Parametertyp (`String`, `int`, ...) und dem Parameterbezeichner.
+Mehrere Parameter werden von `,` Kommas getrennt.
+$$$
+
+$$ Frage 2:Was für mögliche Rückgabewerte gibt es für ein Unterprogramm? Wie nennt man dann je das Unterprogramm?->Lösung
+Wenn das Unterprogramm einen Rückgabewert haben soll, dann muss hinter der Sichtbarkeit des Unterprogramms der Rückgabetyp stehen (`double`, `long`, ...).
+In diesem Fall nennt man es <i>Funktion</i>.<br>
+Wenn es keinen Rückgabewert hat, so muss man den Typ `void` benutzen. Dann nennt man es <i>Prozedur</i>.
+$$$
+
+$$ Frage 3:Was ist der Unterschied zwischen call by value und call by reference?->Lösung
+Bei primitiven Datentypen wird call by value angewendet und damit der Mitgabewert kopiert.<br><br>
+Bei Objekten und Feldern ist es call by reference, was die Referenz zum Objekt kopiert. Damit wird nicht eine Kopie des Objektes mitgegeben, sondern das Objekt selbst.
+Wenn nun im Unterprogramm das Objekt verändert wird, so verändert es sich auch in der originalen Variable.
+$$$
+
+$$ Frage 4:Im Beispiel oben, was würde `berechne(56, 3)`, `berechne(2, 6)` und `berechne(5, 10)` zurückgeben?->Lösung
+112<br>32<br>20
+$$$
+
+$$ Frage 5:Erstelle ein Unterprogramm, das einen Text als Parameter erhält und den doppelten Ganzzahlwert zurückgibt. Erstelle drei Aufrufe und deren Rückgaben dafür.->Lösung
+````Java
+public int doubleNumber(String n) {
+    return Integer.parseInt(n) * 2;
+}
+````
+<br><br>Beispiel-Aufrufe:<br>
+`doubleNumber("2");` --> 4<br>
+`doubleNumber(13 + "2");` --> 264<br>
+`doubleNumber("" + doubleNumber("3"));` --> 6<br>
+$$$
+
+$$ Frage 6:Denk dir selbst ein Unterprogramm aus, das irgendetwas tut, was sich lohnt auszulagern!

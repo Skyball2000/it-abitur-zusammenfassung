@@ -32,4 +32,5 @@ public class Warning implements Comparable<Warning> {
     public final static String WARNING_CLICK_COUNTER_ALREADY_EXISTS = "[WARNING 07] Click counter already exists on other site";
     public final static String WARNING_BUILD_NOT_ONLINE_READY = "[WARNING 08] Site is built for offline mode";
     public final static String WARNING_UNESCAPED_SQUARE_BRACKETS_IN_CODE = "[WARNING 09] Code contains unescaped [square brackets]";
+    public final static String WARNING_IMAGE_NOT_FOUND = "[WARNING 10] Image does not exist";
 }

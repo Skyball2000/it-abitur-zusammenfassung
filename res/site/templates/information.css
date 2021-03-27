@@ -153,22 +153,28 @@ code {
   font-family: Consolas,"courier new";
   color: crimson;
   background-color: #f1f1f1;
-  padding: 2px;
+  padding: 2px 4px 2px 4px;
   font-size: 105%;
+  border-radius: 0.4em;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
 
 .multilineCode {
   display: inline-block;
-  border: 2px solid #bababa;
   border-radius: 0.3em;
   margin: 2px;
   padding: 0px 10px;
   background-color: #f5f5f5;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.25);
 
   font-size: 105%;
   font-family: Consolas,"courier new";
   color: crimson;
+}
+
+.multilineCodeEven {
+  background-image: linear-gradient(to right, #ebebeb, #ebebeb, #ebebeb, #ebebeb, #ebebeb, #ebebeb, #f5f5f5);
+  border-radius: 0.3em;
 }
 
 @media (min-width: 767px) {

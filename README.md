@@ -96,6 +96,9 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - BlurNotification wird nun angezeigt, wenn die Site generiert wurde
 - Code blocks können nun Leerzeilen enthalten
 - Automatisch generierte Keywords enthalten nun keine Keywords mehr, die ein `;` enthalten würden
+- Code snippets haben nun abgerundete Ecken
+- Code blocks wechseln jetzt pro Zeile ihre Farbe ab
+- `-->` wird nun automatisch mit `🠚` ersetzt
 
 ## Todo
 
