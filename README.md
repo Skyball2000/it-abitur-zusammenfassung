@@ -99,15 +99,19 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Code snippets haben nun abgerundete Ecken
 - Code blocks wechseln jetzt pro Zeile ihre Farbe ab
 - `-->` wird nun automatisch mit `🠚` ersetzt
+- Abstände zwischen Elementen auf der Hauptseite sind nun kleiner
+- Seitenleiste hinzugefügt, die nun auf jeder Seite erscheint und einen zu jeder Seite bringen kann
+- HTML und CSS auf allen Seiten etwas angepasst und CSS-Dateien umbenannt
 
 ## Todo
 
 - Luca Bild für Hauptseite unten
 - Mehr Beispiele
 - Aufgaben zu Themen (Lösungen mit spoiler-boxen)
-- Seiten fertig importieren
-- Seiten überarbeiten
+- Seiten nochmal überarbeiten
 - Keywords für Seiten erstellen
 - Werbung (AdSense)  
-  Bin ich dabei! Theoretisch sollte es schon gehen, aber offenbar muss man da etwas warten bis die die
-  Website untersucht haben.
+  Site Behavior: Navigation  
+  Users should be able to easily navigate through the site or app to find what products, goods, or services are promised  
+  Ich hab jetzt meine gesamte yanwittmann.de Domain viel verknüpfter gemacht mit mehr Links die einen hin-
+  und herspringen lassen (unter anderem die Seitenleiste mit allen Seiten)

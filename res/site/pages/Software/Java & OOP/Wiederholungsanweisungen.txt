@@ -80,7 +80,7 @@ Es gibt zwar noch mehr, mächtigere Schleifenarten (wie `for each` oder `Iterato
 ## Aufgaben
 $$ Frage 1:Was ist der Unterschied von `while` und `do while`?->Lösung
 `while` prüft die Bedingung der Schleife bereits vor dem ersten Betreten.<br>
-`do while` tut dies nach dem ersten und den darauf folgenden Schleifendurchläufen.
+`do while` tut dies nach dem ersten Schleifendurchlauf und den darauf folgenden Schleifendurchläufen.
 $$$
 
 $$ Frage 2:Was sind die drei Parameter der `for`-Schleife?->Lösung

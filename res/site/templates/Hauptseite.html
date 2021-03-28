@@ -12,7 +12,7 @@
     <meta name="page_type" content="np-template-header-footer-from-plugin">
     <title>IT Abi BaWü</title>
     <link rel="stylesheet" href="nicepage.css" media="screen">
-    <link rel="stylesheet" href="Hauptseite.css" media="screen">
+    <link rel="stylesheet" href="mainpage.css" media="screen">
     <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
     <link id="u-theme-google-font" rel="stylesheet"
@@ -36,21 +36,36 @@
     <div class="u-clearfix u-sheet u-sheet-1">
     </div>
 </header>
+
+<button class="sideBarBurgerIcon"
+        onclick="toggleDropDownVisibility();this.classList.toggle('opened');this.setAttribute('aria-expanded', this.classList.contains('opened'))"
+        aria-label="Main Menu">
+    <svg width="36" height="36" viewBox="0 0 100 100">
+        <path class="line line1"
+              d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058"/>
+        <path class="line line2" d="M 20,50 H 80"/>
+        <path class="line line3"
+              d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942"/>
+    </svg>
+</button>
+<section class="sidenav">
+    <br><br style="margin: 2em; display: block; font-size: 24%;">
+    BUILDER-PLACE-SIDEBAR
+</section>
+
 <section class="u-clearfix u-section-1" id="sec-0ae8">
-    <div class="u-clearfix u-sheet u-sheet-1">
+    <div class="u-clearfix u-sheet u-sheet-1" style="margin-bottom: -30px;">
         <div class="u-clearfix u-expanded-width u-gutter-0 u-layout-wrap u-layout-wrap-1">
             <div class="u-layout" style="">
                 <div class="u-layout-row" style="">
-                    <div class="u-align-center u-container-style u-layout-cell u-right-cell u-size-30 u-size-xs-60 u-layout-cell-2"
-                         src="">
-                        <div class="u-container-layout u-container-layout-2" src="">
+                    <div class="u-align-center u-container-style u-layout-cell u-right-cell u-size-30 u-size-xs-60 u-layout-cell-2">
+                        <div class="u-container-layout u-container-layout-2">
                             <div style="opacity: 0.0;" class="u-align-left u-palette-4-base u-shape u-shape-1"></div>
                             <img src="images/itabiiconmain.png"
                                  class="u-align-left u-image u-image-1" data-image-width="1200" data-image-height="675">
                         </div>
                     </div>
-                    <div class="u-align-center u-container-style u-layout-cell u-left-cell u-size-30 u-size-xs-60 u-white u-layout-cell-1"
-                         src="">
+                    <div class="u-align-center u-container-style u-layout-cell u-left-cell u-size-30 u-size-xs-60 u-white u-layout-cell-1">
                         <div class="u-container-layout u-valign-middle u-container-layout-1">
                             <h2 class="u-text u-text-1">IT Abi Zusammenfassungen</h2>
                             <p class="u-text u-text-2">Einfach schneller Antworten finden.</p>
@@ -63,7 +78,7 @@
 </section>
 
 <section class="u-align-left u-clearfix u-section-3" id="sec-8614">
-    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1" style="margin-bottom: -60px;">
         BUILDER-PLACE-CONTENTS
     </div>
     <br><br>
@@ -103,8 +118,8 @@
     <div class="u-clearfix u-sheet u-sheet-1">
         <h2 class="u-text u-text-1">Was ist das hier alles?</h2>
         <p class="u-text u-text-2">
-            Diese Website ist eine Ansammlung an so gut wie allem, was man braucht, um in Baden Württemberg das Abitur
-            im Fach IT zu bestehen.
+            Diese Website ist eine Ansammlung an so gut wie allem, was man für das Abitur im Fach IT Baden Württemberg
+            braucht.
             Während unserer Schulzeit sind die ganzen einzelnen Themen für viele von uns nicht ganz einfach gewesen.
             Darum haben wir uns entschlossen, es für die nachfolgenden Klassen einfacher zu machen, indem wir das Wissen
             so kompakt und einfach wie möglich an einer Stelle sammeln.<br><br>
@@ -117,8 +132,11 @@
         <h2 class="u-text u-text-1">Wer sind wir?</h2>
         <p class="u-text u-text-2">
             "Wir" sind <a href="http://yanwittmann.de"><b>Yan Wittmann</b></a> und <b>Luca Kirsch</b>! Wir sind
-            ehemalige Schüler von des technischen Gymnasiums Carl-Bosch-Schule in Heidelberg und haben beide unser
-            Abitur in IT geschrieben.<br><br>
+            ehemalige Schüler von des technischen Gymnasiums <a
+                href="https://www.cbs-heidelberg.de/">Carl-Bosch-Schule</a> in Heidelberg und haben beide unser Abitur
+            in IT geschrieben. Zur Vorbereitung haben wir eine 70 Seiten lange Zusammenfassung geschrieben, die nun dank
+            dieser Website digitalisiert wurde. Die Zusammenfassung wurde zudem sinnvoll ergänzt und es wurden zu vielen
+            Themen Aufgaben bereitgestellt.<br><br>
             <img style="-webkit-filter: drop-shadow(5px 5px 5px #999999); filter: drop-shadow(5px 5px 5px #999999);"
                  src="images/yangifsmall.gif"><br>- Yan Wittmann
         </p>

@@ -85,13 +85,16 @@ public class PageTreeBuilder {
             if (GeneralUtils.countOccurrences(leaf, "\\") == 1)
                 leaf = leaf.replaceAll("\"\\\\(.+)", "\"$1");
             listBuilder.add(leaf);
+            sidebar.add(SIDEBAR_ENTRY + leaf);
             orderedPages.add(leaf);
         }
         sortBranches(branches);
         for (int i = branches.size() - 1; i >= 0; i--) {
             Pair<JSONObject, String> currentBranch = branches.get(i);
+            sidebar.add(SIDEBAR_DROPDOWN + currentBranch.getRight());
             listBuilder.add(getList(currentBranch.getLeft(), currentBranch.getRight()));
         }
+        sidebar.add(SIDEBAR_DROPDOWN_END);
         return listBuilder;
     }
 
@@ -115,18 +118,15 @@ public class PageTreeBuilder {
         for (int i = sorted.length - 1; i >= 0; i--) {
             leaves.add(sorted[i].getLinkText());
         }
-
-        /*String k;
-        for (int i = 0; i < leaves.size() - 1; i++) {
-            if (leaves.get(i).matches(".+>(.+)</a>"))
-                if (leaves.get(i).replaceAll(".+>(.+)</a>", "$1").compareTo(leaves.get(i + 1).replaceAll(".+>(.+)</a>", "$1")) > 0)
-                    continue;
-                else if (leaves.get(i).compareTo(leaves.get(i + 1)) > 0)
-                    continue;
-            k = leaves.get(i);
-            leaves.set(i, leaves.get(i + 1));
-            leaves.set(i + 1, k);
-            sortLeaves(leaves);
-        }*/
     }
+
+    private final ArrayList<String> sidebar = new ArrayList<>();
+
+    public ArrayList<String> getSidebarMenu() {
+        return sidebar;
+    }
+
+    public final static String SIDEBAR_ENTRY = "-en-";
+    public final static String SIDEBAR_DROPDOWN = "-dd-";
+    public final static String SIDEBAR_DROPDOWN_END = "-de-";
 }

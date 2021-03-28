@@ -115,7 +115,7 @@ if (x == 6) {
 }
 ````
 <br>
-Nun fehlen nur noch die Schleifen, diese werden aber auf der [nächsten Seite|Wiederholungsanweisungen] erklärt.
+Nun fehlen von den Kontrollstrukturen nur noch die Schleifen, diese werden aber auf der [nächsten Seite|Wiederholungsanweisungen] erklärt.
 
 ## Aufgaben
 $$ Frage 1:Was für Anweisungen kennst du jetzt, mit denen man Verzweigungen erstellen kann?->Lösung
@@ -127,8 +127,10 @@ $$ Frage 2:Wie viele Verzweigungen kann man ineinander platzieren?->Lösung
 Beliebig viele! (okay, es sind eigentlich nur etwa 20,000)
 $$$
 
-$$ Frage 3:Was würde in dem Beispiel mit den verschachtelten Verzweigungen ausgegeben werden, wenn `x = 9` und `y = 14`?->Lösung
-⇾ `x ist nicht 6 und y größer als 12`
+$$ Frage 3:Erkläre die Syntax des Switch-Statements mit deinen eigenen Worten und überprüfe es mit der Erklärung oben!
+
+$$ Frage 4:Was würde in dem Beispiel mit den verschachtelten Verzweigungen ausgegeben werden, wenn `x = 9` und `y = 14`?->Lösung
+--> `x ist nicht 6 und y größer als 12`
 $$$
 
-$$ Frage 4:Erstelle eine verschachtelte Verzweigung mit mindestens einem `if`, `else if`, `else` und `switch`!
+$$ Frage 5:Erstelle eine verschachtelte Verzweigung mit mindestens einem `if`, `else if`, `else` und `switch`!

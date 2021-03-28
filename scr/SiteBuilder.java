@@ -31,6 +31,7 @@ public class SiteBuilder {
     private final String templatePlaceSearchRandomSite;
     private final String templatePlaceScript;
     private final String templatePlaceClickCounter;
+    private final String templatePlaceSidebar;
     private final String templateInsert;
     private final String templateInsert1;
     private final String templateInsert2;
@@ -72,6 +73,7 @@ public class SiteBuilder {
         templatePlaceSearchRandomSite = configuration.getOrDefault("templatePlaceSearchRandomSite", "BUILDER-PLACE-SEARCH-RANDOM-SITE");
         templatePlaceScript = configuration.getOrDefault("templatePlaceScript", "BUILDER-PLACE-SCRIPT");
         templatePlaceClickCounter = configuration.getOrDefault("templatePlaceClickCounter", "BUILDER-PLACE-CLICK-COUNTER");
+        templatePlaceSidebar = configuration.getOrDefault("templatePlaceSidebar", "BUILDER-PLACE-SIDEBAR");
         templateInsert = configuration.getOrDefault("templateInsert", "INSERT");
         templateInsert1 = configuration.getOrDefault("templateInsert1", "INSERT-1");
         templateInsert2 = configuration.getOrDefault("templateInsert2", "INSERT-2");
@@ -85,7 +87,7 @@ public class SiteBuilder {
 
         templateSubTitleDefault = configuration.getOrDefault("templateSubTitleDefault", "Hauptthema");
         templateMainCss = configuration.getOrDefault("templateMainCss", "nicepage.css");
-        templateInformationCss = configuration.getOrDefault("templateInformationCss", "information.css");
+        templateInformationCss = configuration.getOrDefault("templateInformationCss", "info.css");
 
         siteImageIcon = configuration.getOrDefault("siteImageIcon", "itabiicon.png");
         siteTitleImage = configuration.getOrDefault("siteTitleImage", "227231823-carl-bosch-schule-Lef1.jpg");
@@ -136,9 +138,9 @@ public class SiteBuilder {
         });
         System.out.println("\n" + informationPages.size() + " pages generated");
 
-        FileUtils.copyFile(new File(siteTemplateDir + "information.css"), new File(siteOutDir + "information.css"));
-        FileUtils.copyFile(new File(siteTemplateDir + "Hauptseite.css"), new File(siteOutDir + "Hauptseite.css"));
-        FileUtils.copyFile(new File(siteTemplateDir + "nicepage.css"), new File(siteOutDir + "nicepage.css"));
+        FileUtils.copyFile(new File(siteTemplateDir + "information.css"), new File(siteOutDir + templateInformationCss));
+        FileUtils.copyFile(new File(siteTemplateDir + "Hauptseite.css"), new File(siteOutDir + "mainpage.css"));
+        FileUtils.copyFile(new File(siteTemplateDir + "nicepage.css"), new File(siteOutDir + templateMainCss));
         FileUtils.copyFile(new File(siteTemplateDir + "information.js"), new File(siteOutDir + "information.js"));
         FileUtils.copyFile(new File(siteImagesDir + siteImageIcon), new File(siteOutDir + "images\\" + siteImageIcon));
         FileUtils.copyFile(new File(siteImagesDir + siteTitleImage), new File(siteOutDir + "images\\" + siteTitleImage));
@@ -178,6 +180,8 @@ public class SiteBuilder {
                 generatedPage.append(line.replace(templatePlaceMainPage, mainPageUrl));
             } else if (line.contains(templatePlaceSearchRandomSite)) {
                 generatedPage.append(line.replace(templatePlaceSearchRandomSite, generateSearchRandomKeywords()));
+            } else if (line.contains(templatePlaceSidebar)) {
+                generatedPage.append(line.replace(templatePlaceSidebar, generateSidebarMenu("")));
             } else if (line.contains(templatePlaceContents)) {
                 generatedPage.append(line.replace(templatePlaceContents, mainList.toString()));
             } else if (line.contains(templatePlaceSearchList)) {
@@ -255,6 +259,27 @@ public class SiteBuilder {
         pathToMainDirectory = IntStream.range(0, GeneralUtils.countOccurrences(path, "\\") + (path.equals(templateSubTitleDefault) ? 0 : 1))
                 .mapToObj(i -> "..\\").collect(Collectors.joining());
         informationPages.add(new InformationPage(pageTitle, siteFile, path.replace(templateSubTitleDefault, "")));
+    }
+
+    private String generateSidebarMenu(String pathToMainDirectory) {
+        LineBuilder sidebar = new LineBuilder();
+        sidebar.append("<a href=\"" + pathToMainDirectory + "/index.html\">Hauptseite</a>");
+        sidebar.append("<a href=\"http://yanwittmann.de\">Zu yanwittmann.de</a>");
+
+        for (String entry : pageTreeBuilder.getSidebarMenu()) {
+            if (entry.startsWith(PageTreeBuilder.SIDEBAR_DROPDOWN)) {
+                sidebar.append("<button class=\"dropdown-btn\">" + entry.replace(PageTreeBuilder.SIDEBAR_DROPDOWN, ""));
+                sidebar.append("<i class=\"fa fa-caret-down\"></i>");
+                sidebar.append("</button>");
+                sidebar.append("<div class=\"dropdown-container\">");
+            } else if (entry.startsWith(PageTreeBuilder.SIDEBAR_ENTRY)) {
+                sidebar.append(entry.replace(PageTreeBuilder.SIDEBAR_ENTRY, "").replace("<a href=\"", "<a href=\"" + pathToMainDirectory));
+            } else if (entry.equals(PageTreeBuilder.SIDEBAR_DROPDOWN_END)) {
+                sidebar.append("</div>");
+            }
+        }
+
+        return sidebar.toString();
     }
 
     private final ArrayList<Warning> warnings = new ArrayList<>();
@@ -462,6 +487,8 @@ public class SiteBuilder {
                 generatedPage.append(line.replace(templatePlaceMainPage, pathToMainDirectory + mainPageUrl));
             } else if (line.contains(templatePlaceScript)) {
                 generatedPage.append(line.replace(templatePlaceScript, "<script src=\"" + pathToMainDirectory + "information.js\"></script>"));
+            } else if (line.contains(templatePlaceSidebar)) {
+                generatedPage.append(line.replace(templatePlaceSidebar, generateSidebarMenu(pathToMainDirectory)));
             } else if (line.contains(templatePlaceClickCounter)) {
                 generatedPage.append(line.replace(templatePlaceClickCounter, generateClickCounter(pathToMainDirectory, pageTitle)));
             } else {
@@ -552,7 +579,7 @@ public class SiteBuilder {
                 .replace("\\<", "ESCAPEDLARGERTHAN").replace("-->", "\uD83E\uDC1A");
         if (!firstCodeBlockLine && isCurrentlyInCodeBlock && !text.endsWith("<br>") && !text.trim().equals("````") && isCurrentlyInTextBlock)
             text = "<br>" + text;
-        if(isCurrentlyInCodeBlock && text.length() == 0) text = "<br>";
+        if (isCurrentlyInCodeBlock && text.length() == 0) text = "<br>";
         if (isCurrentlyInCodeBlock && firstCodeBlockLine) firstCodeBlockLine = false;
         if (text.matches("\\$\\$\\$ .+")) {
             isCurrentlyInTextBlock = true;

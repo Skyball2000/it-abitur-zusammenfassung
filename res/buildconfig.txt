@@ -14,6 +14,7 @@ templatePlaceSearchList:BUILDER-PLACE-SEARCH-LIST
 templatePlaceSearchRandomSite:BUILDER-PLACE-SEARCH-RANDOM-SITE
 templatePlaceScript:BUILDER-PLACE-SCRIPT
 templatePlaceClickCounter:BUILDER-PLACE-CLICK-COUNTER
+templatePlaceSidebar:BUILDER-PLACE-SIDEBAR
 templateInsert:INSERT
 templateInsert1:INSERT-1
 templateInsert2:INSERT-2
@@ -27,7 +28,7 @@ templateIcon:<img src="INSERT" class="u-logo-image u-logo-image-1" data-image-wi
 
 templateSubTitleDefault:Hauptthema
 templateMainCss:nicepage.css
-templateInformationCss:information.css
+templateInformationCss:info.css
 
 siteImageIcon:itabiicon.png
 siteTitleImage:itabiiconmain.png

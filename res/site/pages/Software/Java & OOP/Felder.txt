@@ -51,14 +51,15 @@ Bei der Adresse `64783` sind also die konkreten Werte des Feldes angegeben, dazu
 Doch was ist das? Weiter unten gibt es noch ein weiteres Feld `zweitesFeld`, das auch auf die Adresse `64783` zeigt! Das ist der Unterschied zu primitiven Datentypen: Es
 kann mehrere Variablen mit der gleichen Referenz geben. Wenn wir also einen Wert in `zweitesFeld` verändern, so verändern wir diesen auch in `meinFeld` gleichermaßen, da
 beide Felder auf die gleiche Adresse im Speicher zeigen und damit auch auf das gleiche reale Feld zugreifen.<br>
-Hier wäre die initialisierung dieser im Code:
+Hier wäre die initialisierung dieser beiden Felder im Code:
 ````Java
 int\[\] meinFeld = {23, 54364};
 int\[\] zweitesFeld = meinFeld;
-meinFeld\[1\] = 984; //Aufgabe 1 weiter unten!
+meinFeld\[1\] = 984;    //Aufgabe 1 weiter unten! ;-)
 System.out.println(zweitesFeld\[1\]);
 ````
-Mit `zweitesFeld = meinFeld` wird nicht das Feld `meinFeld` kopiert, sondern die Referenz zum eigentlichen Feld kopiert. Damit greifen also beide auf das gleiche Feld zu.<br><br>
+Mit `zweitesFeld = meinFeld` wird nicht das Feld `meinFeld` kopiert, sondern die Referenz zum eigentlichen Feld kopiert.
+Damit greifen also beide Variablen auf das gleiche Feld zu.<br><br>
 
 Für die Variable `wahrheitstabelle` ist es das gleiche, ein `boolean\[\]` Feld, das auf die eigentlichen Werte mit einer Referenz verweist.
 
