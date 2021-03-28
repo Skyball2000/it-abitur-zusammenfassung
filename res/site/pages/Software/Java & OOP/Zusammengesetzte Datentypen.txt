@@ -1,0 +1,174 @@
+# 7. Zusammengesetzte Datentypen
+> Klassen, Objekte, class
+
+Bisher hatten wir nur [einfache, primitive Datentypen|Elementare Sprachelemente in Java|primitiven Datentypen] und [Felder|Felder]. Doch auf lange Sicht werden diese
+irgendwann unhandlich. Man schaue sich dieses Beispiel an:
+
+````Java
+char punkt1_Name = 'p';
+int punkt1_X = 12;
+int punkt1_Y = 34;
+char punkt2_Name = 'q';
+int punkt2_X = 67;
+int punkt2_Y = 24;
+char punkt3_Name = 'r';
+int punkt3_X = 164;
+int punkt3_Y = 96;
+````
+Hier wird versucht, drei Punkte mit je zwei Koordinatenwerten (x, y) und einem Namen abzuspeichern. Das braucht aber alleine dafür schon je drei Variablen pro Punkt
+und man kann nicht einfach so einen neuen hinzufügen, ohne viele weitere Variablen anzulegen. Das geht auch einfacher.<br><br>
+
+Zusammengefasste Datentypen sind genau das, was der Name vermuten lässt: Mehrere Werte in einem Typ zusammengefasst. Dieser Typ ist, nicht wie ein `int` oder `char`,
+kein primitiver Typ mehr, daher gilt für diesen dann bei Java [call by reference|Unterprogrammtechnik|Call by reference]. Im Beispiel von oben hätten wir dann
+also einen Typ `Punkt` der drei Werte enthält: `int x`, `int y` und `char name`.
+img pages/zusammengesetzte_datentypen_punkt.png
+
+## Erstellen eines zusammengesetzten Datentyps in Java
+In Java nennen sich solche zusammengesetzten Typen <b>Klassen</b>. Du hast diese sogar schon verwendet: jedes mal, wenn du Code geschrieben hast, hast du unbewusst
+eine solche Klasse erstellt und diese mit Code und Variablen befüllt. Eine Klasse wird durch das Codeword `class` angedeutet. Eine Klasse entspricht (meistens zumindest)
+einer `.java`-Datei. Also, wenn wir unsere Klasse `Punkt` schreiben wollen, müssten wir in einer Datei `Punkt.java` folgenden Code haben:<br>
+````Java
+public class Punkt {
+    private int x, y;
+    private char name;
+
+    public Punkt(int x, int y, char name) {
+        this.x = x;
+        this.y = y;
+        this.name = name;
+    }
+}
+````
+
+<br>Es beginnt mit `public class Punkt`: Die Sichtbarkeit `public` bedeutet einfach, dass man diese Klasse von überall aus verwendet werden kann. `class` ist wie
+gesagt einfach nur das Schlüsselwort, dass nun eine Klasse definiert wird und `Punkt` ist der Name der Klasse.<br>
+Nun kommen alle Variablen, die man in dem zusammengesetzen Datentyp speichern möchte, also unsere Koordinaten `x` und `y` und der Name `name`.
+Es handelt sich hierbei um globale Variablen, welche immer auf `private` gesetzt sein sollten. Generell sollte man so oft wie nur möglich `private` als Sichtbarkeit verwenden.<br>
+Danach kommt etwas, das aussieht wie ein Unterprogramm nur ohne Rückgabewert. Es handelt sich hierbei um den <b>Konstruktor</b> der Klasse, also das, was aufgerufen wird,
+wenn wir ein neues Objekt von diesem Typen erzeugen. Wir wollen diesem unsere Koordinaten und den Namen als Parameter mitgeben: `int x, int y, char name`<br>
+Doch diese nur als Parameter mitzugeben bringt noch nicht viel, jetzt müssen wir noch die globalen Variablen auf die entsprechenden Werte setzen: `this` bedeutet, dass
+wir auf ein Klassenattribut zugreifen möchten, also im Beispiel oben zuerst auf die globale Variable `x`: `this.x`. Damit greifen wir nicht auf den Parameter, sondern
+auf die globale Variable zu. Nun wollen wir es auf den parameter `x` setzen, also `this.x = x`. Das gleiche passiert mit den anderen beiden Parametern.<br><br>
+
+Nun wollen wir aber auch noch auf die Werte zugreifen können, was wir ja im Moment nicht können, da sie auf `private` gesetzt sind. Dazu brauchen wir nur <b>getter</b> und
+<b>setter</b>, also Funktionen die uns den Wert geben/setzen, zu der `Punkt`-Klasse hinzufügen:
+````Java
+public int <b>getX()</b> {
+    return x;
+}
+
+public int <b>getY()</b> {
+    return y;
+}
+
+public char <b>getName()</b> {
+    return name;
+}
+
+public void <b>setX(int x)</b> {
+    this.x = x;
+}
+
+public void <b>setY(int y)</b> {
+    this.y = y;
+}
+````
+
+<br><br>Nun das Beispiel von oben mit unserem neuen zusammengesetzten Datentyp:
+````Java
+Punkt p = new Punkt(12, 34, 'p');
+Punkt q = new Punkt(67, 24, 'q');
+Punkt r = new Punkt(164, 96, 'r');
+````
+Anstatt neun Zeilen nur drei, das ist doch nicht schlecht! Wenn wir nun auf die Werte zugreifen wollen, können wir einfach die getter und setter verwenden:
+````Java
+p.setX( q.getY() );
+System.out.println(p.getName() + ": x=" + p.getX() + " y=" + p.getY());
+//...
+````
+
+## Allgemeine Vorgehensweise
+Um einen zusammengesetzten Typen zu erstellen muss man folgende Schritte befolgen:
+~ Einen passenden Namen für den Typ finden
+~ Benötigte Werte und deren Typen herausfinden (also bei unserem `Punkt` oben `x`, `y` und `name`)
+~ Eine Klasse mit dem Namen und den Variablen anlegen
+~ Einen Konstruktor erstellen, in dem die Werte initialisiert werden
+~ Benötigte getter und setter für die Variablen erstellen
+
+
+## Aufgaben
+$$ Frage 1:Wofür sind zusammengesetzte Typen gut?->Lösung
+1. Kombinieren von mehreren Werten in einen Typ --> einfacher zu verwenden<br>
+2. Ein weiterer Schritt zur Abstraktion des Programms<br>
+3. Mehrere Werte können als ein Parameter oder Rückgabewert übergeben werden<br>
+... und noch mehr! Klassen sind ein unverzichtbarer (und der definierende) Teil der OOP.
+$$$
+
+$$ Frage 2:Was wird in dem Beispiel mit dem Punkt `p` und `q` oben ausgegeben?->Lösung
+Es wird `p: x=24 y=34` ausgegeben
+$$$
+
+$$ Frage 3:Könnte man bei dem obigen Beispiel den Name des Punktes nach der ersten initialisierung noch setzen? Warum?->Lösung
+ --> Nein<br>
+Die Variable `name` ist `private` und es gibt keinen setter, das heißt man hat nur noch Lesezugriff auf die Variable und keinen Schreibzugriff.
+$$$
+
+$$ Frage 4:Erstelle einen zusammengesetzen Typ in Java `Linie` mit sinnvollen Variablen, gettern, settern und einer `berechneLaenge`-Funktion!->Lösung
+Die Java-Klasse:<br>
+````Java
+public class Linie {
+    private int x1, y1, x2, y2;
+
+    public Linie(int x1, int y1, int x2, int y2) {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+    }
+
+    public int getX1() {
+        return x1;
+    }
+
+    public int getY1() {
+        return y1;
+    }
+
+    public int getX2() {
+        return x1;
+    }
+
+    public int getY2() {
+        return y2;
+    }
+
+    public void setX1(int x) {
+        this.x1 = x;
+    }
+
+    public void setY1(int y) {
+        this.y1 = y;
+    }
+
+    public void setX2(int x) {
+        this.x2 = x;
+    }
+
+    public void setY2(int y) {
+        this.y2 = y;
+    }
+
+    public double berechneLaenge() {
+        return Math.sqrt( (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) );
+    }
+}
+````
+$$$
+
+$$ Frage 5:Verwende die in Aufgabe 4 angegebene Java-Klasse um ein Objekt davon zu erzeugen und von diesem die Länge auszugeben!->Lösung
+````Java
+Linie l = new Linie(1, 1, 2, 2);
+System.out.println(l.berechneLaenge());
+````
+<br><br>Dies würde `1.4142135623730951` ausgeben.
+$$$

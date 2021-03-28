@@ -265,6 +265,7 @@ public class SiteBuilder {
         LineBuilder sidebar = new LineBuilder();
         sidebar.append("<a href=\"" + pathToMainDirectory + "/index.html\">Hauptseite</a>");
         sidebar.append("<a href=\"http://yanwittmann.de\">Zu yanwittmann.de</a>");
+        sidebar.append("<br style=\"margin: 1em; display: block; font-size: 24%;\">");
 
         for (String entry : pageTreeBuilder.getSidebarMenu()) {
             if (entry.startsWith(PageTreeBuilder.SIDEBAR_DROPDOWN)) {
@@ -609,6 +610,7 @@ public class SiteBuilder {
                     spoilerBoxLabel + "</span>" +
                     "<div class=\"spoilerContents\" id=\"" + spoilerBoxId + "\" style=\"display:none\">" + templateTextParagraphIntro;
         } else if (text.equals("$$$")) {
+            isCurrentlyInTextBlock = false;
             return "</p></div>";
         } else if (text.equals("$$$$") && !isCurrentlyInTextBlock) {
             isCurrentlyInTextBlock = true;
@@ -669,6 +671,7 @@ public class SiteBuilder {
         if (!isCurrentlyInTextBlock && isCurrentlyInCodeBlock && !firstCodeBlockLine && evenCodeBlockLine) {
             text = "<div class=\"multilineCodeEven\">" + text + "</div>";
         }
+        if(isCurrentlyInTextBlock && text.startsWith("<code><br>")) text = "<br><code>" + text.replace("<code><br>", "");
         return text.replace("ESCAPEDSQUAREBRACKETSOPEN", "[").replace("ESCAPEDSQUAREBRACKETSCLOSE", "]")
                 .replace("ESCAPEDCARROT", "^").replace("ESCAPEDDOLLAR", "$").replace("ESCAPEDSMALLERTHAN", ">")
                 .replace("ESCAPEDLARGERTHAN", "<");

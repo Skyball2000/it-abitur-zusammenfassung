@@ -102,6 +102,9 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Abstände zwischen Elementen auf der Hauptseite sind nun kleiner
 - Seitenleiste hinzugefügt, die nun auf jeder Seite erscheint und einen zu jeder Seite bringen kann
 - HTML und CSS auf allen Seiten etwas angepasst und CSS-Dateien umbenannt
+- Code blocks nach spoiler boxen werden nun richtig dargestellt
+- Die automatisch platzierten `<br>` in code blocks in spoiler boxen werden nun vor dem `<code>` platziert,
+  darum werden jetzt keine komischen Zeilenumbrüche mehr angezeigt
 
 ## Todo
 
@@ -110,6 +113,7 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Aufgaben zu Themen (Lösungen mit spoiler-boxen)
 - Seiten nochmal überarbeiten
 - Keywords für Seiten erstellen
+- Kapitel Java/OOP fertig schreiben
 - Werbung (AdSense)  
   Site Behavior: Navigation  
   Users should be able to easily navigate through the site or app to find what products, goods, or services are promised  

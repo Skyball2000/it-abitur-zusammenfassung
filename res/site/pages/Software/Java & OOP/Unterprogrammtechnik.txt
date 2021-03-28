@@ -133,7 +133,7 @@ public void doStuff(<i>int meinParameter</i>) {
 img pages/call by value.png
 Wie im Bild zu sehen ist, wurde der Wert an eine andere Adresse im Speicher kopiert und beide Variablen haben somit eine eigene Kopie des Wertes.
 
-<br><br><b>Call by reference</b><br>
+<br><br><b>[Call by reference]</b><br>
 Bei call by Reference wird nicht der Wert der angegebenen Variable mitgegeben, sondern die <i>Referenz</i>, also ein Zeiger, zum eigentlichen Wert mitgegeben. Hier sind
 das alle restlichen Typen, also Objekte und Felder.<br>
 Bei dem Übergebenen Wert handelt es sich also tatsächlich um den <i>exakt gleichen Wert</i>, nicht bloß eine Kopie davon. Wenn man den Wert der Variable dann im
@@ -196,6 +196,24 @@ Basierend auf dem Rückgabewert-Typ wird auch die Namensgebung bestimmt:
 - Wenn ein Unterprogramm einen Wert zurückgibt nennt man es <b>Funktion</b>
 - Wenn es keinen Wert zurückgibt (also `void`), nennt man es <b>Prozedur</b>
 
+
+## Formalparameter und Aktualparameter
+Je nachdem, ob der Parameter in der Unterprogrammdefinition oder im Aufruf steht, wird er unterschiedlich benannt.<br><br>
+Die Parameter in der Definition eines Unterprogramms (also in der Signatur) werden <b>Formalparameter</b> genannt. In diesem Beispiel hier wäre also `String textParameter` ein
+Formalparameter, da es sich bei dem Code um eine Unterprogrammdefinition handelt:
+````Java
+private String doStuff(String textParameter) {
+    //...
+}
+````
+
+<br>Wenn nun das Unterprogramm aufgerufen wird, so werden für die benötigten Parameter konkrete Werte eingesetzt. Das sind dann die <b>Aktualparameter</b>. Die beiden hier
+konkreten mitgegebenen Werte sind also Aktualparameter:
+````Java
+doStuff("Dies ist ein Aktualparameter");
+doStuff("Mein Text".substring(1,4));
+````
+
 ## Aufgaben
 $$ Frage 1:Wie werden bei einem Unterprogramm Parameter angegeben?->Lösung
 Parameter befinden sich in den Parameterklammern hinter dem Unterprogrammnamen. Sie bestehen je aus dem Parametertyp (`String`, `int`, ...) und dem Parameterbezeichner.
@@ -230,4 +248,87 @@ public int doubleNumber(String n) {
 `doubleNumber("" + doubleNumber("3"));` --> 6<br>
 $$$
 
-$$ Frage 6:Denk dir selbst ein Unterprogramm aus, das irgendetwas tut, was sich lohnt auszulagern!
+$$ Frage 6:Extrahiere sinnvoll Unterprogramme aus dem Programm unten:->Lösung
+````Java
+public static void main(String\[\] args) {
+    int\[\] meineWerte = {1, 45, 23, 76, 34};
+    gibAus(meineWerte);
+    veraendereWerte(meineWerte);
+    gibAus(meineWerte);
+    veraendereWerte(meineWerte);
+    gibAus(meineWerte);
+}
+
+public void gibAus(int\[\] feld) {
+    for (int i = 0; i < feld.length; i++) {
+        System.out.println(feld\[i\]);
+    }
+}
+
+public void veraendereWerte(int\[\] feld) {
+    for (int i = 0; i < feld.length; i++) {
+        if (feld\[i\] < 30) {
+            feld\[i\] = feld\[i\] / 2;
+        } else {
+            feld\[i\] = feld\[i\] + 4;
+        }
+    }
+}
+````
+$$$
+
+````Java
+public static void main(String\[\] args) {
+    int\[\] meineWerte = {1, 45, 23, 76, 34};
+    for (int i = 0; i < meineWerte.length; i++) {
+        System.out.println(meineWerte\[i\]);
+    }
+    for (int i = 0; i < meineWerte.length; i++) {
+        if (meineWerte\[i\] < 30) {
+            meineWerte\[i\] = meineWerte\[i\] / 2;
+        } else {
+            meineWerte\[i\] = meineWerte\[i\] + 4;
+        }
+    }
+    for (int i = 0; i < meineWerte.length; i++) {
+        System.out.println(meineWerte\[i\]);
+    }
+    for (int i = 0; i < meineWerte.length; i++) {
+        if (meineWerte\[i\] < 30) {
+            meineWerte\[i\] = meineWerte\[i\] / 2;
+        } else {
+            meineWerte\[i\] = meineWerte\[i\] + 4;
+        }
+    }
+    for (int i = 0; i < meineWerte.length; i++) {
+        System.out.println(meineWerte\[i\]);
+    }
+}
+````
+
+$$ Frage 7:Liste <i><b>alle</b></i> Aktual-/Formalparameter im Code hier drunter auf:->Lösung
+Aktualparameter:<br>
+`12`  `34`  `berechne(12, 34)`  `x`  `x + 45`  `berechne(x, x + 45) + 6`
+
+<br><br>
+Formalparameter:<br>
+`int a`  `int b`  `int ergebnis`
+$$$
+
+````Java
+public static void main(String\[\] args) {
+    gibAus(berechne(12, 34));
+    int x = 4;
+    gibAus(berechne(x, x + 45) + 6);
+}
+
+private int berechne(int a, int b) {
+    return a - b * 2;
+}
+
+private void gibAus(int ergebnis) {
+    System.out.println(ergebnis);
+}
+````
+
+$$ Frage 8:Denk dir selbst ein Unterprogramm aus, das irgendetwas tut, was sich lohnt auszulagern und du z.B. immer mal wieder gebrauchen könntest!
