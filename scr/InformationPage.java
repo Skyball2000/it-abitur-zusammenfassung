@@ -20,6 +20,7 @@ public class InformationPage {
         this.file = file;
         this.path = path;
         this.pathTitles = path.split("\\\\+");
+        Sitemap.addWithPrefix(path.replace("\\", "/") + "/" + file.getName());
 
         ArrayList<String> fileLines = FileUtils.readFileToArrayList(file);
         keywords.addAll(Arrays.asList(fileLines.stream().filter(line -> line.startsWith(">")).findFirst().
@@ -45,7 +46,7 @@ public class InformationPage {
     }
 
     public void addKeyword(String keyword) {
-        if(keyword.contains(";")) return;
+        if (keyword.contains(";")) return;
         for (String s : keyword.split(" ?[&/] ?")) {
             s = s.trim().replaceAll("^([^)]*)\\(([^)]*)$", "$1$2")
                     .replaceAll("^([^(]*)\\)([^)]*)$", "$1$2");
@@ -80,13 +81,13 @@ public class InformationPage {
 
     public String generateSearchEntry() {
         return "<li class=\"searchElement\"> " +
-                "<a href=\"" + path + "\\" + file.getName().replace(".txt", SiteBuilder.informationPageEndingForLink) + "\">" +
+                "<a href=\"" + SiteBuilder.prepareInformationPageLink(path.replace("\\", "/") + "/" + file.getName().replace(".txt", SiteBuilder.informationPageEndingForLink)) + "\">" +
                 path.replace("\\", " > ") + " > " + displayName +
                 (keywords.size() > 0 ? "<font style=\"display:none\">" + SiteBuilder.prepareSearchKeyword(String.join(" ", keywords)) + "</font>" : "") + "</a></li>";
     }
 
     @Override
     public String toString() {
-        return "<a href=\"" + path + "\\" + file.getName().replace(".txt", SiteBuilder.informationPageEndingForLink) + "\">" + displayName + "</a>";
+        return "<a href=\"" + SiteBuilder.prepareInformationPageLink(path.replace("\\", "/") + "/" + file.getName().replace(".txt", SiteBuilder.informationPageEndingForLink)) + "\">" + displayName + "</a>";
     }
 }

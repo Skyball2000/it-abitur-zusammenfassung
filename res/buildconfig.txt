@@ -15,6 +15,7 @@ templatePlaceSearchRandomSite:BUILDER-PLACE-SEARCH-RANDOM-SITE
 templatePlaceScript:BUILDER-PLACE-SCRIPT
 templatePlaceClickCounter:BUILDER-PLACE-CLICK-COUNTER
 templatePlaceSidebar:BUILDER-PLACE-SIDEBAR
+templatePlaceAmountPages:BUILDER-PLACE-AMOUNT-PAGES
 templateInsert:INSERT
 templateInsert1:INSERT-1
 templateInsert2:INSERT-2

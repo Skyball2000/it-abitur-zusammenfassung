@@ -105,6 +105,9 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Code blocks nach spoiler boxen werden nun richtig dargestellt
 - Die automatisch platzierten `<br>` in code blocks in spoiler boxen werden nun vor dem `<code>` platziert,
   darum werden jetzt keine komischen Zeilenumbrüche mehr angezeigt
+- `-->` sollte nun nicht mehr versehentlich eine Liste starten
+- Anzahl der dead links von 500 auf ca. 10 reduziert
+- Es wird nun eine `sitemap.xml` generiert, die Google zum Indexieren der Seite verwendet
 
 ## Todo
 

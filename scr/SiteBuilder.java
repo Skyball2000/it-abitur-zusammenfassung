@@ -32,6 +32,7 @@ public class SiteBuilder {
     private final String templatePlaceScript;
     private final String templatePlaceClickCounter;
     private final String templatePlaceSidebar;
+    private final String templatePlaceAmountPages;
     private final String templateInsert;
     private final String templateInsert1;
     private final String templateInsert2;
@@ -74,6 +75,7 @@ public class SiteBuilder {
         templatePlaceScript = configuration.getOrDefault("templatePlaceScript", "BUILDER-PLACE-SCRIPT");
         templatePlaceClickCounter = configuration.getOrDefault("templatePlaceClickCounter", "BUILDER-PLACE-CLICK-COUNTER");
         templatePlaceSidebar = configuration.getOrDefault("templatePlaceSidebar", "BUILDER-PLACE-SIDEBAR");
+        templatePlaceAmountPages = configuration.getOrDefault("templatePlaceAmountPages", "BUILDER-PLACE-AMOUNT-PAGES");
         templateInsert = configuration.getOrDefault("templateInsert", "INSERT");
         templateInsert1 = configuration.getOrDefault("templateInsert1", "INSERT-1");
         templateInsert2 = configuration.getOrDefault("templateInsert2", "INSERT-2");
@@ -186,6 +188,8 @@ public class SiteBuilder {
                 generatedPage.append(line.replace(templatePlaceContents, mainList.toString()));
             } else if (line.contains(templatePlaceSearchList)) {
                 generatedPage.append(line.replace(templatePlaceSearchList, searchList));
+            } else if (line.contains(templatePlaceAmountPages)) {
+                generatedPage.append(line.replace(templatePlaceAmountPages, "" + informationPages.size()));
             } else {
                 generatedPage.append(line);
             }
@@ -257,17 +261,18 @@ public class SiteBuilder {
                 break;
             }
         pathToMainDirectory = IntStream.range(0, GeneralUtils.countOccurrences(path, "\\") + (path.equals(templateSubTitleDefault) ? 0 : 1))
-                .mapToObj(i -> "..\\").collect(Collectors.joining());
+                .mapToObj(i -> "../").collect(Collectors.joining());
         informationPages.add(new InformationPage(pageTitle, siteFile, path.replace(templateSubTitleDefault, "")));
     }
 
     private String generateSidebarMenu(String pathToMainDirectory) {
         LineBuilder sidebar = new LineBuilder();
-        sidebar.append("<a href=\"" + pathToMainDirectory + "/index.html\">Hauptseite</a>");
+        sidebar.append(prepareInformationPageLink("<a href=\"" + pathToMainDirectory + "/index.html\">Hauptseite</a>"));
         sidebar.append("<a href=\"http://yanwittmann.de\">Zu yanwittmann.de</a>");
         sidebar.append("<br style=\"margin: 1em; display: block; font-size: 24%;\">");
 
         for (String entry : pageTreeBuilder.getSidebarMenu()) {
+            entry = SiteBuilder.prepareInformationPageLink(entry);
             if (entry.startsWith(PageTreeBuilder.SIDEBAR_DROPDOWN)) {
                 sidebar.append("<button class=\"dropdown-btn\">" + entry.replace(PageTreeBuilder.SIDEBAR_DROPDOWN, ""));
                 sidebar.append("<i class=\"fa fa-caret-down\"></i>");
@@ -292,7 +297,7 @@ public class SiteBuilder {
         String pageSubtitle = path.replace("\\", " >> ");
         String pageTitle = "Title";
         pathToMainDirectory = IntStream.range(0, GeneralUtils.countOccurrences(path, "\\") + (path.equals(templateSubTitleDefault) ? 0 : 1))
-                .mapToObj(i -> "..\\").collect(Collectors.joining());
+                .mapToObj(i -> "../").collect(Collectors.joining());
         boolean pageErrorWarning = false, pageIncompleteWarning = false;
         String warningMessage = "";
         currentPage = "no page";
@@ -335,7 +340,7 @@ public class SiteBuilder {
                         (i - 1 >= 0 && !readFileToArrayList.get(i - 1).startsWith("-") && !readFileToArrayList.get(i - 1).startsWith("~")))
                     generatedBody.append("<br>");
                 generatedBody.append("<img style=\"margin-top:10px;max-width:100%;\" src=\"" + prepareImageLink(line.replace("img ", "")) + "\"/><br>");
-            } else if (line.startsWith("-")) { //list
+            } else if (line.startsWith("-") && !line.startsWith("-->")) { //list
                 if (isCurrentlyTextOrImage) {
                     isCurrentlyTextOrImage = false;
                     generatedBody.append("</p>");
@@ -508,7 +513,7 @@ public class SiteBuilder {
         currentPageNumber++;
         printProgressBar(currentPageNumber, numberOfPages);
 
-        FileUtils.writeFile(new File(siteOutDir + path.replace(templateSubTitleDefault, "") + "\\" + siteFile.getName().replace(".txt", SiteBuilder.informationPageEnding)), optimizeGeneratedPage(generatedPage.toString()));
+        FileUtils.writeFile(new File(SiteBuilder.prepareInformationPageLink(siteOutDir + path.replace(templateSubTitleDefault, "") + "/" + siteFile.getName().replace(".txt", SiteBuilder.informationPageEnding))), optimizeGeneratedPage(generatedPage.toString()));
     }
 
     private final ArrayList<String> clickCounters = new ArrayList<>();
@@ -557,11 +562,11 @@ public class SiteBuilder {
             return link;
         File image = new File(siteImagesDir + link);
         if (image.exists()) {
-            File destination = new File(siteOutDir + "\\images\\" + link);
+            File destination = new File(siteOutDir + "/images/" + link);
             FileUtils.makeDirectories(destination.getPath().replace(image.getName(), ""));
             FileUtils.copyFile(image, destination);
         } else warnings.add(new Warning(Warning.WARNING_IMAGE_NOT_FOUND, ": " + image.getPath()));
-        return (pathToMainDirectory + "\\images\\" + link).replaceAll("^\\\\", "");
+        return (pathToMainDirectory + "/images/" + link).replaceAll("[\\\\/]{2}", "/").replaceAll("[\\\\/]{2}", "/");
     }
 
     private boolean isCurrentlyInTextBlock = false;
@@ -671,7 +676,8 @@ public class SiteBuilder {
         if (!isCurrentlyInTextBlock && isCurrentlyInCodeBlock && !firstCodeBlockLine && evenCodeBlockLine) {
             text = "<div class=\"multilineCodeEven\">" + text + "</div>";
         }
-        if(isCurrentlyInTextBlock && text.startsWith("<code><br>")) text = "<br><code>" + text.replace("<code><br>", "");
+        if (isCurrentlyInTextBlock && text.startsWith("<code><br>"))
+            text = "<br><code>" + text.replace("<code><br>", "");
         return text.replace("ESCAPEDSQUAREBRACKETSOPEN", "[").replace("ESCAPEDSQUAREBRACKETSCLOSE", "]")
                 .replace("ESCAPEDCARROT", "^").replace("ESCAPEDDOLLAR", "$").replace("ESCAPEDSMALLERTHAN", ">")
                 .replace("ESCAPEDLARGERTHAN", "<");
@@ -687,7 +693,7 @@ public class SiteBuilder {
                     String section;
                     if (splitted.length == 3) section = "#" + splitted[2];
                     else section = "";
-                    return "<a href=\"" + pathToMainDirectory + informationPage.getPath() + "\\" +
+                    return "<a href=\"" + pathToMainDirectory + informationPage.getPath().replace("\\", "/") + "/" +
                             informationPage.getFile().getName().replace(".txt", informationPageEndingForLink) + section + "\">" + splitted[0] + "</a>";
                 }
         return splitted[0];
@@ -696,6 +702,11 @@ public class SiteBuilder {
     private String prepareInformationPagePath(String path) {
         path = path.replaceAll(".*" + sitePagesDir.replace("\\", "\\\\") + "(.+)", "$1");
         return path.contains("\\") ? path.replaceAll("(.+)\\\\.+", "$1") : templateSubTitleDefault;
+    }
+
+    static String prepareInformationPageLink(String name) {
+        return name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue")
+                .replaceAll("[\\\\/]{2}", "/");
     }
 
     private String optimizeGeneratedPage(String generated) {

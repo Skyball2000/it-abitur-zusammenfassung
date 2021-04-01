@@ -1,0 +1,180 @@
+# 8. Objektorientierte Programmierung
+
+Die [zusammengesetzten Datentypen|Zusammengesetzte Datentypen] waren die Einleitung zur <b>O</b>bjekt<b>O</b>rientierten <b>P</b>rogrammierung (OOP). Doch was ist OOP?<br><br>
+
+Bei OOP geht es darum, dass unterschiedliche Objekte mit unterschiedlichen Eigenschaften erzeugt werden.<br>
+Das Prinzip ist, dass ein zu behandelndes Problem auf einige wenige, beherrschbare <i>Eigenschaften</i> und <i>Operationen</i> reduziert wird. Der erste Schritt ist die
+<b>Datenmodellierung</b>: Es müssen alle Objekte und deren Eigenschaften gefunden werden, die benötigt werden, um das Problem zu lösen. Diese werden erst mal
+nur Aufgelistet.<br><br>
+
+Nehmen wir ein Beispiel an einem realen Objekt, dimmbare Lampen. Eine solche Lampe hat folgende grundlegende Eigenschaften:
+- Form
+- Farbe
+- Maximale Leuchtkraft
+- Aktuelle Leuchtkraft
+Und folgende Operationen, die man an ihr durchführen kann:
+- Heller (erhöhe aktuelle Leuchtkraft)
+- Dunkler (senke aktuelle Leuchtkraft)
+Hier einige Beispiele (die Bilder habe ich einfach mal von [[href=https://openai.com/blog/dall-e/|DALL-E]] genommen):
+img pages/OOP Lampen.svg
+
+Schritt 2 ist es, einen allgemeinen Bauplan für Objekte dieser Art zu erstellen. Dieser wird in der OOP <b>Klasse</b> genannt. Mithilfe dieser Klasse können
+später konkrete Objekte erzeugt werden.<br>
+In Java würde diese Klasse (= zusammengesetzter Datentyp) so aussehen:
+````Java
+public class Lampe {
+    private String form;
+    private Color farbe;
+    private final int maxLeuchtkraft;
+    private int aktLeuchtkraft;
+
+    public Lampe(String form, Color farbe, int maxLeuchtkraft) {
+        this.form = form;
+        this.farbe = farbe;
+        this.maxLeuchtkraft = maxLeuchtkraft;
+        this.aktLeuchtkraft = 0;
+    }
+
+    public void heller() {
+        aktLeuchtkraft = aktLeuchtkraft + 10;
+        if (aktLeuchtkraft > maxLeuchtkraft)
+            aktLeuchtkraft = maxLeuchtkraft;
+    }
+
+    public void dunkler() {
+        aktLeuchtkraft = aktLeuchtkraft - 10;
+        if (aktLeuchtkraft < 0)
+            aktLeuchtkraft = 0;
+    }
+}
+````
+Die Klasse hat die vier Eigenschaften, die wir vorhin definiert haben: `String form`, `Color farbe`, `int maxLeuchtkraft` und `int aktLeuchtkraft` und die beiden
+Operationen `heller()` und `dunkler()`. Die `maxLeuchtkraft` soll später nicht mehr verändert werden, darum hat sie noch das Schlüsselwort `final`, was es zu einer
+Konstante macht.<br>
+Nun da wir den 'Bauplan' für die Objekte haben, können wir diesen auch anwenden. In Java erzeugt man Objekte mit `new`:
+````Java
+Lampe erdbeerLampe = new Lampe('Erdbeere', new Color(235, 64, 52), 25);
+Lampe avocadoLampe = new Lampe('Avocado', new Color(245, 140, 42), 68);
+````
+Wir rufen also nach dem `new` den Konstruktor (`public Lampe(String form, Color farbe, int maxLeuchtkraft)`) der Klasse auf und müssen diesem Werte für die angegebenen
+Formalparameter mitgeben, damit dieser dann die Werte setzen kann. Dieser gibt uns zudem je das erzeugte Objekt zurück und wir können es in unsere Variablen
+`erdbeerLampe` und `avocadoLampe` schreiben.
+
+## Zustand und Verhalten
+Ein Objekt beschreibt mit seinen Variablen einen gewissen <b>Zustand</b>, also was es <i>jetzt gerade</i> für Eigenschaften hat. Basierend auf diesen Eigenschaften
+reagiert es unterschiedlich auf verschiedene Eingaben aus seiner Umwelt: Das <b>Verhalten</b>.<br>
+Das Verhalten wird durch die Operationen, also Unterprogramme, der Klasse definiert. Dieses Verhalten ist fast immer von dem aktuellen Zustand des Objekts abhängig,
+da die Variablen des Objektes fast immer in den Operationen verwendet werden.<br>
+Im Beispiel von oben mit den Lampen wäre die resultierende Aktion des Objekts auf den Aufruf `heller()` unterschiedlich, je nach dem, welchen Helligkeitswert die
+Lampe derzeit hat und welchen maximalen Helligkeitswert die Lampe hat.<br><br>
+
+Jedes Objekt hat also je seine eigenen Eigenschaften (Variablenwerte). Die Unterprogramme werden jedoch nur ein einziges mal definiert: in der Klasse, die diese
+Objekte erzeugt hat. Alle Objekte, die von der Klasse erzeugt werden, haben Zugriff auf die Unterprogramme.<br><br>
+
+Der Zustand eines Objektes wird ja durch die zugehörigen Variablen beschrieben. Im Optimalfall ist die Veränderung der Eigenschaften der Objekte nur durch Unterprogramme
+(Operationen) möglich. Dies ist aber nur dann gewährleistet, wenn die Variablen auch auf `private` gesetzt sind, ansonsten (z.B. mit `public`) können externe Objekte
+nach belieben auf diese zugreifen und die Werte verändern. Damit würde das <b>Geheimnisprinzip</b> verletzt werden. Also: Alles was möglich ist, auf `private` setzen.
+
+## Sich untereinander kennende Objekte
+Ein essenzieller Teil der OOP ist, dass sich Objekte untereinander kennen können. Dies kann dadurch passieren, dass dank call by reference die Referenz zu einem Objekt
+als Parameter in ein anderes Objekt übergeben wird. In einem Klassen-/ Objektdiagramm wird dies durch Pfeile zwischen den Klassen/Objekten signalisiert.<br>
+Hier ein Beispiel mit zwei Klassen, deren Objekte sich untereinander kennen können sollen:
+````Java
+public class Steuerung {
+    private Gui dieGui;
+
+    public Steuerung() {
+        dieGui = new Gui(<b>this</b>);
+    }
+}
+
+public class Gui() {
+    private Steuerung steuerung;
+
+    public Gui(<b>Steuerung steuerung</b>) {
+        this.steuerung = steuerung;
+    }
+}
+````
+Sobald man in diesem Beispiel mit `new Steuerung()` ein neues Steuerungsobjekt erzeugt, wird eine neue Gui erzeugt, die einen Parameter erwartet: Ein Steuerungsobjekt.<br>
+Das soll es auch bekommen: Mit `this` geben wir das Objekt mit, in dem wir uns gerade befinden, also in dem Steuerungsobjekt. In der Gui wird dieses Objekt dann in die
+entsprechende Variable `steuerung` geschrieben.<br>
+Nun haben wir in beiden Klassen ein Objekt, das je zum anderen zeigt und haben damit eine Verbindung zwischen den Objekten erzeugt, denn mit diesen Variablen kann nun
+auf die Operationen des je anderen Objektes zugegriffen werden.<br><br>
+Dies ist eines der Grundkonzepten der OOP und essentiell zum weiteren Programmieren mit mehreren Klassen.
+
+## Aufgaben
+$$ Frage 1:Wofür steht OOP? Worum geht es dabei?->Lösung
+OOP = Objektorientierte Programmierung<br>
+Es werden unterschiedliche Objekte von einem 'Bauplan' (Klasse) erstellt, die je ihre eigenen Eigenschaften (Zustände) haben können und haben ein durch Operationen
+definiertes Verhalten, die den Zustand des Objektes verändern können.<br>
+Objekte können sich untereinander kennen, was komplexe Interaktionen ermöglicht.
+$$$
+
+$$ Frage 2:Im Beispiel mit den Lampen oben wird die Klasse `Color` verwendet. Wie könnte eine grundlegende implementierung dieser mit Konstruktor und Gettern aussehen?->Lösung
+````Java
+public class Color {
+    private int r, g, b;
+    public Color(int r, int g, int b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
+
+    public int getRed() {
+        return r;
+    }
+
+    public int getGreen() {
+        return g;
+    }
+
+    public int getBlue() {
+        return b;
+    }
+}
+````
+$$$
+
+$$ Frage 3:Wie kann man eine Verknüpfung zwischen zwei Objekten herstellen?->Lösung
+Man gibt das eine Objekt dem anderen durch einen Parameter mit. Dies kann z.B. mit `this` passieren, da dies die Referenz zum aktuellen Objekt ist.
+$$$
+
+$$ Frage 4:Erstelle eine Klasse `Film`, die den Filmtitel, Beschreibung und bis zu 10 Bewertungstexten enthält und entsprechende Getter und Setter hat.<br>Der Titel soll nicht mehr verändert werden.<br>Die Bewertungen sollen nicht mehr gelöscht werden, aber es können jederzeit neue dazukommen. Zu Beginn gibt es noch keine Bewertungen.->Lösung
+````Java
+public class Film {
+    private final String titel;
+    private String beschreibung;
+    private final String\[\] bewertungen = new String\[10\];
+    private int anzahlBewertungen = 0;
+
+    public Film(String titel, String beschreibung) {
+        this.titel = titel;
+        this.beschreibung = beschreibung;
+    }
+
+    public String getBeschreibung() {
+        return beschreibung;
+    }
+
+    public String getTitel() {
+        return titel;
+    }
+
+    public String\[\] getBewertungen() {
+        return bewertungen;
+    }
+
+    public void setBeschreibung(String beschreibung) {
+        this.beschreibung = beschreibung;
+    }
+
+    public void neueBewertung(String bewertung) {
+        if (anzahlBewertungen < bewertungen.length) {
+            bewertungen\[anzahlBewertungen\] = bewertung;
+            anzahlBewertungen++;
+        }
+    }
+}
+````
+$$$
