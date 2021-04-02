@@ -233,7 +233,8 @@ public class SiteBuilder {
 
     private Pair<String, String> getSurroundingInfoPages(File page) {
         Pair<String, String> pair = new Pair<>();
-        String lookingForPage = page.toString().replace(".txt", informationPageEndingForLink).replace(sitePagesDir, "");
+        String lookingForPage = page.toString().replace(".txt", informationPageEndingForLink).replace(sitePagesDir, "")
+                .replaceAll(".+[\\\\/]([^\\\\/]+)", "$1");
         for (int i = 0, orderedPagesSize = orderedPages.size(); i < orderedPagesSize; i++) {
             String orderedPage = orderedPages.get(i);
             if (orderedPage.contains(lookingForPage)) {
@@ -693,7 +694,7 @@ public class SiteBuilder {
                     String section;
                     if (splitted.length == 3) section = "#" + splitted[2];
                     else section = "";
-                    return "<a href=\"" + pathToMainDirectory + informationPage.getPath().replace("\\", "/") + "/" +
+                    return "<a class=\"link\" href=\"" + pathToMainDirectory + informationPage.getPath().replace("\\", "/") + "/" +
                             informationPage.getFile().getName().replace(".txt", informationPageEndingForLink) + section + "\">" + splitted[0] + "</a>";
                 }
         return splitted[0];

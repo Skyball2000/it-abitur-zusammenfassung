@@ -32319,6 +32319,46 @@ a.u-link.u-text-hover-grey-90:hover {
   }
 }
 
- /*begin-variables base-font-size*/ 
- html { font-size: 16px; }
- /*end-variables base-font-size*/
+/*begin-variables base-font-size*/
+html {
+  font-size: 16px;
+}
+/*end-variables base-font-size*/
+
+.link {
+  text-decoration: none;
+  line-height: 1;
+
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  padding: 0.2% 4px;
+  overflow: hidden;
+  color: #333;
+  vertical-align: bottom;
+  border-radius: 0.2em;
+  transition: all .3s ease-out;
+}
+
+.link::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  transform: translateY(calc(100% - 2px));
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(60deg, #f2bd0c 0%, #f2730c 100%);
+  transition: all .25s ease-out;
+}
+
+.link:hover {
+  color: #FFF;
+  font-size: 110%;
+}
+
+.link:hover::before {
+  transform: translateY(0);
+  transition: all .25s ease-out;
+}

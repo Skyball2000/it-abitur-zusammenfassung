@@ -81,13 +81,13 @@ public class InformationPage {
 
     public String generateSearchEntry() {
         return "<li class=\"searchElement\"> " +
-                "<a href=\"" + SiteBuilder.prepareInformationPageLink(path.replace("\\", "/") + "/" + file.getName().replace(".txt", SiteBuilder.informationPageEndingForLink)) + "\">" +
+                "<a class=\"link\" href=\"" + SiteBuilder.prepareInformationPageLink(path.replace("\\", "/") + "/" + file.getName().replace(".txt", SiteBuilder.informationPageEndingForLink)) + "\">" +
                 path.replace("\\", " > ") + " > " + displayName +
                 (keywords.size() > 0 ? "<font style=\"display:none\">" + SiteBuilder.prepareSearchKeyword(String.join(" ", keywords)) + "</font>" : "") + "</a></li>";
     }
 
     @Override
     public String toString() {
-        return "<a href=\"" + SiteBuilder.prepareInformationPageLink(path.replace("\\", "/") + "/" + file.getName().replace(".txt", SiteBuilder.informationPageEndingForLink)) + "\">" + displayName + "</a>";
+        return "<a class=\"link\" href=\"" + SiteBuilder.prepareInformationPageLink(path.replace("\\", "/") + "/" + file.getName().replace(".txt", SiteBuilder.informationPageEndingForLink)) + "\">" + displayName + "</a>";
     }
 }

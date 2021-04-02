@@ -1,7 +1,7 @@
 # IT Abitur-Zusammenfassung
 
 Eine Website, auf der nützliches fürs IT Abitur in Baden Württemberg gesammelt wird!  
-Eine [Live-Demo](http://yanwittmann.de/schule/site/) kann hier gefunden werden.
+Eine Live-Version kann [hier](http://yanwittmann.de/schule/site/) gefunden werden.
 
 ![res/site/img/itabiicon.png](res/site/img/itabiicon.png)
 
@@ -108,6 +108,7 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - `-->` sollte nun nicht mehr versehentlich eine Liste starten
 - Anzahl der dead links von 500 auf ca. 10 reduziert
 - Es wird nun eine `sitemap.xml` generiert, die Google zum Indexieren der Seite verwendet
+- css stark verändert
 
 ## Todo
 

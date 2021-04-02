@@ -391,7 +391,7 @@ code {
 
 /* Add an active class to the active dropdown button */
 .active {
-  background-color: #63bf1d;
+  background-color: #f2bd0c;
   color: white;
 }
 

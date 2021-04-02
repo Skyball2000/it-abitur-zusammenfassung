@@ -594,16 +594,47 @@
   background: #444;
 }
 
+
 #searchbar {
-  background-image: url('/css/searchicon.png');
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
   width: 100%;
   font-size: 16px;
   padding: 12px 20px 12px 40px;
   border: 1px solid #ddd;
   margin-bottom: 12px;
+  border-radius: calc(4 * var(--border-width));
 }
+
+#searchbar:focus {
+  width: 100%;
+}
+
+.gradient-border {
+   --border-width: 3px;
+   position: relative;
+   align-items: center;
+   border-radius: var(--border-width);
+ }
+ .gradient-border::after {
+   position: absolute;
+   content: "";
+   top: calc(-1 * var(--border-width));
+   left: calc(-1 * var(--border-width));
+   z-index: -1;
+   width: calc(100% + var(--border-width) * 2);
+   height: calc(calc(100% + var(--border-width) * 2) - 12px);
+   background: linear-gradient(90deg, rgba(255,222,0,1) 0%, rgba(255,125,19,1) 65%, rgba(255,62,19,1) 100%);
+   background-size: 300% 300%;
+   background-position: 0 50%;
+   border-radius: calc(5 * var(--border-width));
+   animation: moveGradient 4s alternate infinite;
+ }
+
+ @keyframes moveGradient {
+   50% {
+     background-position: 100% 50%;
+   }
+ }
+
 
 #searchList {
   list-style-type: none;
@@ -625,6 +656,7 @@
 #searchList li a:hover:not(.header) {
   background-color: #eee;
 }
+
 
 /* Fixed sidenav, full height */
 .sidenav {
@@ -670,7 +702,7 @@
 
 /* Add an active class to the active dropdown button */
 .active {
-  background-color: #63bf1d;
+  background-color: #f2bd0c;
   color: white;
 }
 
