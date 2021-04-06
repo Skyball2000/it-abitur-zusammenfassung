@@ -22,7 +22,7 @@ public abstract class Sitemap {
         urls.add(url);
     }
 
-    private static String escapeURLCharacters(String url) {
+    public static String escapeURLCharacters(String url) {
         return url.replace(" ", "%20").replace("!", "%21").replace("&", "%26");
     }
 

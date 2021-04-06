@@ -280,7 +280,7 @@ public class SiteBuilder {
                 sidebar.append("</button>");
                 sidebar.append("<div class=\"dropdown-container\">");
             } else if (entry.startsWith(PageTreeBuilder.SIDEBAR_ENTRY)) {
-                sidebar.append(entry.replace(PageTreeBuilder.SIDEBAR_ENTRY, "").replace("<a href=\"", "<a href=\"" + pathToMainDirectory));
+                sidebar.append(entry.replace(PageTreeBuilder.SIDEBAR_ENTRY, "").replace("href=\"", "href=\"" + pathToMainDirectory));
             } else if (entry.equals(PageTreeBuilder.SIDEBAR_DROPDOWN_END)) {
                 sidebar.append("</div>");
             }
