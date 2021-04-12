@@ -2,6 +2,7 @@
 
 Eine Website, auf der nützliches fürs IT Abitur in Baden Württemberg gesammelt wird!  
 Eine Live-Version kann [hier](http://yanwittmann.de/schule/site/) gefunden werden.
+Die Site ist nun bereit, der Öffentlichkeit gezeigt zu werden.
 
 ![res/site/img/itabiicon.png](res/site/img/itabiicon.png)
 
@@ -109,17 +110,13 @@ Die Textdatei mit dem Inhalt der Seite befüllen. Die Syntax:
 - Anzahl der dead links von 500 auf ca. 10 reduziert
 - Es wird nun eine `sitemap.xml` generiert, die Google zum Indexieren der Seite verwendet
 - css stark verändert
+- Auto-Ads Script von der Seite entfernt
+- Werbung funktioniert endlich!
 
 ## Todo
 
-- Luca Bild für Hauptseite unten
+- Luca Bild/Link für Hauptseite unten
 - Mehr Beispiele
 - Aufgaben zu Themen (Lösungen mit spoiler-boxen)
-- Seiten nochmal überarbeiten
 - Keywords für Seiten erstellen
-- Kapitel Java/OOP fertig schreiben
-- Werbung (AdSense)  
-  Site Behavior: Navigation  
-  Users should be able to easily navigate through the site or app to find what products, goods, or services are promised  
-  Ich hab jetzt meine gesamte yanwittmann.de Domain viel verknüpfter gemacht mit mehr Links die einen hin-
-  und herspringen lassen (unter anderem die Seitenleiste mit allen Seiten)
+- Werbung (AdSense)

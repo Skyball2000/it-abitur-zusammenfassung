@@ -714,6 +714,10 @@ public class SiteBuilder {
         return generated.replaceAll("\n<br>", "<br>");
     }
 
+    private void printProgressBar(int currentValue, int maxValue) {
+        System.out.printf("\r%s", generateProgressBar(currentValue, maxValue));
+    }
+
     public static String generateProgressBar(int currentValue, int maxValue) {
         int progressBarLength = 33;
         int currentProgressBarIndex = (int) Math.ceil(((double) progressBarLength / maxValue) * currentValue);
@@ -732,9 +736,5 @@ public class SiteBuilder {
         }
         sb.append("]");
         return sb.toString();
-    }
-
-    private void printProgressBar(int currentValue, int maxValue) {
-        System.out.printf("\r%s", generateProgressBar(currentValue, maxValue));
     }
 }
