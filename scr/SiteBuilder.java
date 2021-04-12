@@ -543,14 +543,17 @@ public class SiteBuilder {
         lineBuilder.append("<div class=\"clickCounter\">");
         lineBuilder.append("<span id=\"counterInsert\">");
         lineBuilder.append("<?php");
+        lineBuilder.append("$agent = $_SERVER['HTTP_USER_AGENT'];");
+        lineBuilder.append("if (strpos($agent, 'Firefox') !== false or strpos($agent, 'Chrome') !== false) {");
         if (CREATE_COUNTERS)
-            lineBuilder.append("$url=\"http://yanwittmann.de/projects/countapi/hit.php?key=" + countApi.getKey() + "&namespace=" + countApi.getNamespace() + "\";");
-        else lineBuilder.append("$url=\"http://yanwittmann.de/projects/countapi/hit.php?key=test&namespace=yan\";");
-        lineBuilder.append("$result = file_get_contents($url);");
-        lineBuilder.append("echo $result;");
+            lineBuilder.append("  $url = \"http://yanwittmann.de/projects/countapi/hit.php?key=" + countApi.getKey() + "&namespace=" + countApi.getNamespace() + "\";");
+        else lineBuilder.append("  $url = \"http://yanwittmann.de/projects/countapi/hit.php?key=test&namespace=yan\";");
+        lineBuilder.append("  $result = file_get_contents($url);");
+        lineBuilder.append("  echo $result;");
+        lineBuilder.append("  echo '</span>';");
+        lineBuilder.append("  echo '<img width=\"20\" src=\"" + pathToMainDirectory + "images/arrow-cursor.svg\"/>';");
+        lineBuilder.append("}");
         lineBuilder.append("?>");
-        lineBuilder.append("</span>");
-        lineBuilder.append("<img width=\"20\" src=\"" + pathToMainDirectory + "images/arrow-cursor.svg\"/>");
         lineBuilder.append("</div>");
         return lineBuilder.toString();
     }
