@@ -10,4 +10,4 @@ bis<br>
 So können auch lange Dezimalzahlen als eine Folge von BCD-Codes dargestellt werden:<br>
 `4285` → `0100 0010 1000 0101`<br><br>
 
-Ein Anwendungsfall wären z.B. 7-Segment-Anzeigen
+Ein Anwendungsfall sind z.B. 7-Segment-Anzeigen

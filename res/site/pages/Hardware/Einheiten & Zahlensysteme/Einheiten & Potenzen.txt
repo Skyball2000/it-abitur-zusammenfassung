@@ -110,4 +110,4 @@ Diese Weise, Werte anzugeben, wird vor allem bei der Größenangabe von Speicher
 </tbody>
 </table>
 
-Diese werden vor allem für die wissenschaftliche Schreibweise verwendet.
+Diese Bezeichnungen werden vor allem für die wissenschaftliche Schreibweise verwendet.

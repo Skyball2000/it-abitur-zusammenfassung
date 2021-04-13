@@ -231,12 +231,14 @@ public class SiteBuilder {
         return searches.toString();
     }
 
-    private Pair<String, String> getSurroundingInfoPages(File page) {
+    private Pair<String, String> getSurroundingInfoPages(File page) { // keywords for ctrl+f: neighboring, next to, around
         Pair<String, String> pair = new Pair<>();
-        String lookingForPage = page.toString().replace(".txt", informationPageEndingForLink).replace(sitePagesDir, "")
+        String lookingForPage = page.toString()
+                .replace(".txt", informationPageEndingForLink.length() == 0 ? "<" :informationPageEndingForLink).replace(sitePagesDir, "")
                 .replaceAll(".+[\\\\/]([^\\\\/]+)", "$1");
         for (int i = 0, orderedPagesSize = orderedPages.size(); i < orderedPagesSize; i++) {
             String orderedPage = orderedPages.get(i);
+            System.out.println(orderedPage + " - " + lookingForPage);
             if (orderedPage.contains(lookingForPage)) {
                 if (i - 1 >= 0)
                     pair.setLeft(orderedPages.get(i - 1));
